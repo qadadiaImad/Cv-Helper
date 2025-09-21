@@ -47,7 +47,7 @@ For sb2nov template, use these exact macros:
 - \resumeItemListStart and \resumeItemListEnd
 
 ## EXAMPLE OUTPUT STRUCTURE
-```latex
+\`\`\`latex
 \documentclass[letterpaper,11pt]{article}
 [... exact template preamble ...]
 
