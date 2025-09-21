@@ -27,6 +27,10 @@ export default function TemplateBuilderPage() {
     },
   })
 
+  const handleDataChange = (data: Partial<CVData>) => {
+    setCurrentData(data)
+  }
+
   useEffect(() => {
     const foundTemplate = getTemplate(templateId)
     if (!foundTemplate) {
@@ -52,10 +56,6 @@ export default function TemplateBuilderPage() {
 
   const handleFormSubmit = (data: CVData) => {
     generateResume(data)
-  }
-
-  const handleDataChange = (data: Partial<CVData>) => {
-    setCurrentData(data)
   }
 
   const handleDownload = () => {

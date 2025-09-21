@@ -128,9 +128,15 @@ export function CVForm({ initialData, onSubmit, onDataChange, isLoading }: CVFor
   const watchedData = form.watch()
 
   // Notify parent of data changes
+  const prevDataRef = React.useRef<string>("")
+
   React.useEffect(() => {
     if (onDataChange) {
-      onDataChange(watchedData as Partial<CVData>)
+      const currentDataString = JSON.stringify(watchedData)
+      if (currentDataString !== prevDataRef.current) {
+        prevDataRef.current = currentDataString
+        onDataChange(watchedData as Partial<CVData>)
+      }
     }
   }, [watchedData, onDataChange])
 

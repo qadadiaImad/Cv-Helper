@@ -10,10 +10,10 @@ export default function HomePage() {
       {/* Header */}
       <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
         <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between font-sans">
             <div className="flex items-center gap-2">
               <FileText className="h-8 w-8 text-primary" />
-              <h1 className="text-2xl font-bold">FlowCV</h1>
+              <h1 className="text-2xl font-bold">{"RealCV"}</h1>
             </div>
             <nav className="flex items-center gap-4">
               <Link href="/dashboard/builder">
@@ -28,13 +28,12 @@ export default function HomePage() {
       <section className="container mx-auto px-4 py-16 text-center">
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="space-y-4">
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-balance">
+            <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-balance opacity-90 border-4 border-dashed border-foreground font-serif">
               Professional LaTeX Resumes
-              <span className="text-primary"> Made Simple</span>
+              <span className="text-primary">  Made Simple</span>
             </h2>
-            <p className="text-xl text-muted-foreground text-balance max-w-2xl mx-auto">
-              Create stunning, ATS-friendly resumes with professional LaTeX templates. Upload your existing CV and
-              automatically adapt it to any job description using AI.
+            <p className="text-xl text-muted-foreground text-balance max-w-2xl mx-auto text-center">
+              Create stunning resumes with professional LaTeX templates. Upload your existing CV and automatically adapt it to any job description.
             </p>
           </div>
 
