@@ -51,9 +51,16 @@ export function getTemplateBase(id: string): string {
 \\usepackage{tabularx}
 \\usepackage{fontawesome5}
 \\usepackage{multicol}
+\\usepackage{iftex}
 \\setlength{\\multicolsep}{-3.0pt}
 \\setlength{\\columnsep}{-1pt}
-\\input{glyphtounicode}
+
+% Engine-specific Unicode handling
+\\ifPDFTeX
+  \\input{glyphtounicode}
+  \\pdfgentounicode=1
+\\fi
+% XeTeX/LuaTeX handle Unicode natively
 
 \\pagestyle{fancy}
 \\fancyhf{} % clear all header and footer fields
@@ -79,8 +86,7 @@ export function getTemplateBase(id: string): string {
   \\vspace{-4pt}\\scshape\\raggedright\\large\\bfseries
 }{}{0em}{}[\\color{black}\\titlerule \\vspace{-5pt}]
 
-% Ensure that generate pdf is machine readable/ATS parsable
-\\pdfgentounicode=1
+% ATS parsable - handled by engine-specific code above
 
 %-------------------------
 % Custom commands

@@ -14,6 +14,8 @@ interface FileUploadProps {
   acceptedTypes?: string[]
   maxSize?: number
   className?: string
+  extractText?: boolean // New prop to control text extraction
+  fileType?: 'cv' | 'jd' // New prop to specify file type for API
 }
 
 export function FileUpload({
@@ -22,6 +24,8 @@ export function FileUpload({
   acceptedTypes = [".pdf", ".docx", ".doc", ".txt"],
   maxSize = 10 * 1024 * 1024, // 10MB
   className,
+  extractText = true, // Default to true for backward compatibility
+  fileType = 'cv', // Default to cv for backward compatibility
 }: FileUploadProps) {
   const [uploadStatus, setUploadStatus] = useState<"idle" | "uploading" | "processing" | "success" | "error">("idle")
   const [uploadProgress, setUploadProgress] = useState(0)
@@ -59,10 +63,28 @@ export function FileUpload({
         onFileUpload(file)
 
         // If text extraction is requested, parse the file
-        if (onTextExtracted) {
-          const { parseCV } = await import("@/lib/parse/parseCv")
-          const result = await parseCV(file)
-          onTextExtracted(result.text, result.metadata)
+        if (onTextExtracted && extractText) {
+          try {
+            // Call the parse API instead of importing Node.js modules
+            const formData = new FormData()
+            formData.append('file', file)
+            formData.append('type', fileType) // Use the fileType prop
+
+            const response = await fetch('/api/parse', {
+              method: 'POST',
+              body: formData,
+            })
+
+            if (response.ok) {
+              const result = await response.json()
+              onTextExtracted(result.text, result.metadata)
+            } else {
+              throw new Error('Failed to parse file')
+            }
+          } catch (error) {
+            console.error('[v0] Text extraction failed:', error)
+            throw error
+          }
         }
 
         setUploadStatus("success")

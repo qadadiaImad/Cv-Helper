@@ -57,6 +57,15 @@ ${bullets}
 }
 
 export function buildProjects(items: CVData["projects"]): string {
+  // If no projects, return a default project to avoid empty list error
+  if (!items || items.length === 0) {
+    return `    \\resumeProjectHeading
+          {\\textbf{Sample Project} $|$ \\emph{React, Node.js}}{2023}
+          \\resumeItemListStart
+            \\resumeItem{Built a web application with modern technologies}
+          \\resumeItemListEnd`
+  }
+
   return items
     .map((project) => {
       const bullets = project.bullets

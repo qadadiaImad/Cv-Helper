@@ -96,6 +96,7 @@ export function CVUploadPanel({ templateId, onAdaptationComplete }: CVUploadPane
                 onTextExtracted={handleCVUpload}
                 acceptedTypes={[".pdf", ".docx", ".doc", ".txt"]}
                 onFileUpload={(file) => console.log("[v0] CV file uploaded:", file.name)}
+                fileType="cv"
               />
 
               <div className="space-y-2">
@@ -142,6 +143,7 @@ export function CVUploadPanel({ templateId, onAdaptationComplete }: CVUploadPane
                 onTextExtracted={handleJDUpload}
                 acceptedTypes={[".pdf", ".docx", ".doc", ".txt"]}
                 onFileUpload={(file) => console.log("[v0] JD file uploaded:", file.name)}
+                fileType="jd"
               />
 
               <div className="space-y-2">

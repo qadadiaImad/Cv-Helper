@@ -18,7 +18,14 @@
 \usepackage{fancyhdr}
 \usepackage[english]{babel}
 \usepackage{tabularx}
-\input{glyphtounicode}
+\usepackage{iftex}
+
+% Engine-specific Unicode handling
+\ifPDFTeX
+  \input{glyphtounicode}
+  \pdfgentounicode=1
+\fi
+% XeTeX/LuaTeX handle Unicode natively, no need for glyphtounicode
 
 %----------FONT OPTIONS----------
 % sans-serif

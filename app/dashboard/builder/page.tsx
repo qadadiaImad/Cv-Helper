@@ -1,72 +1,100 @@
 "use client"
 
 import { useState, useCallback } from "react"
-import { TemplatePicker } from "@/components/template-picker"
-import { CVForm } from "@/components/cv-form"
-import { PDFPreview } from "@/components/pdf-preview"
-import { LaTeXEditor } from "@/components/latex-editor"
-import { CVUploadPanel } from "@/components/cv-upload-panel"
+import { CVPreview } from "@/components/cv-preview"
+import { TemplateSelector } from "@/components/template-selector"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
-import { FileText, Download, Code, Upload, ArrowLeft } from "lucide-react"
-import { useResumeGenerator } from "@/hooks/use-resume-generator"
-import type { CVData } from "@/lib/latex/schema"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { Textarea } from "@/components/ui/textarea"
+import { FileText, Download, Upload, ArrowLeft, Plus, Trash2 } from "lucide-react"
+import type { ResumeData, TemplateId } from "@/lib/react-templates"
 import Link from "next/link"
 
-export default function BuilderPage() {
-  const [selectedTemplate, setSelectedTemplate] = useState<string>("jake_gutierrez")
-  const [currentData, setCurrentData] = useState<Partial<CVData>>({})
-  const [generatedTeX, setGeneratedTeX] = useState<string>("")
-  const [activeTab, setActiveTab] = useState<"form" | "latex" | "upload">("form")
-
-  const { isGenerating, pdfUrl, error, generateResume, downloadResume, exportLaTeX, exportJSON } = useResumeGenerator({
-    templateId: selectedTemplate,
-    onSuccess: (url) => {
-      console.log("[v0] Resume generated successfully:", url)
-    },
-    onError: (err) => {
-      console.error("[v0] Resume generation failed:", err)
-    },
+export default function ReactBuilderPage() {
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>('classic_minimal')
+  const [activeTab, setActiveTab] = useState<"form" | "upload">("form")
+  
+  const [resumeData, setResumeData] = useState<ResumeData>({
+    name: "John Doe",
+    email: "john@example.com",
+    phone: "123-456-7890",
+    links: [
+      { label: "GitHub", url: "https://github.com/johndoe" },
+      { label: "LinkedIn", url: "https://linkedin.com/in/johndoe" }
+    ],
+    experience: [
+      {
+        role: "Software Engineer",
+        company: "Tech Corp",
+        period: "2023 - Present",
+        details: [
+          "Developed web applications using React and Node.js",
+          "Led team of 5 developers on major projects",
+          "Improved system performance by 40%"
+        ]
+      }
+    ],
+    projects: [
+      {
+        title: "CV Helper App",
+        description: "Application React pour créer des CV professionnels",
+        link: "https://github.com/johndoe/cv-helper"
+      }
+    ],
+    education: [
+      {
+        degree: "Master's in Computer Science",
+        school: "University of Tech",
+        year: "2021"
+      }
+    ],
+    skills: ["JavaScript", "React", "Node.js", "TypeScript", "Python", "Docker"]
   })
 
-  const handleFormSubmit = useCallback(
-    (data: CVData) => {
-      generateResume(data)
-    },
-    [generateResume],
-  )
-
-  const handleDataChange = useCallback((data: Partial<CVData>) => {
-    setCurrentData(data)
+  const updateResumeData = useCallback((updates: Partial<ResumeData>) => {
+    setResumeData(prev => ({ ...prev, ...updates }))
   }, [])
 
-  const handleDownload = useCallback(() => {
-    if (currentData.fullName && Object.keys(currentData).length > 2) {
-      const filename = `${currentData.fullName?.replace(/\s+/g, "_")}_resume.pdf`
-      downloadResume(currentData as CVData, filename)
-    }
-  }, [currentData, downloadResume])
+  const addExperience = () => {
+    setResumeData(prev => ({
+      ...prev,
+      experience: [...prev.experience, {
+        role: "",
+        company: "",
+        period: "",
+        details: [""]
+      }]
+    }))
+  }
 
-  const handleExportLaTeX = useCallback(() => {
-    if (currentData.fullName && Object.keys(currentData).length > 2) {
-      const filename = `${currentData.fullName?.replace(/\s+/g, "_")}_resume.tex`
-      exportLaTeX(currentData as CVData, filename)
-    }
-  }, [currentData, exportLaTeX])
+  const removeExperience = (index: number) => {
+    setResumeData(prev => ({
+      ...prev,
+      experience: prev.experience.filter((_, i) => i !== index)
+    }))
+  }
 
-  const handleExportJSON = useCallback(() => {
-    if (currentData.fullName && Object.keys(currentData).length > 2) {
-      const filename = `${currentData.fullName?.replace(/\s+/g, "_")}_resume.json`
-      exportJSON(currentData as CVData, filename)
-    }
-  }, [currentData, exportJSON])
+  const addProject = () => {
+    setResumeData(prev => ({
+      ...prev,
+      projects: [...prev.projects, {
+        title: "",
+        description: "",
+        link: ""
+      }]
+    }))
+  }
 
-  const handleAdaptationComplete = useCallback((tex: string) => {
-    setGeneratedTeX(tex)
-    setActiveTab("latex")
-  }, [])
+  const removeProject = (index: number) => {
+    setResumeData(prev => ({
+      ...prev,
+      projects: prev.projects.filter((_, i) => i !== index)
+    }))
+  }
 
   return (
     <div className="min-h-screen bg-background">
@@ -83,7 +111,7 @@ export default function BuilderPage() {
               </Link>
               <div className="flex items-center gap-2">
                 <FileText className="h-6 w-6 text-primary" />
-                <h1 className="text-xl font-semibold">Resume Builder</h1>
+                <h1 className="text-xl font-semibold">React Resume Builder</h1>
               </div>
             </div>
 
@@ -93,17 +121,6 @@ export default function BuilderPage() {
                   {selectedTemplate.replace("_", " ").replace(/\b\w/g, (l) => l.toUpperCase())}
                 </Badge>
               )}
-
-              <div className="flex gap-2">
-                <Button variant="outline" size="sm" onClick={handleDownload} disabled={!pdfUrl || isGenerating}>
-                  <Download className="h-4 w-4 mr-2" />
-                  PDF
-                </Button>
-                <Button variant="outline" size="sm" onClick={handleExportLaTeX} disabled={isGenerating}>
-                  <Code className="h-4 w-4 mr-2" />
-                  LaTeX
-                </Button>
-              </div>
             </div>
           </div>
         </div>
@@ -111,7 +128,7 @@ export default function BuilderPage() {
 
       <div className="container mx-auto px-4 py-6">
         <div className="grid gap-6 lg:grid-cols-2">
-          {/* Left Panel - Form/Editor */}
+          {/* Left Panel - Form */}
           <div className="space-y-6">
             {/* Template Selection */}
             <Card>
@@ -119,51 +136,135 @@ export default function BuilderPage() {
                 <CardTitle className="text-lg">Step 1: Choose Template</CardTitle>
               </CardHeader>
               <CardContent>
-                <TemplatePicker selectedTemplate={selectedTemplate} onTemplateSelect={setSelectedTemplate} />
+                <TemplateSelector 
+                  selectedTemplate={selectedTemplate} 
+                  onTemplateChange={setSelectedTemplate} 
+                />
               </CardContent>
             </Card>
 
-            {/* Main Content Tabs */}
+            {/* Form */}
             <Card>
               <CardHeader>
                 <CardTitle className="text-lg">Step 2: Add Content</CardTitle>
               </CardHeader>
-              <CardContent className="p-0">
-                <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as typeof activeTab)}>
-                  <TabsList className="grid w-full grid-cols-3">
-                    <TabsTrigger value="form">Form Builder</TabsTrigger>
-                    <TabsTrigger value="upload">
-                      <Upload className="h-4 w-4 mr-2" />
-                      AI Adapt
-                    </TabsTrigger>
-                    <TabsTrigger value="latex">LaTeX Editor</TabsTrigger>
-                  </TabsList>
+              <CardContent className="space-y-6">
+                {/* Personal Info */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold">Personal Information</h3>
+                  <div className="grid gap-4 md:grid-cols-2">
+                    <div>
+                      <Label htmlFor="name">Full Name</Label>
+                      <Input
+                        id="name"
+                        value={resumeData.name}
+                        onChange={(e) => updateResumeData({ name: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="email">Email</Label>
+                      <Input
+                        id="email"
+                        type="email"
+                        value={resumeData.email}
+                        onChange={(e) => updateResumeData({ email: e.target.value })}
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="phone">Phone</Label>
+                      <Input
+                        id="phone"
+                        value={resumeData.phone}
+                        onChange={(e) => updateResumeData({ phone: e.target.value })}
+                      />
+                    </div>
+                  </div>
+                </div>
 
-                  <TabsContent value="form" className="p-6">
-                    <CVForm
-                      initialData={currentData}
-                      onSubmit={handleFormSubmit}
-                      onDataChange={handleDataChange}
-                      isLoading={isGenerating}
-                    />
-                  </TabsContent>
+                {/* Experience */}
+                <div className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h3 className="font-semibold">Experience</h3>
+                    <Button onClick={addExperience} size="sm">
+                      <Plus className="h-4 w-4 mr-2" />
+                      Add
+                    </Button>
+                  </div>
+                  {resumeData.experience.map((exp, index) => (
+                    <Card key={index} className="p-4">
+                      <div className="flex justify-between items-start mb-4">
+                        <h4 className="font-medium">Experience {index + 1}</h4>
+                        <Button 
+                          onClick={() => removeExperience(index)} 
+                          size="sm" 
+                          variant="destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
+                      <div className="grid gap-4 md:grid-cols-2">
+                        <div>
+                          <Label>Role</Label>
+                          <Input
+                            value={exp.role}
+                            onChange={(e) => {
+                              const newExp = [...resumeData.experience]
+                              newExp[index] = { ...exp, role: e.target.value }
+                              updateResumeData({ experience: newExp })
+                            }}
+                          />
+                        </div>
+                        <div>
+                          <Label>Company</Label>
+                          <Input
+                            value={exp.company}
+                            onChange={(e) => {
+                              const newExp = [...resumeData.experience]
+                              newExp[index] = { ...exp, company: e.target.value }
+                              updateResumeData({ experience: newExp })
+                            }}
+                          />
+                        </div>
+                        <div className="md:col-span-2">
+                          <Label>Period</Label>
+                          <Input
+                            value={exp.period}
+                            onChange={(e) => {
+                              const newExp = [...resumeData.experience]
+                              newExp[index] = { ...exp, period: e.target.value }
+                              updateResumeData({ experience: newExp })
+                            }}
+                          />
+                        </div>
+                        <div className="md:col-span-2">
+                          <Label>Details (one per line)</Label>
+                          <Textarea
+                            value={exp.details.join('\n')}
+                            onChange={(e) => {
+                              const newExp = [...resumeData.experience]
+                              newExp[index] = { ...exp, details: e.target.value.split('\n').filter(d => d.trim()) }
+                              updateResumeData({ experience: newExp })
+                            }}
+                            rows={3}
+                          />
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </div>
 
-                  <TabsContent value="upload" className="p-6">
-                    <CVUploadPanel templateId={selectedTemplate} onAdaptationComplete={handleAdaptationComplete} />
-                  </TabsContent>
-
-                  <TabsContent value="latex" className="p-6">
-                    <LaTeXEditor
-                      initialCode={generatedTeX}
-                      onCodeChange={setGeneratedTeX}
-                      onCompile={(code) => {
-                        // Handle LaTeX compilation
-                        console.log("[v0] Compiling LaTeX:", code.length, "characters")
-                      }}
-                      isCompiling={isGenerating}
-                    />
-                  </TabsContent>
-                </Tabs>
+                {/* Skills */}
+                <div className="space-y-4">
+                  <h3 className="font-semibold">Skills</h3>
+                  <Textarea
+                    value={resumeData.skills.join(', ')}
+                    onChange={(e) => updateResumeData({ 
+                      skills: e.target.value.split(',').map(s => s.trim()).filter(s => s) 
+                    })}
+                    placeholder="JavaScript, React, Node.js, TypeScript..."
+                    rows={2}
+                  />
+                </div>
               </CardContent>
             </Card>
           </div>
@@ -172,40 +273,12 @@ export default function BuilderPage() {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <div className="flex items-center justify-between">
-                  <CardTitle className="text-lg">Step 3: Preview & Export</CardTitle>
-                  <div className="flex gap-2">
-                    <Button variant="outline" size="sm" onClick={handleExportJSON} disabled={isGenerating}>
-                      JSON
-                    </Button>
-                  </div>
-                </div>
+                <CardTitle className="text-lg">Step 3: Preview & Export</CardTitle>
               </CardHeader>
               <CardContent className="p-0">
-                <PDFPreview
-                  pdfUrl={pdfUrl || undefined}
-                  isLoading={isGenerating}
-                  onRefresh={() => {
-                    if (Object.keys(currentData).length > 2) {
-                      generateResume(currentData as CVData)
-                    }
-                  }}
-                  onDownload={handleDownload}
-                />
+                <CVPreview data={resumeData} />
               </CardContent>
             </Card>
-
-            {/* Status/Error Display */}
-            {error && (
-              <Card className="border-destructive">
-                <CardHeader>
-                  <CardTitle className="text-destructive text-sm">Error</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-sm text-destructive">{error}</p>
-                </CardContent>
-              </Card>
-            )}
           </div>
         </div>
       </div>

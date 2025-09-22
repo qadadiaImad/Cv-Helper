@@ -2,6 +2,53 @@ import { spawn } from "child_process"
 import { promises as fs } from "fs"
 import { join } from "path"
 import { randomUUID } from "crypto"
+import { tmpdir } from "os"
+import path from "path"
+
+// Get tectonic executable path
+function getTectonicPath(): string {
+  // Try local tectonic.exe first
+  const localTectonic = path.join(process.cwd(), "tectonic.exe")
+  return localTectonic
+}
+
+// Check if tectonic is available
+async function checkTectonicAvailable(): Promise<boolean> {
+  return new Promise((resolve) => {
+    const tectonicPath = getTectonicPath()
+    const proc = spawn(tectonicPath, ["--version"], { stdio: "pipe" })
+    
+    const timer = setTimeout(() => {
+      proc.kill()
+      resolve(false)
+    }, 2000)
+    
+    proc.on("close", (code) => {
+      clearTimeout(timer)
+      resolve(code === 0)
+    })
+    
+    proc.on("error", () => {
+      clearTimeout(timer)
+      // Try system tectonic as fallback
+      const systemProc = spawn("tectonic", ["--version"], { stdio: "pipe" })
+      const systemTimer = setTimeout(() => {
+        systemProc.kill()
+        resolve(false)
+      }, 2000)
+      
+      systemProc.on("close", (code) => {
+        clearTimeout(systemTimer)
+        resolve(code === 0)
+      })
+      
+      systemProc.on("error", () => {
+        clearTimeout(systemTimer)
+        resolve(false)
+      })
+    })
+  })
+}
 
 export interface CompileOptions {
   tex: string
@@ -18,10 +65,21 @@ export interface CompileResult {
 
 export async function compileTex({
   tex,
-  timeout = 10000,
+  timeout = 60000, // Increased to 60 seconds for first-time package downloads
   maxSize = 204800, // 200KB max input
 }: CompileOptions): Promise<CompileResult> {
   console.log("[v0] Starting LaTeX compilation, input size:", tex.length)
+
+  // Check if tectonic is available
+  const isTectonicAvailable = await checkTectonicAvailable()
+  if (!isTectonicAvailable) {
+    console.log("[v0] Tectonic not available, returning LaTeX code only")
+    return {
+      success: false,
+      error: "LaTeX compiler (tectonic) not installed. Please install tectonic or use the LaTeX code directly.",
+      logs: `LaTeX code generated successfully (${tex.length} characters).\n\nTo install tectonic:\n- Windows: Download from https://tectonic-typesetting.github.io/\n- macOS: brew install tectonic\n- Linux: cargo install tectonic\n\nAlternatively, you can copy the LaTeX code and compile it with any LaTeX distribution.`,
+    }
+  }
 
   // Security: Check input size
   if (tex.length > maxSize) {
@@ -52,7 +110,7 @@ export async function compileTex({
     }
   }
 
-  const tempDir = join("/tmp", `latex-${randomUUID()}`)
+  const tempDir = join(tmpdir(), `latex-${randomUUID()}`)
   console.log("[v0] Using temp directory:", tempDir)
 
   try {
@@ -67,7 +125,8 @@ export async function compileTex({
     // Compile with tectonic
     const result = await new Promise<CompileResult>((resolve) => {
       console.log("[v0] Starting tectonic process")
-      const proc = spawn("tectonic", ["-Zshell-escape=0", texFile], {
+      const tectonicPath = getTectonicPath()
+      const proc = spawn(tectonicPath, [texFile], {
         cwd: tempDir,
         stdio: ["pipe", "pipe", "pipe"],
       })
@@ -75,8 +134,16 @@ export async function compileTex({
       const chunks: Buffer[] = []
       const errorChunks: Buffer[] = []
 
-      proc.stdout.on("data", (data) => chunks.push(Buffer.from(data)))
-      proc.stderr.on("data", (data) => errorChunks.push(Buffer.from(data)))
+      proc.stdout.on("data", (data) => {
+        const output = data.toString()
+        console.log("[v0] Tectonic stdout:", output)
+        chunks.push(Buffer.from(data))
+      })
+      proc.stderr.on("data", (data) => {
+        const output = data.toString()
+        console.log("[v0] Tectonic stderr:", output)
+        errorChunks.push(Buffer.from(data))
+      })
 
       const timer = setTimeout(() => {
         console.log("[v0] Compilation timeout, killing process")

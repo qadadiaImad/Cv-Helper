@@ -29,11 +29,11 @@ export default function HomePage() {
         <div className="max-w-4xl mx-auto space-y-8">
           <div className="space-y-4">
             <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-balance opacity-90 border-4 border-dashed border-foreground font-serif">
-              Professional LaTeX Resumes
+              Professional React Resumes
               <span className="text-primary">  Made Simple</span>
             </h2>
             <p className="text-xl text-muted-foreground text-balance max-w-2xl mx-auto text-center">
-              Create stunning resumes with professional LaTeX templates. Upload your existing CV and automatically adapt it to any job description.
+              Create stunning resumes with modern React templates. Real-time preview and instant PDF export with professional designs.
             </p>
           </div>
 
@@ -44,9 +44,11 @@ export default function HomePage() {
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Button size="lg" variant="outline" className="text-lg px-8 bg-transparent">
-              View Templates
-            </Button>
+            <Link href="/templates">
+              <Button size="lg" variant="outline" className="text-lg px-8 bg-transparent">
+                View Templates
+              </Button>
+            </Link>
           </div>
         </div>
       </section>

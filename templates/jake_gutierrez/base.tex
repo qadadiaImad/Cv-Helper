@@ -20,9 +20,16 @@
 \usepackage{tabularx}
 \usepackage{fontawesome5}
 \usepackage{multicol}
+\usepackage{iftex}
 \setlength{\multicolsep}{-3.0pt}
 \setlength{\columnsep}{-1pt}
-\input{glyphtounicode}
+
+% Engine-specific Unicode handling
+\ifPDFTeX
+  \input{glyphtounicode}
+  \pdfgentounicode=1
+\fi
+% XeTeX/LuaTeX handle Unicode natively, no need for glyphtounicode
 
 %----------FONT OPTIONS----------
 % sans-serif
