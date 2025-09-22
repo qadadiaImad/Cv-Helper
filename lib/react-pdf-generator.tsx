@@ -2,94 +2,84 @@ import type { ResumeData, TemplateId } from "@/lib/react-templates"
 
 export async function generateReactPDF(data: ResumeData, templateId: TemplateId = "classic_minimal"): Promise<Blob> {
   try {
-    console.log("[v0] Starting PDF generation with browser print API")
+    console.log("[v0] Starting PDF generation with jsPDF")
+
+    // Dynamically import jsPDF and html2canvas
+    const { default: jsPDF } = await import('jspdf')
+    const { default: html2canvas } = await import('html2canvas')
 
     // Create a temporary div with the resume content
     const tempDiv = document.createElement("div")
     tempDiv.style.cssText = `
-      position: absolute;
-      top: -9999px;
-      left: -9999px;
+      position: fixed;
+      top: 0;
+      left: 0;
       width: 210mm;
-      min-height: 297mm;
+      height: 297mm;
       padding: 20mm;
       background: white;
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      font-size: 14px;
+      font-family: Arial, sans-serif;
+      font-size: 12px;
       line-height: 1.5;
       color: #333;
+      z-index: -9999;
+      overflow: hidden;
     `
 
     // Generate HTML content for the resume
-    const htmlContent = generateResumeHTML(data)
+    const htmlContent = generateResumeHTML(data, templateId)
     tempDiv.innerHTML = htmlContent
     document.body.appendChild(tempDiv)
 
-    // Use the browser's print functionality to generate PDF
-    const printWindow = window.open("", "_blank")
-    if (!printWindow) {
-      throw new Error("Could not open print window")
-    }
+    // Wait for fonts and images to load
+    await new Promise(resolve => setTimeout(resolve, 500))
 
-    printWindow.document.write(`
-      <!DOCTYPE html>
-      <html>
-        <head>
-          <title>${data.name} - Resume</title>
-          <style>
-            @page { 
-              size: A4; 
-              margin: 20mm; 
-            }
-            body { 
-              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-              font-size: 14px;
-              line-height: 1.5;
-              color: #333;
-              margin: 0;
-              padding: 0;
-            }
-            .header { margin-bottom: 20px; }
-            .name { font-size: 24px; font-weight: bold; margin-bottom: 8px; }
-            .contact { color: #666; margin-bottom: 12px; }
-            .section { margin-bottom: 20px; }
-            .section-title { font-size: 18px; font-weight: bold; margin-bottom: 12px; color: #333; border-bottom: 1px solid #ddd; padding-bottom: 4px; }
-            .item { margin-bottom: 12px; }
-            .item-title { font-weight: bold; margin-bottom: 2px; }
-            .item-subtitle { color: #555; margin-bottom: 2px; }
-            .item-date { color: #888; font-size: 12px; margin-bottom: 4px; }
-            .skills { display: flex; flex-wrap: wrap; gap: 8px; }
-            .skill { background: #f0f0f0; padding: 4px 8px; border-radius: 4px; font-size: 12px; }
-          </style>
-        </head>
-        <body>
-          ${htmlContent}
-        </body>
-      </html>
-    `)
-    printWindow.document.close()
+    // Create PDF with jsPDF
+    const pdf = new jsPDF({
+      orientation: 'portrait',
+      unit: 'mm',
+      format: 'a4',
+      compress: true,
+      putOnlyUsedFonts: true,
+      precision: 16
+    })
+
+    // Convert HTML to canvas
+    const canvas = await html2canvas(tempDiv, {
+      scale: 2,
+      useCORS: true,
+      allowTaint: true,
+      backgroundColor: '#ffffff',
+      logging: false,
+      windowWidth: tempDiv.scrollWidth,
+      windowHeight: tempDiv.scrollHeight
+    })
+
+    // Add canvas to PDF
+    const imgData = canvas.toDataURL('image/jpeg', 1.0)
+    const pdfWidth = pdf.internal.pageSize.getWidth()
+    const pdfHeight = pdf.internal.pageSize.getHeight()
+    const canvasWidth = canvas.width
+    const canvasHeight = canvas.height
+    const ratio = Math.min(pdfWidth / canvasWidth, pdfHeight / canvasHeight)
+    const imgWidth = canvasWidth * ratio
+    const imgHeight = canvasHeight * ratio
+    pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight, undefined, 'FAST')
 
     // Clean up
     document.body.removeChild(tempDiv)
 
-    // Return a simple blob (the actual PDF generation will be handled by the browser)
-    const blob = new Blob([htmlContent], { type: "text/html" })
-
-    // Trigger print dialog
-    setTimeout(() => {
-      printWindow.print()
-      printWindow.close()
-    }, 500)
-
-    console.log("[v0] PDF generation completed")
-    return blob
+    // Generate PDF blob
+    const pdfBlob = pdf.output('blob')
+    console.log("[v0] PDF generation completed successfully")
+    return pdfBlob
   } catch (error) {
     console.error("[v0] PDF generation failed:", error)
-    throw new Error(`PDF generation failed: ${error instanceof Error ? error.message : "Unknown error"}`)
+    throw new Error(`PDF generation failed: ${error instanceof Error ? error.message : String(error)}`)
   }
 }
 
-function generateResumeHTML(data: ResumeData): string {
+function generateResumeHTML(data: ResumeData, templateId: TemplateId = 'classic_minimal'): string {
   return `
     <div class="header">
       <div class="name">${data.name}</div>
