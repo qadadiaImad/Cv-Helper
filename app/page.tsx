@@ -2,22 +2,35 @@ import type React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { FileText, Zap, Download, Shield, Sparkles, ArrowRight } from "lucide-react"
+import { ArrowRight, Download, FileText, Shield, Sparkles, Zap, Workflow } from "lucide-react"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-gradient-to-br from-background to-muted">
+    <div className="min-h-screen bg-aurora text-foreground">
       {/* Header */}
-      <header className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between font-sans">
-            <div className="flex items-center gap-2">
-              <FileText className="h-8 w-8 text-primary" />
-              <h1 className="text-2xl font-bold">{"RealCV"}</h1>
+      <header className="sticky top-0 z-40 border-b border-border/60 bg-background/70 backdrop-blur-xl">
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-gradient-to-br from-primary to-accent animate-float">
+                <FileText className="h-6 w-6 text-primary-foreground" />
+              </div>
+              <div>
+                <p className="text-sm uppercase tracking-[0.35em] text-muted-foreground">RealCV Studio</p>
+                <h1 className="text-2xl font-semibold">Craft resumes that glow</h1>
+              </div>
             </div>
-            <nav className="flex items-center gap-4">
+            <nav className="flex items-center gap-3">
+              <Link href="/templates" className="hidden md:block">
+                <Button variant="ghost" className="glass-panel border border-border/60">
+                  Explore templates
+                </Button>
+              </Link>
               <Link href="/dashboard/builder">
-                <Button>Get Started</Button>
+                <Button className="animate-gradient bg-gradient-to-r from-primary via-accent to-primary text-primary-foreground shadow-lg shadow-primary/40">
+                  Launch builder
+                  <ArrowRight className="ml-2 h-5 w-5" />
+                </Button>
               </Link>
             </nav>
           </div>
@@ -25,96 +38,139 @@ export default function HomePage() {
       </header>
 
       {/* Hero Section */}
-      <section className="container mx-auto px-4 py-16 text-center">
-        <div className="max-w-4xl mx-auto space-y-8">
-          <div className="space-y-4">
-            <h2 className="text-4xl md:text-6xl font-bold tracking-tight text-balance opacity-90 border-4 border-dashed border-foreground font-serif">
-              Professional React Resumes
-              <span className="text-primary">  Made Simple</span>
+      <section className="container mx-auto px-6 pb-24 pt-16 text-center">
+        <div className="mx-auto max-w-5xl space-y-10">
+          <div className="space-y-6">
+            <div className="inline-flex items-center gap-2 rounded-full border border-primary/40 bg-primary/10 px-5 py-2 text-sm font-medium text-primary animate-float">
+              <Sparkles className="h-4 w-4" />
+              Powered by AI + React templates
+            </div>
+            <h2 className="text-balance text-4xl font-semibold leading-tight text-foreground md:text-6xl">
+              Design a resume that speaks with <span className="bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent">clarity and flair</span>
             </h2>
-            <p className="text-xl text-muted-foreground text-balance max-w-2xl mx-auto text-center">
-              Create stunning resumes with modern React templates. Real-time preview and instant PDF export with professional designs.
+            <p className="mx-auto max-w-3xl text-balance text-lg text-muted-foreground md:text-xl">
+              Orchestrate your career story with live previews, cinematic animations, and export-ready PDFs. Every detail is polished so you can focus on landing the role you want.
             </p>
           </div>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <Link href="/dashboard/builder">
-              <Button size="lg" className="text-lg px-8">
-                Start Building
+          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
+            <Link href="/dashboard/builder" className="w-full sm:w-auto">
+              <Button size="lg" className="w-full rounded-full border-0 bg-gradient-to-r from-primary via-accent to-primary text-lg tracking-wide shadow-xl shadow-primary/30">
+                Start building now
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
             </Link>
-            <Link href="/templates">
-              <Button size="lg" variant="outline" className="text-lg px-8 bg-transparent">
-                View Templates
+            <Link href="/templates" className="w-full sm:w-auto">
+              <Button size="lg" variant="outline" className="w-full rounded-full border-primary/40 bg-background/60 backdrop-blur">
+                Browse template gallery
               </Button>
             </Link>
+          </div>
+
+          <div className="relative mx-auto flex max-w-5xl items-center justify-center">
+            <div className="glass-panel card-glow w-full rounded-3xl border border-primary/20 p-1">
+              <div className="rounded-[26px] bg-background/80 p-6 shadow-2xl shadow-primary/20">
+                <div className="grid gap-6 md:grid-cols-2">
+                  <div className="flex flex-col gap-4 text-left">
+                    <h3 className="text-2xl font-semibold text-primary-foreground">Curated template OS</h3>
+                    <p className="text-muted-foreground">
+                      Switch between polished layouts instantly, preview changes live, and export razor-sharp PDFs without leaving your browser.
+                    </p>
+                    <div className="flex flex-wrap gap-2">
+                      {[
+                        "One-click themes",
+                        "ATS friendly",
+                        "Real-time preview",
+                        "AI adaptation",
+                      ].map((chip) => (
+                        <span key={chip} className="pill border border-primary/20 bg-primary/10 text-sm text-primary">
+                          {chip}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <div className="relative flex items-center justify-center">
+                    <div className="absolute -inset-6 animate-gradient rounded-[34px] bg-gradient-to-r from-primary/40 via-accent/25 to-primary/40 blur-3xl" />
+                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-primary/30 bg-gradient-to-br from-background via-background/40 to-background">
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <Sparkles className="h-20 w-20 text-primary/50" />
+                      </div>
+                      <div className="absolute inset-0 bg-grid opacity-60" />
+                      <div className="absolute inset-x-6 top-6 rounded-2xl border border-border/60 bg-background/80 p-4 text-left">
+                        <p className="text-sm font-semibold text-muted-foreground">Preview • Elegant Black</p>
+                        <div className="mt-3 h-32 rounded-xl border border-border/40 bg-muted/20" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="container mx-auto px-4 py-16">
-        <div className="text-center mb-12">
-          <h3 className="text-3xl font-bold mb-4">Why Choose FlowCV?</h3>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Professional resume creation with the power of LaTeX and the intelligence of AI
+      <section className="container mx-auto px-6 pb-20">
+        <div className="mx-auto max-w-3xl text-center">
+          <h3 className="text-3xl font-semibold md:text-4xl">Why designers & engineers trust RealCV</h3>
+          <p className="mt-4 text-lg text-muted-foreground">
+            From academic dossiers to design portfolios, you get flexible building blocks, automation, and total control over your personal branding.
           </p>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
           <FeatureCard
             icon={<FileText className="h-8 w-8 text-primary" />}
-            title="Professional Templates"
-            description="Choose from carefully crafted LaTeX templates designed by professionals. Each template is ATS-friendly and follows industry best practices."
+            title="Signature templates"
+            description="Select from art-directed layouts inspired by proven open-source CV frameworks and tuned for ATS readability."
           />
-
           <FeatureCard
-            icon={<Sparkles className="h-8 w-8 text-primary" />}
-            title="AI-Powered Adaptation"
-            description="Upload your existing CV and a job description. Our AI will automatically tailor your resume to match the job requirements."
+            icon={<Sparkles className="h-8 w-8 text-accent" />}
+            title="AI blending"
+            description="Fuse saved profiles, job descriptions, and portfolio links. Our AI assistant adapts tone and highlights to each opportunity."
           />
-
           <FeatureCard
-            icon={<Zap className="h-8 w-8 text-primary" />}
-            title="Instant Compilation"
-            description="See your changes in real-time with our fast LaTeX compilation engine. No need to install anything locally."
+            icon={<Workflow className="h-8 w-8 text-primary" />}
+            title="Profile vaults"
+            description="Store multiple personas—consultant, academic, creator—and switch context instantly without rewriting your story."
           />
-
           <FeatureCard
             icon={<Download className="h-8 w-8 text-primary" />}
-            title="Multiple Export Formats"
-            description="Export your resume as PDF, LaTeX source code, or JSON data. Perfect for version control and customization."
+            title="Pixel-perfect exports"
+            description="Generate PDFs, JSON, or LaTeX sources on demand. Every render is retina-ready and print safe."
           />
-
+          <FeatureCard
+            icon={<Zap className="h-8 w-8 text-accent" />}
+            title="Realtime editing"
+            description="Stay in flow with instant previews, keyboard-friendly inputs, and autosaving that never interrupts your momentum."
+          />
           <FeatureCard
             icon={<Shield className="h-8 w-8 text-primary" />}
-            title="Secure & Private"
-            description="Your data is processed securely with strict privacy controls. No data is stored permanently on our servers."
-          />
-
-          <FeatureCard
-            icon={<FileText className="h-8 w-8 text-primary" />}
-            title="Open Source Templates"
-            description="All templates are based on popular open-source LaTeX resume templates with proper attribution and MIT licensing."
+            title="Secure workspace"
+            description="All input stays encrypted in-memory with optional account sync. Export and delete with one click."
           />
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="container mx-auto px-4 py-16">
-        <Card className="max-w-4xl mx-auto text-center">
-          <CardHeader>
-            <CardTitle className="text-3xl">Ready to Create Your Perfect Resume?</CardTitle>
+      <section className="container mx-auto px-6 pb-24">
+        <Card className="card-glow glass-panel max-w-5xl mx-auto overflow-hidden border border-primary/30 text-center">
+          <CardHeader className="space-y-3">
+            <CardTitle className="text-3xl md:text-4xl">Build a resume that moves hiring teams</CardTitle>
             <CardDescription className="text-lg">
-              Join thousands of professionals who trust FlowCV for their career success
+              Join product designers, engineers, and leaders enhancing their applications with our intelligent CV studio.
             </CardDescription>
           </CardHeader>
-          <CardContent>
+          <CardContent className="flex flex-col items-center gap-4 md:flex-row md:justify-center">
             <Link href="/dashboard/builder">
-              <Button size="lg" className="text-lg px-8">
-                Start Building Now
+              <Button size="lg" className="rounded-full bg-primary text-primary-foreground shadow-lg shadow-primary/50">
+                Go to dashboard
                 <ArrowRight className="ml-2 h-5 w-5" />
+              </Button>
+            </Link>
+            <Link href="/templates">
+              <Button size="lg" variant="ghost" className="rounded-full border border-border/60 text-muted-foreground">
+                Tour the library
               </Button>
             </Link>
           </CardContent>
@@ -122,17 +178,20 @@ export default function HomePage() {
       </section>
 
       {/* Footer */}
-      <footer className="border-t bg-muted/50">
-        <div className="container mx-auto px-4 py-8">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            <div className="flex items-center gap-2">
-              <FileText className="h-6 w-6 text-primary" />
-              <span className="font-semibold">FlowCV</span>
+      <footer className="border-t border-border/40 bg-background/60">
+        <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-6 py-8 md:flex-row">
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
+              <FileText className="h-5 w-5 text-primary" />
             </div>
-            <p className="text-sm text-muted-foreground">
-              Built with Next.js, LaTeX, and AI. Open source templates with proper attribution.
-            </p>
+            <div>
+              <span className="text-sm uppercase tracking-[0.35em] text-muted-foreground">RealCV</span>
+              <p className="text-sm text-muted-foreground/90">Next.js • Tailwind • AI-assisted editing</p>
+            </div>
           </div>
+          <p className="text-center text-sm text-muted-foreground">
+            {new Date().getFullYear()} RealCV Studio. Crafted for ambitious builders.
+          </p>
         </div>
       </footer>
     </div>
@@ -147,13 +206,17 @@ interface FeatureCardProps {
 
 function FeatureCard({ icon, title, description }: FeatureCardProps) {
   return (
-    <Card className="text-center">
-      <CardHeader>
-        <div className="mx-auto mb-4">{icon}</div>
-        <CardTitle className="text-xl">{title}</CardTitle>
+    <Card className="card-glow glass-panel h-full border border-border/40 text-left transition-all duration-300 hover:-translate-y-1">
+      <CardHeader className="space-y-4">
+        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-primary">
+          {icon}
+        </div>
+        <CardTitle className="text-xl font-semibold text-foreground">{title}</CardTitle>
       </CardHeader>
       <CardContent>
-        <CardDescription className="text-base">{description}</CardDescription>
+        <CardDescription className="text-base leading-relaxed text-muted-foreground">
+          {description}
+        </CardDescription>
       </CardContent>
     </Card>
   )
