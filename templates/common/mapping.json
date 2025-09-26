@@ -1,0 +1,70 @@
+{
+  "jake_gutierrez": {
+    "anchors": {
+      "HEADER": {
+        "description": "Personal information and contact details",
+        "required_fields": ["fullName", "email"],
+        "optional_fields": ["phone", "links.linkedin", "links.github", "links.portfolio"],
+        "format": "center-aligned header with name, email, phone, and links"
+      },
+      "EDUCATION": {
+        "description": "Educational background",
+        "required_fields": ["education"],
+        "format": "\\resumeSubheading{school}{dates}{degree}{city}"
+      },
+      "EXPERIENCE": {
+        "description": "Work experience with bullet points",
+        "required_fields": ["experience"],
+        "format": "\\resumeSubheading{company}{dates}{title}{city} + \\resumeItem{bullet} list"
+      },
+      "PROJECTS": {
+        "description": "Personal/professional projects",
+        "optional_fields": ["projects"],
+        "format": "\\resumeProjectHeading{name | stack}{dates} + \\resumeItem{bullet} list"
+      },
+      "SKILLS": {
+        "description": "Technical skills categorized",
+        "optional_fields": ["skills"],
+        "format": "\\textbf{Category}: comma-separated list"
+      },
+      "PHOTO": {
+        "description": "Profile photo (not supported)",
+        "supported": false
+      }
+    }
+  },
+  "sb2nov": {
+    "anchors": {
+      "HEADER": {
+        "description": "Personal information and contact details",
+        "required_fields": ["fullName", "email"],
+        "optional_fields": ["phone", "links.linkedin", "links.github", "links.portfolio"],
+        "format": "center-aligned header with name, email, phone, and links"
+      },
+      "EDUCATION": {
+        "description": "Educational background",
+        "required_fields": ["education"],
+        "format": "\\resumeSubheading{school}{dates}{degree}{city}"
+      },
+      "EXPERIENCE": {
+        "description": "Work experience with bullet points",
+        "required_fields": ["experience"],
+        "format": "\\resumeSubheading{company}{dates}{title}{city} + \\resumeItem{bullet} list"
+      },
+      "PROJECTS": {
+        "description": "Personal/professional projects",
+        "optional_fields": ["projects"],
+        "format": "\\resumeProjectHeading{name}{dates} + \\resumeItem{bullet} list"
+      },
+      "SKILLS": {
+        "description": "Technical skills categorized",
+        "optional_fields": ["skills"],
+        "format": "\\textbf{Category}: comma-separated list"
+      },
+      "PHOTO": {
+        "description": "Profile photo (not supported)",
+        "supported": false
+      }
+    }
+  }
+}
