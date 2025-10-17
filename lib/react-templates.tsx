@@ -300,6 +300,259 @@ export const EuropeanStandard: React.FC<Props> = ({ data }) => (
   </div>
 );
 
+/* 11. Responsive Professional */
+export const ResponsiveProfessional: React.FC<Props> = ({ data }) => (
+  <div style={{
+    width: '100%',
+    backgroundColor: '#ffffff',
+    fontFamily: 'Raleway, sans-serif',
+    display: 'flex',
+    minHeight: '100vh'
+  }}>
+    <div style={{
+      width: '40%',
+      backgroundColor: '#fff',
+      padding: '60px 40px',
+      color: '#9099a0'
+    }}>
+      <div style={{
+        width: '150px',
+        height: '150px',
+        borderRadius: '50%',
+        backgroundColor: '#4a4e51',
+        margin: '0 auto 30px',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }}>
+        <span style={{ color: '#fff', fontSize: '48px', fontWeight: 'bold' }}>
+          {data.name.split(' ').map(n => n[0]).join('')}
+        </span>
+      </div>
+      <h1 style={{
+        fontSize: '2.5em',
+        fontFamily: 'Montserrat, sans-serif',
+        color: '#4a4e51',
+        fontWeight: 700,
+        textTransform: 'uppercase',
+        marginBottom: '20px'
+      }}>{data.name}</h1>
+      <div style={{ marginTop: '40px' }}>
+        <p style={{ marginBottom: '8px' }}><strong>Email:</strong> {data.email}</p>
+        <p style={{ marginBottom: '8px' }}><strong>Phone:</strong> {data.phone}</p>
+      </div>
+    </div>
+    <div style={{
+      width: '60%',
+      backgroundColor: '#3d3e42',
+      padding: '60px 40px',
+      color: '#9099a0'
+    }}>
+      <h2 style={{ color: 'white', marginBottom: '20px', fontSize: '1.8em' }}>Experience</h2>
+      {data.experience.map((exp, i) => (
+        <div key={i} style={{ marginBottom: '30px', borderBottom: '1px solid #525252', paddingBottom: '30px' }}>
+          <h3 style={{ color: 'white', marginBottom: '8px' }}>{exp.role}</h3>
+          <p style={{ fontSize: '14px', marginBottom: '8px' }}>{exp.company} | {exp.period}</p>
+          <ul style={{ listStyle: 'disc', marginLeft: '20px', fontSize: '14px' }}>
+            {exp.details.map((d, j) => <li key={j}>{d}</li>)}
+          </ul>
+        </div>
+      ))}
+      <h2 style={{ color: 'white', marginTop: '40px', marginBottom: '20px', fontSize: '1.8em' }}>Skills</h2>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+        {data.skills.map((skill, i) => (
+          <span key={i} style={{
+            backgroundColor: '#525252',
+            padding: '8px 16px',
+            borderRadius: '4px',
+            fontSize: '14px'
+          }}>{skill}</span>
+        ))}
+      </div>
+    </div>
+  </div>
+);
+
+/* 12. Simple Elegant */
+export const SimpleElegant: React.FC<Props> = ({ data }) => (
+  <div style={{
+    width: '100%',
+    maxWidth: '900px',
+    margin: '0 auto',
+    backgroundColor: '#fff',
+    padding: '60px 80px',
+    fontFamily: 'Lato, sans-serif'
+  }}>
+    <header style={{
+      marginBottom: '60px',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'flex-end'
+    }}>
+      <div>
+        <h1 style={{
+          fontSize: '4.2rem',
+          fontWeight: 900,
+          textTransform: 'uppercase',
+          textShadow: '4px 4px 0 #6fd1bd',
+          marginBottom: '20px'
+        }}>{data.name}</h1>
+      </div>
+      <div style={{ textAlign: 'right' }}>
+        <p>{data.email}</p>
+        <p>{data.phone}</p>
+      </div>
+    </header>
+    
+    <section style={{
+      marginTop: '60px',
+      borderTop: '1px solid #ddd',
+      paddingTop: '40px',
+      position: 'relative'
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: '-1px',
+        left: 0,
+        borderTop: '5px solid #333',
+        width: '50px'
+      }} />
+      <h2 style={{ fontWeight: 900, fontSize: '2rem', marginBottom: '20px' }}>Experience</h2>
+      {data.experience.map((exp, i) => (
+        <div key={i} style={{ marginBottom: '30px' }}>
+          <h3 style={{ fontSize: '1.4rem', fontWeight: 600 }}>{exp.role}</h3>
+          <p style={{ color: '#666', marginBottom: '8px' }}>{exp.company} | {exp.period}</p>
+          <ul style={{ listStyle: 'disc', marginLeft: '20px' }}>
+            {exp.details.map((d, j) => <li key={j}>{d}</li>)}
+          </ul>
+        </div>
+      ))}
+    </section>
+    
+    <section style={{
+      marginTop: '60px',
+      borderTop: '1px solid #ddd',
+      paddingTop: '40px',
+      position: 'relative'
+    }}>
+      <div style={{
+        position: 'absolute',
+        top: '-1px',
+        left: 0,
+        borderTop: '5px solid #333',
+        width: '50px'
+      }} />
+      <h2 style={{ fontWeight: 900, fontSize: '2rem', marginBottom: '20px' }}>Skills</h2>
+      <p>{data.skills.join(' • ')}</p>
+    </section>
+  </div>
+);
+
+/* 13. RWD Modern */
+export const RWDModern: React.FC<Props> = ({ data }) => (
+  <div style={{
+    width: '100%',
+    maxWidth: '1000px',
+    margin: '40px auto',
+    backgroundColor: '#ffffff',
+    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+    borderRadius: '12px',
+    overflow: 'hidden',
+    fontFamily: 'Roboto, sans-serif'
+  }}>
+    <div style={{
+      background: 'linear-gradient(135deg, #3b82f6, #8b5cf6)',
+      color: '#ffffff',
+      padding: '60px 40px',
+      textAlign: 'center'
+    }}>
+      <div style={{
+        width: '120px',
+        height: '120px',
+        margin: '0 auto 20px',
+        borderRadius: '50%',
+        backgroundColor: 'rgba(255, 255, 255, 0.3)',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        fontSize: '48px',
+        fontWeight: 'bold'
+      }}>
+        {data.name.split(' ').map(n => n[0]).join('')}
+      </div>
+      <h1 style={{ fontSize: '2.5rem', fontWeight: 700, marginBottom: '8px' }}>{data.name}</h1>
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '30px', marginTop: '20px', flexWrap: 'wrap' }}>
+        <span>📧 {data.email}</span>
+        <span>📱 {data.phone}</span>
+      </div>
+    </div>
+    
+    <div style={{ padding: '40px' }}>
+      <section style={{ marginBottom: '40px' }}>
+        <h3 style={{
+          fontSize: '1.5rem',
+          fontWeight: 700,
+          color: '#3b82f6',
+          marginBottom: '20px',
+          paddingBottom: '10px',
+          borderBottom: '2px solid #3b82f6'
+        }}>Experience</h3>
+        {data.experience.map((exp, i) => (
+          <div key={i} style={{
+            marginBottom: '25px',
+            paddingLeft: '20px',
+            borderLeft: '2px solid #e5e7eb',
+            position: 'relative'
+          }}>
+            <div style={{
+              position: 'absolute',
+              left: '-6px',
+              top: '5px',
+              width: '10px',
+              height: '10px',
+              borderRadius: '50%',
+              backgroundColor: '#3b82f6'
+            }} />
+            <h4 style={{ fontSize: '1.2rem', fontWeight: 500, marginBottom: '5px' }}>{exp.role}</h4>
+            <p style={{ color: '#6b7280', marginBottom: '10px' }}>{exp.company} | {exp.period}</p>
+          </div>
+        ))}
+      </section>
+      
+      <section>
+        <h3 style={{
+          fontSize: '1.5rem',
+          fontWeight: 700,
+          color: '#3b82f6',
+          marginBottom: '20px',
+          paddingBottom: '10px',
+          borderBottom: '2px solid #3b82f6'
+        }}>Skills</h3>
+        <div style={{ display: 'grid', gap: '20px' }}>
+          {data.skills.map((skill, i) => (
+            <div key={i}>
+              <div style={{ fontWeight: 500, marginBottom: '8px' }}>{skill}</div>
+              <div style={{
+                height: '8px',
+                backgroundColor: '#e5e7eb',
+                borderRadius: '4px',
+                overflow: 'hidden'
+              }}>
+                <div style={{
+                  height: '100%',
+                  width: `${90 - i * 5}%`,
+                  background: 'linear-gradient(90deg, #3b82f6, #8b5cf6)',
+                  borderRadius: '4px'
+                }} />
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+    </div>
+  </div>
+);
+
 // Export template registry
 export const REACT_TEMPLATES = {
   classic_minimal: ClassicMinimal,
@@ -312,6 +565,9 @@ export const REACT_TEMPLATES = {
   lofi_minimal: LofiMinimal,
   color_blocks: ColorBlocks,
   european_standard: EuropeanStandard,
+  responsive_professional: ResponsiveProfessional,
+  simple_elegant: SimpleElegant,
+  rwd_modern: RWDModern,
 };
 
 export type TemplateId = keyof typeof REACT_TEMPLATES;

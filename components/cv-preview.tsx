@@ -4,15 +4,15 @@ import React, { useState, useMemo } from "react"
 import { REACT_TEMPLATES, type TemplateId, type ResumeData } from "@/lib/react-templates"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 
 interface CVPreviewProps {
   data: ResumeData
+  selectedTemplate: TemplateId
   onExportPDF?: () => void
+  showToolbar?: boolean
 }
 
-export function CVPreview({ data, onExportPDF }: CVPreviewProps) {
-  const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>('classic_minimal')
+export function CVPreview({ data, selectedTemplate, onExportPDF, showToolbar = true }: CVPreviewProps) {
   const [isExporting, setIsExporting] = useState(false)
 
   const TemplateComponent = useMemo(() => {
@@ -43,28 +43,19 @@ export function CVPreview({ data, onExportPDF }: CVPreviewProps) {
 
   return (
     <div className="space-y-4">
-      {/* Template Selector */}
-      <Card className="p-4">
-        <div className="flex items-center gap-4">
-          <div className="flex-1">
-            <Select value={selectedTemplate} onValueChange={(value) => setSelectedTemplate(value as TemplateId)}>
-              <SelectTrigger>
-                <SelectValue placeholder="Choose a template" />
-              </SelectTrigger>
-              <SelectContent>
-                {Object.keys(REACT_TEMPLATES).map((templateId) => (
-                  <SelectItem key={templateId} value={templateId}>
-                    {templateId.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+      {/* Toolbar */}
+      {showToolbar && (
+        <Card className="p-4">
+          <div className="flex items-center justify-between gap-4">
+            <div className="text-sm text-muted-foreground">
+              Using template: <span className="font-medium text-foreground">{selectedTemplate.replace('_', ' ').replace(/\b\w/g, l => l.toUpperCase())}</span>
+            </div>
+            <Button onClick={handleExportPDF} disabled={isExporting}>
+              {isExporting ? 'Exporting...' : 'Export PDF'}
+            </Button>
           </div>
-          <Button onClick={handleExportPDF} disabled={isExporting}>
-            {isExporting ? 'Exporting...' : 'Export PDF'}
-          </Button>
-        </div>
-      </Card>
+        </Card>
+      )}
 
       {/* Preview */}
       <Card className="p-4">

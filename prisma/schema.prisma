@@ -1,0 +1,20 @@
+// Prisma schema for CV-Helper auth
+// Default to SQLite for local dev; can switch to Postgres later by changing the datasource
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  // To switch to Postgres, change provider to "postgresql" and update the DATABASE_URL in .env
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  name        String
+  email       String   @unique
+  passwordHash String
+  createdAt   DateTime @default(now())
+}

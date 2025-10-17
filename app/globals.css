@@ -3,41 +3,94 @@
 
 @custom-variant dark (&:is(.dark *));
 
+/* FlowCV Design Tokens */
 :root {
-  /* FlowCV-inspired brighter color scheme */
-  --background: #fafbfc;
-  --foreground: #1a202c;
-  --card: rgba(255, 255, 255, 0.95);
-  --card-foreground: #1a202c;
-  --popover: rgba(255, 255, 255, 0.98);
-  --popover-foreground: #1a202c;
-  --primary: rgb(194, 203, 218);
+  /* FlowCV Color System */
+  --flowcv-sand-light: #F6F6F9;
+  --flowcv-cream: #FAF8F4;
+  --flowcv-cream-dark: #f2f0ed;
+  --flowcv-ink: #2B0B3C;
+  --flowcv-primary-black: #1a1a1a;
+  --flowcv-brand-purple: #3626A7;
+  --flowcv-feature-blue: #1E3050;
+  --flowcv-gray-530: #64748b;
+  --flowcv-gray-600: #475569;
+  --flowcv-gray-700: #334155;
+  --flowcv-gray-800: #1e293b;
+  --flowcv-blue-800: #1e40af;
+  --flowcv-green-600: #16a34a;
+  
+  /* Legacy Shadcn/UI tokens - mapped to FlowCV */
+  --background: var(--flowcv-sand-light);
+  --foreground: var(--flowcv-ink);
+  --card: #ffffff;
+  --card-foreground: var(--flowcv-ink);
+  --popover: #fffffffa;
+  --popover-foreground: var(--flowcv-ink);
+  --primary: var(--flowcv-brand-purple);
   --primary-foreground: #ffffff;
-  --secondary: rgba(59, 130, 246, 0.08);
-  --secondary-foreground: #374151;
-  --muted: rgba(156, 163, 175, 0.15);
-  --muted-foreground: #6b7280;
-  --accent: rgb(72, 169, 169);
+  --secondary: #f4f2ff;
+  --secondary-foreground: var(--flowcv-ink);
+  --muted: #eef2f7;
+  --muted-foreground: var(--flowcv-gray-600);
+  --accent: #ff5c8a;
   --accent-foreground: #ffffff;
   --destructive: #ef4444;
   --destructive-foreground: #fef2f2;
-  --border: rgba(209, 213, 219, 0.6);
-  --input: rgba(209, 213, 219, 0.4);
-  --ring: rgba(59, 130, 246, 0.4);
-  --chart-1: rgb(80, 131, 220);
-  --chart-2: #06b6d4;
-  --chart-3: #f472b6;
+  --border: #e5e7eb;
+  --input: #e5e7eb;
+  --ring: rgba(54, 38, 167, 0.5);
+  --chart-1: #6c5ce7;
+  --chart-2: #ff6b6b;
+  --chart-3: #06b6d4;
   --chart-4: #fbbf24;
   --chart-5: #10b981;
   --radius: 0.75rem;
   --sidebar: rgba(248, 250, 252, 0.95);
-  --sidebar-foreground: #1a202c;
-  --sidebar-primary: rgb(83, 140, 232);
+  --sidebar-foreground: var(--flowcv-ink);
+  --sidebar-primary: var(--flowcv-brand-purple);
   --sidebar-primary-foreground: #ffffff;
-  --sidebar-accent: rgba(59, 130, 246, 0.1);
-  --sidebar-accent-foreground: #374151;
-  --sidebar-border: rgba(209, 213, 219, 0.3);
-  --sidebar-ring: rgba(6, 182, 212, 0.3);
+  --sidebar-accent: rgba(54, 38, 167, 0.12);
+  --sidebar-accent-foreground: var(--flowcv-gray-700);
+  --sidebar-border: rgba(226, 232, 240, 0.8);
+  --sidebar-ring: rgba(255, 92, 138, 0.3);
+  
+  /* FlowCV Spacing Scale */
+  --flowcv-space-3_5: 0.875rem;  /* 14px */
+  --flowcv-space-7_5: 1.875rem;  /* 30px */
+  --flowcv-space-15: 3.75rem;    /* 60px */
+  --flowcv-space-18: 4.5rem;     /* 72px */
+  --flowcv-space-20: 5rem;       /* 80px */
+  
+  /* FlowCV Typography Scale */
+  --flowcv-text-xs: 0.75rem;     /* 12px */
+  --flowcv-text-sm: 0.875rem;    /* 14px */
+  --flowcv-text-base: 1rem;      /* 16px */
+  --flowcv-text-lg: 1.125rem;    /* 18px */
+  --flowcv-text-xl: 1.25rem;     /* 20px */
+  --flowcv-text-2xl: 1.5rem;     /* 24px */
+  --flowcv-text-3xl: 1.875rem;   /* 30px */
+  --flowcv-text-4xl: 2.25rem;    /* 36px */
+  --flowcv-text-5xl: 3rem;       /* 48px */
+  --flowcv-text-6xl: 3.75rem;    /* 60px */
+  --flowcv-text-7xl: 4.5rem;     /* 72px */
+  --flowcv-text-8xl: 6rem;       /* 96px */
+  
+  /* FlowCV Letter Spacing */
+  --flowcv-tracking-tight: -0.025em;
+  --flowcv-tracking-tighter: -0.05em;
+  --flowcv-tracking-hero: -0.075em;
+  --flowcv-tracking-wide: 0.025em;
+  --flowcv-tracking-wider: 0.05em;
+  --flowcv-tracking-widest: 0.1em;
+  
+  /* FlowCV Shadows */
+  --flowcv-shadow-soft: 0px 4px 12px rgba(0, 0, 0, 0.08);
+  --flowcv-shadow-medium: 0px 8px 24px rgba(0, 0, 0, 0.12);
+  --flowcv-shadow-large: 0px 16px 48px rgba(0, 0, 0, 0.16);
+  --flowcv-shadow-hero: 0px 34px 68px -16px rgba(0, 0, 0, 0.25);
+  --flowcv-shadow-hero-xl: 0px 42px 84px -20px rgba(0, 0, 0, 0.25);
+  --flowcv-shadow-comment: 0px 8px 32px rgba(0, 0, 0, 0.12);
 }
 
 .dark {
@@ -117,20 +170,102 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/* DM Sans Font System */
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwARZthTk8.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAhZthTk8.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwA25thTk8.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwARZthTk8.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAr5thTk8.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAW5xhTk8.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwAYpxhTk8.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwABZxhTk8.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'DM Sans';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url('https://fonts.gstatic.com/s/dmsans/v15/rP2tp2ywxg089UriI5-g4vlH9VoD8CmcqZG40F9JadbnoEwALJxhTk8.woff2') format('woff2');
+}
+
 @layer base {
   * {
-    @apply border-border outline-ring/50;
+    border-color: hsl(var(--border));
+    outline-color: hsl(var(--ring) / 0.5);
   }
+  
   body {
-    @apply bg-background text-foreground antialiased;
-    /* Improved background with better contrast for accessibility */
-    background-image: radial-gradient(circle at top right, rgba(59, 130, 246, 0.04), transparent 60%),
-      radial-gradient(circle at bottom left, rgba(6, 182, 212, 0.03), transparent 50%),
-      linear-gradient(135deg, rgba(250, 251, 252, 0.98), rgba(248, 250, 252, 1));
+    background-color: var(--flowcv-sand-light);
+    color: var(--flowcv-ink);
+    font-family: 'DM Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    font-feature-settings: 'rlig' 1, 'calt' 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    /* FlowCV-like subtle gradients with high readability */
+    background-image: radial-gradient(circle at 85% 10%, rgba(54, 38, 167, 0.04), transparent 60%),
+      radial-gradient(circle at 10% 90%, rgba(255, 92, 138, 0.03), transparent 55%),
+      linear-gradient(135deg, var(--flowcv-sand-light), #ffffff);
     background-attachment: fixed;
   }
 
   .dark body {
+    background-color: #0f172a;
+    color: #f8fafc;
     /* Darker background with subtle gradients for better contrast */
     background-image: radial-gradient(circle at top right, rgba(96, 165, 250, 0.08), transparent 60%),
       radial-gradient(circle at bottom left, rgba(34, 211, 238, 0.05), transparent 50%),
@@ -139,79 +274,525 @@
 }
 
 @layer components {
-  /* FlowCV-inspired modern UI components */
-  .card-modern {
-    @apply bg-card border border-border rounded-xl p-6 shadow-sm;
-    @apply hover:shadow-lg hover:border-primary/20 transition-all duration-300 ease-in-out;
-    backdrop-filter: blur(10px);
+  /* FlowCV Typography Scale */
+  .heading-xs {
+    font-size: var(--flowcv-text-xs);
+    font-weight: 700;
+    letter-spacing: var(--flowcv-tracking-widest);
+    text-transform: uppercase;
+    color: var(--flowcv-gray-600);
   }
-
-  .card-feature {
-    @apply bg-card border border-border rounded-xl p-6 shadow-sm relative overflow-hidden;
-    @apply hover:shadow-lg hover:border-primary/20 transition-all duration-300 ease-in-out;
-    backdrop-filter: blur(10px);
+  
+  .heading-sm {
+    font-size: var(--flowcv-text-sm);
+    font-weight: 700;
+    letter-spacing: var(--flowcv-tracking-wider);
+    text-transform: uppercase;
+    color: var(--flowcv-gray-600);
   }
-
-  .card-feature::before {
-    @apply absolute inset-0 bg-gradient-to-br from-primary/5 to-accent/5 opacity-0;
-    @apply transition-opacity duration-300;
+  
+  .heading-xl {
+    font-size: var(--flowcv-text-xl);
+    font-weight: 800;
+    letter-spacing: var(--flowcv-tracking-tight);
+    color: var(--flowcv-ink);
+    line-height: 1.3;
+  }
+  
+  .heading-2xl {
+    font-size: var(--flowcv-text-2xl);
+    font-weight: 800;
+    letter-spacing: var(--flowcv-tracking-tight);
+    color: var(--flowcv-ink);
+    line-height: 1.25;
+  }
+  
+  .heading-3xl {
+    font-size: var(--flowcv-text-3xl);
+    font-weight: 900;
+    letter-spacing: var(--flowcv-tracking-tighter);
+    color: var(--flowcv-ink);
+    line-height: 1.2;
+  }
+  
+  .heading-4xl {
+    font-size: var(--flowcv-text-4xl);
+    font-weight: 900;
+    letter-spacing: var(--flowcv-tracking-tighter);
+    color: var(--flowcv-ink);
+    line-height: 1.15;
+  }
+  
+  .heading-5xl {
+    font-size: var(--flowcv-text-5xl);
+    font-weight: 900;
+    letter-spacing: var(--flowcv-tracking-hero);
+    color: var(--flowcv-ink);
+    line-height: 1.1;
+  }
+  
+  .heading-6xl {
+    font-size: var(--flowcv-text-6xl);
+    font-weight: 900;
+    letter-spacing: var(--flowcv-tracking-hero);
+    color: var(--flowcv-ink);
+    line-height: 1.05;
+  }
+  
+  .heading-7xl {
+    font-size: var(--flowcv-text-7xl);
+    font-weight: 900;
+    letter-spacing: var(--flowcv-tracking-hero);
+    color: var(--flowcv-ink);
+    line-height: 1.05;
+  }
+  
+  /* FlowCV Button System */
+  .btn-flowcv-primary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--flowcv-primary-black);
+    color: white;
+    font-weight: 700;
+    font-size: var(--flowcv-text-base);
+    height: var(--flowcv-space-15);
+    padding-left: var(--flowcv-space-7_5);
+    padding-right: 1.75rem;
+    border-radius: 0.75rem;
+    border: none;
+    cursor: pointer;
+    touch-action: manipulation;
+    appearance: none;
+    transition: opacity 0.2s ease;
+    text-decoration: none;
+  }
+  
+  .btn-flowcv-primary:hover {
+    opacity: 0.8;
+  }
+  
+  .btn-flowcv-primary.btn-large {
+    height: var(--flowcv-space-20);
+    font-size: var(--flowcv-text-lg);
+    border-radius: 0.75rem;
+  }
+  
+  .btn-flowcv-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: var(--flowcv-ink);
+    font-weight: 700;
+    font-size: var(--flowcv-text-base);
+    height: 2.5rem;
+    padding-left: var(--flowcv-space-3_5);
+    padding-right: var(--flowcv-space-3_5);
+    border-radius: 0.5rem;
+    border: 2px solid var(--flowcv-gray-700);
+    cursor: pointer;
+    touch-action: manipulation;
+    appearance: none;
+    transition: opacity 0.2s ease;
+    text-decoration: none;
+  }
+  
+  .btn-flowcv-secondary:hover {
+    opacity: 0.8;
+  }
+  
+  .btn-flowcv-secondary.btn-large {
+    height: 3rem;
+    font-size: var(--flowcv-text-base);
+    border-radius: 0.75rem;
+    padding-left: 2rem;
+    padding-right: 2rem;
+  }
+  
+  /* FlowCV Card System */
+  .card-flowcv {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    box-shadow: var(--flowcv-shadow-soft);
+    transition: all 0.3s ease;
+  }
+  
+  .card-flowcv:hover {
+    box-shadow: var(--flowcv-shadow-medium);
+  }
+  
+  .card-flowcv-feature {
+    background-color: white;
+    border: 1px solid #f3f4f6;
+    border-radius: 0.75rem;
+    box-shadow: var(--flowcv-shadow-soft);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .card-flowcv-feature::before {
     content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(54, 38, 167, 0.03), rgba(255, 92, 138, 0.03));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
   }
-
-  .card-feature:hover::before {
-    @apply opacity-100;
+  
+  .card-flowcv-feature:hover::before {
+    opacity: 1;
   }
-
-  .input-modern {
-    @apply w-full px-4 py-3 text-sm bg-background border border-input rounded-lg;
-    @apply focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50;
-    @apply transition-all duration-200 ease-in-out placeholder:text-muted-foreground;
+  
+  .card-flowcv-feature:hover {
+    box-shadow: var(--flowcv-shadow-medium);
+    border-color: rgba(54, 38, 167, 0.1);
   }
-
-  .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-white bg-primary rounded-lg;
-    @apply hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2;
-    @apply transition-all duration-200 ease-in-out transform;
-    box-shadow: 0 4px 14px 0 rgba(59, 130, 246, 0.25);
+  
+  /* FlowCV Input System */
+  .input-flowcv {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: var(--flowcv-text-sm);
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    font-family: inherit;
   }
-
+  
+  .input-flowcv:focus {
+    outline: none;
+    border-color: var(--flowcv-brand-purple);
+    box-shadow: 0 0 0 3px rgba(54, 38, 167, 0.1);
+  }
+  
+  .input-flowcv::placeholder {
+    color: var(--flowcv-gray-530);
+  }
+  
+  /* FlowCV Layout System */
+  .container-flowcv {
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .container-flowcv {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .container-flowcv {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  
+  .section-flowcv {
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .section-flowcv {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .section-flowcv {
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+    }
+  }
+  
+  /* FlowCV Background System */
+  .bg-flowcv-sand {
+    background-color: var(--flowcv-sand-light);
+  }
+  
+  .bg-flowcv-cream {
+    background-color: var(--flowcv-cream);
+  }
+  
+  .bg-flowcv-cream-dark {
+    background-color: var(--flowcv-cream-dark);
+  }
+  
+  .bg-flowcv-gradient {
+    background: linear-gradient(135deg, var(--flowcv-sand-light), white);
+  }
+  
+  /* FlowCV Text Colors */
+  .text-flowcv-ink {
+    color: var(--flowcv-ink);
+  }
+  
+  .text-flowcv-primary-black {
+    color: var(--flowcv-primary-black);
+  }
+  
+  .text-flowcv-gray-530 {
+    color: var(--flowcv-gray-530);
+  }
+  
+  .text-flowcv-gray-600 {
+    color: var(--flowcv-gray-600);
+  }
+  
+  .text-flowcv-brand {
+    color: var(--flowcv-brand-purple);
+  }
+  
+  .text-flowcv-blue {
+    color: var(--flowcv-blue-800);
+  }
+  
+  /* FlowCV Shadows */
+  .shadow-flowcv-soft {
+    box-shadow: var(--flowcv-shadow-soft);
+  }
+  
+  .shadow-flowcv-medium {
+    box-shadow: var(--flowcv-shadow-medium);
+  }
+  
+  .shadow-flowcv-large {
+    box-shadow: var(--flowcv-shadow-large);
+  }
+  
+  .shadow-flowcv-hero {
+    box-shadow: var(--flowcv-shadow-hero);
+  }
+  
+  .shadow-flowcv-hero-xl {
+    box-shadow: var(--flowcv-shadow-hero-xl);
+  }
+  
+  .shadow-flowcv-comment {
+    box-shadow: var(--flowcv-shadow-comment);
+  }
+  
+  /* FlowCV Responsive Typography */
+  @media (min-width: 640px) {
+    .heading-3xl { font-size: var(--flowcv-text-4xl); }
+    .heading-4xl { font-size: var(--flowcv-text-5xl); }
+    .heading-5xl { font-size: var(--flowcv-text-6xl); }
+    .heading-6xl { font-size: var(--flowcv-text-7xl); }
+  }
+  
+  @media (min-width: 1024px) {
+    .heading-4xl { font-size: var(--flowcv-text-6xl); }
+    .heading-5xl { font-size: var(--flowcv-text-7xl); }
+    .heading-6xl { font-size: var(--flowcv-text-8xl); }
+  }
+  
+  /* FlowCV Sidebar Layout */
+  .sidebar-flowcv {
+    background-color: var(--flowcv-cream-dark);
+    border-right: 1px solid rgba(0, 0, 0, 0.08);
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    width: 200px;
+    min-width: 200px;
+    padding: 1.5rem;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    align-items: start;
+  }
+  
+  @media (min-width: 1280px) {
+    .sidebar-flowcv {
+      width: 240px;
+      min-width: 240px;
+      padding: 2rem;
+    }
+  }
+  
+  @media (min-width: 1536px) {
+    .sidebar-flowcv {
+      width: 280px;
+      min-width: 280px;
+      padding: 2.5rem;
+    }
+  }
+  
+  .main-flowcv {
+    background-color: var(--flowcv-cream);
+    min-height: 100vh;
+    flex: 1;
+  }
+  
+  /* Legacy compatibility classes - keeping existing functionality */
+  .btn-primary { 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--flowcv-primary-black);
+    color: white;
+    font-weight: 700;
+    font-size: var(--flowcv-text-base);
+    height: 2.5rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.2s ease;
+    text-decoration: none;
+  }
+  
   .btn-primary:hover {
-    transform: scale(1.02);
+    opacity: 0.8;
   }
-
-  .btn-primary:active {
-    transform: scale(0.98);
+  
+  .btn-secondary { 
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background-color: transparent;
+    color: var(--flowcv-ink);
+    font-weight: 600;
+    font-size: var(--flowcv-text-sm);
+    height: 2.5rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d1d5db;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-decoration: none;
   }
-
-  .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3 text-sm font-semibold text-primary bg-secondary border border-border rounded-lg;
-    @apply hover:bg-secondary/80 hover:border-primary/30 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2;
-    @apply transition-all duration-200 ease-in-out transform;
-  }
-
+  
   .btn-secondary:hover {
-    transform: scale(1.02);
+    background-color: #f9fafb;
+    border-color: #9ca3af;
   }
-
-  .btn-secondary:active {
-    transform: scale(0.98);
+  
+  .card-modern { 
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    box-shadow: var(--flowcv-shadow-soft);
+    transition: all 0.3s ease;
   }
-
-  .badge-modern {
-    @apply inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-full;
-    @apply bg-primary/10 text-primary border border-primary/20;
+  
+  .card-modern:hover {
+    box-shadow: var(--flowcv-shadow-medium);
   }
-
+  
+  .card-feature { 
+    background-color: white;
+    border: 1px solid #f3f4f6;
+    border-radius: 0.75rem;
+    box-shadow: var(--flowcv-shadow-soft);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s ease;
+  }
+  
+  .card-feature::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(54, 38, 167, 0.03), rgba(255, 92, 138, 0.03));
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+  }
+  
+  .card-feature:hover::before {
+    opacity: 1;
+  }
+  
+  .card-feature:hover {
+    box-shadow: var(--flowcv-shadow-medium);
+    border-color: rgba(54, 38, 167, 0.1);
+  }
+  
+  .input-modern { 
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-size: var(--flowcv-text-sm);
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.5rem;
+    transition: all 0.2s ease;
+    font-family: inherit;
+  }
+  
+  .input-modern:focus {
+    outline: none;
+    border-color: var(--flowcv-brand-purple);
+    box-shadow: 0 0 0 3px rgba(54, 38, 167, 0.1);
+  }
+  
+  .input-modern::placeholder {
+    color: var(--flowcv-gray-530);
+  }
+  
+  .container-modern { 
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  @media (min-width: 640px) {
+    .container-modern {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .container-modern {
+      padding-left: 2rem;
+      padding-right: 2rem;
+    }
+  }
+  
+  .section-padding { 
+    padding-top: 5rem;
+    padding-bottom: 5rem;
+  }
+  
+  @media (min-width: 768px) {
+    .section-padding {
+      padding-top: 6rem;
+      padding-bottom: 6rem;
+    }
+  }
+  
+  @media (min-width: 1024px) {
+    .section-padding {
+      padding-top: 8rem;
+      padding-bottom: 8rem;
+    }
+  }
+  
   .gradient-text {
-    @apply bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent font-bold;
-  }
-
-  .section-padding {
-    @apply px-4 py-16 sm:px-6 lg:px-8 lg:py-24;
-  }
-
-  .container-modern {
-    @apply mx-auto max-w-7xl px-4 sm:px-6 lg:px-8;
+    background: linear-gradient(135deg, var(--flowcv-brand-purple), var(--flowcv-ink));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 700;
   }
 }
 
@@ -362,6 +943,34 @@
     background-image: linear-gradient(90deg, rgba(148, 163, 184, 0.1) 1px, transparent 1px),
       linear-gradient(180deg, rgba(148, 163, 184, 0.08) 1px, transparent 1px);
     background-size: 22px 22px;
+  }
+
+  /* FlowCV Template Gallery Styles */
+  .template-card-hover {
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+  }
+  
+  .template-card-hover:hover {
+    opacity: 0.7;
+  }
+
+  .template-card-selected {
+    border-color: var(--flowcv-brand-purple);
+    box-shadow: 0 0 0 2px var(--flowcv-brand-purple);
+  }
+
+  /* A4 Aspect Ratio for Templates */
+  .aspect-a4 {
+    aspect-ratio: 1 / 1.414;
+  }
+
+  /* FlowCV Background Colors */
+  .bg-flowcv-sand {
+    background-color: #FAF8F4;
+  }
+
+  .bg-flowcv-sand-dark {
+    background-color: #f2f0ed;
   }
 }
 

@@ -33,6 +33,9 @@ const templateDescriptions = {
   lofi_minimal: "Palette noir/blanc avec touches cyan",
   color_blocks: "Sections colorées (header rouge, skills vert, projets bleu)",
   european_standard: "Inspiré Europass (bleu clair, structure rigide)",
+  responsive_professional: "Two-column layout with animated background",
+  simple_elegant: "Clean typography with shadow effects",
+  rwd_modern: "Gradient header with progress bars",
 }
 
 const templateCategories = {
@@ -46,6 +49,9 @@ const templateCategories = {
   lofi_minimal: "Developer",
   color_blocks: "Creative",
   european_standard: "International",
+  responsive_professional: "Modern",
+  simple_elegant: "Minimal",
+  rwd_modern: "Tech",
 }
 
 const categoryIcons = {
@@ -59,6 +65,9 @@ const categoryIcons = {
   Developer: <MonitorSmartphone className="h-5 w-5" />,
   Creative: <Sparkles className="h-5 w-5" />,
   International: <Globe2 className="h-5 w-5" />,
+  Modern: <Layers className="h-5 w-5" />,
+  Minimal: <PenTool className="h-5 w-5" />,
+  Tech: <Cpu className="h-5 w-5" />,
 } as const
 
 export function TemplateSelector({ selectedTemplate, onTemplateChange }: TemplateSelectorProps) {

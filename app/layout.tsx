@@ -5,6 +5,10 @@ import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import "./globals.css"
+import { SiteHeader } from "@/components/site-header"
+import { Toaster } from "sonner"
+import { ThemeProvider } from "@/lib/theme-context"
+import { ThemeWrapper } from "@/components/theme-wrapper"
 
 export const metadata: Metadata = {
   title: "FlowCV - Professional LaTeX Resume Builder",
@@ -40,8 +44,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
-        <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
-        <Analytics />
+        <ThemeProvider>
+          <ThemeWrapper>
+            <SiteHeader />
+            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+            <Analytics />
+            <Toaster richColors closeButton />
+          </ThemeWrapper>
+        </ThemeProvider>
       </body>
     </html>
   )

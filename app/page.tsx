@@ -2,112 +2,116 @@ import type React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { ArrowRight, Download, FileText, Shield, Sparkles, Zap, Workflow } from "lucide-react"
+import { ArrowRight, Download, FileText, Shield, Sparkles, Zap, Workflow, Star, CheckCircle, Users, Clock, Eye, LayoutTemplate, User } from "lucide-react"
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-aurora text-foreground">
-      {/* Header */}
-      <header className="sticky top-0 z-40 border-b border-border/60 surface-high-contrast">
-        <div className="container mx-auto px-6 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="flex h-11 w-11 items-center justify-center rounded-full bg-slate-900 dark:bg-slate-100 animate-float">
-                <FileText className="h-6 w-6 text-white dark:text-slate-900" />
-              </div>
-              <div>
-                <p className="text-sm uppercase tracking-[0.35em] text-muted-foreground">RealCV Studio</p>
-                <h1 className="text-2xl font-semibold text-high-contrast">Craft resumes that glow</h1>
-              </div>
-            </div>
-            <nav className="flex items-center gap-3">
-              <Link href="/templates" className="hidden md:block">
-                <Button variant="ghost" className="surface-glass-accessible border border-border/60 text-high-contrast">
-                  Explore templates
-                </Button>
-              </Link>
-              <Link href="/dashboard/builder">
-                <Button className="btn-accessible-primary">
-                  Launch builder
-                  <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </header>
-
-      {/* Hero Section */}
-      <section className="container mx-auto px-6 pb-24 pt-16 text-center">
-        <div className="mx-auto max-w-5xl space-y-10">
-          <div className="space-y-6">
-            <div className="inline-flex items-center gap-2 rounded-full surface-glass-accessible px-5 py-2 text-sm font-medium text-high-contrast animate-float">
-              <Sparkles className="h-4 w-4" />
-              Powered by AI + React templates
-            </div>
-            <h2 className="text-balance text-4xl font-semibold leading-tight text-high-contrast md:text-6xl">
-              Design a resume that speaks with{" "}
-              <span className="relative text-high-contrast">
-                <span className="absolute inset-0 bg-gradient-to-r from-primary via-accent to-primary opacity-20 blur-sm"></span>
-                <span className="relative font-bold">clarity and flair</span>
-              </span>
-            </h2>
-            <p className="mx-auto max-w-3xl text-balance text-lg text-muted-foreground md:text-xl">
-              Orchestrate your career story with live previews, cinematic animations, and export-ready PDFs. Every
-              detail is polished so you can focus on landing the role you want.
+    <div className="min-h-screen bg-flowcv-sand">
+      {/* FlowCV-style Hero Section */}
+      <section className="section-flowcv relative overflow-hidden">
+        <div className="container-flowcv">
+          <div className="text-center space-y-8">
+            {/* Micro Heading */}
+            <div className="heading-xs text-flowcv-brand">Free Online Resume Builder</div>
+            
+            {/* Main Headline */}
+            <h1 className="heading-6xl max-w-4xl mx-auto">
+              Create a professional resume that gets you hired
+            </h1>
+            
+            {/* Subheading */}
+            <p className="text-flowcv-gray-600 text-lg max-w-2xl mx-auto leading-relaxed">
+              Build a beautiful resume in minutes with our AI-powered builder. Choose from professional templates, 
+              customize with ease, and download instantly.
             </p>
+            
+            {/* CTA Buttons */}
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+              <Link href="/dashboard/builder" className="btn-flowcv-primary btn-large">
+                Create My Resume
+              </Link>
+              <Link href="/dashboard/templates" className="btn-flowcv-secondary btn-large">
+                Browse Templates
+              </Link>
+            </div>
           </div>
-
-          <div className="flex flex-col items-center justify-center gap-4 sm:flex-row">
-            <Link href="/dashboard/builder" className="w-full sm:w-auto">
-              <Button size="lg" className="w-full rounded-full btn-accessible-primary text-lg tracking-wide">
-                Start building now
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/templates" className="w-full sm:w-auto">
-              <Button
-                size="lg"
-                variant="outline"
-                className="w-full rounded-full surface-glass-accessible border-slate-300 dark:border-slate-600 text-high-contrast bg-transparent"
-              >
-                Browse template gallery
-              </Button>
-            </Link>
-          </div>
-
-          <div className="relative mx-auto flex max-w-5xl items-center justify-center">
-            <div className="surface-high-contrast w-full rounded-3xl border border-primary/20 p-1">
-              <div className="rounded-[26px] bg-background/95 p-6 shadow-2xl shadow-primary/20">
-                <div className="grid gap-6 md:grid-cols-2">
-                  <div className="flex flex-col gap-4 text-left">
-                    <h3 className="text-2xl font-semibold text-high-contrast">Curated template OS</h3>
-                    <p className="text-muted-foreground">
-                      Switch between polished layouts instantly, preview changes live, and export razor-sharp PDFs
-                      without leaving your browser.
-                    </p>
-                    <div className="flex flex-wrap gap-2">
-                      {["One-click themes", "ATS friendly", "Real-time preview", "AI adaptation"].map((chip) => (
-                        <span
-                          key={chip}
-                          className="surface-glass-accessible border border-primary/30 px-3 py-1 rounded-full text-sm text-high-contrast font-medium"
-                        >
-                          {chip}
-                        </span>
-                      ))}
+          
+          {/* Hero Image with Floating Comment Cards */}
+          <div className="relative mt-16 flex justify-center">
+            {/* Main Hero Image Container */}
+            <div className="relative max-w-4xl">
+              {/* Main Resume Preview */}
+              <div className="bg-white rounded-2xl shadow-flowcv-hero border border-gray-100 p-8 max-w-2xl mx-auto">
+                <div className="space-y-6">
+                  {/* Header */}
+                  <div className="text-center space-y-2">
+                    <div className="w-16 h-16 bg-flowcv-brand-purple rounded-full mx-auto flex items-center justify-center">
+                      <User className="h-8 w-8 text-white" />
+                    </div>
+                    <h3 className="heading-2xl">Sarah Johnson</h3>
+                    <p className="text-flowcv-gray-600">Senior Product Designer</p>
+                  </div>
+                  
+                  {/* Content Blocks */}
+                  <div className="space-y-4">
+                    <div className="h-3 bg-flowcv-brand-purple/20 rounded w-3/4"></div>
+                    <div className="h-3 bg-gray-200 rounded w-full"></div>
+                    <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+                    <div className="h-3 bg-gray-200 rounded w-4/5"></div>
+                  </div>
+                  
+                  {/* Skills */}
+                  <div className="flex flex-wrap gap-2">
+                    {['UI/UX Design', 'Figma', 'React', 'TypeScript'].map((skill) => (
+                      <span key={skill} className="px-3 py-1 bg-flowcv-brand-purple/10 text-flowcv-brand-purple rounded-full text-sm font-medium">
+                        {skill}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
+              
+              {/* Floating Comment Card 1 */}
+              <div className="absolute -left-8 top-16 hidden lg:block animate-float">
+                <div className="bg-white rounded-2xl shadow-flowcv-comment border border-gray-100 p-4 max-w-xs">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 bg-flowcv-green-600 rounded-full flex items-center justify-center flex-shrink-0">
+                      <CheckCircle className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-semibold text-flowcv-ink text-sm">ATS Optimized</span>
+                        <div className="flex">
+                          {[1,2,3,4,5].map((i) => (
+                            <Star key={i} className="h-3 w-3 fill-yellow-400 text-yellow-400" />
+                          ))}
+                        </div>
+                      </div>
+                      <p className="text-flowcv-gray-600 text-xs leading-relaxed">
+                        Your resume passes through applicant tracking systems with 95% success rate.
+                      </p>
                     </div>
                   </div>
-                  <div className="relative flex items-center justify-center">
-                    <div className="absolute -inset-6 rounded-[34px] bg-gradient-to-r from-primary/20 via-accent/15 to-primary/20 blur-2xl" />
-                    <div className="relative aspect-[4/3] w-full overflow-hidden rounded-3xl border border-primary/30 surface-glass-accessible">
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <Sparkles className="h-20 w-20 text-primary/70" />
+                </div>
+              </div>
+              
+              {/* Floating Comment Card 2 */}
+              <div className="absolute -right-8 bottom-16 hidden lg:block animate-float" style={{animationDelay: '1s'}}>
+                <div className="bg-white rounded-2xl shadow-flowcv-comment border border-gray-100 p-4 max-w-xs">
+                  <div className="flex items-start gap-3">
+                    <div className="w-10 h-10 bg-flowcv-blue-800 rounded-full flex items-center justify-center flex-shrink-0">
+                      <Eye className="h-5 w-5 text-white" />
+                    </div>
+                    <div>
+                      <div className="flex items-center gap-2 mb-1">
+                        <span className="font-semibold text-flowcv-ink text-sm">Live Preview</span>
+                        <span className="px-2 py-0.5 bg-flowcv-brand-purple/10 text-flowcv-brand-purple rounded text-xs font-medium">
+                          Real-time
+                        </span>
                       </div>
-                      <div className="absolute inset-0 bg-grid opacity-40" />
-                      <div className="absolute inset-x-6 top-6 rounded-2xl border border-border/60 surface-glass-accessible p-4 text-left">
-                        <p className="text-sm font-semibold text-high-contrast">Preview • Elegant Black</p>
-                        <div className="mt-3 h-32 rounded-xl border border-border/40 bg-muted/30" />
-                      </div>
+                      <p className="text-flowcv-gray-600 text-xs leading-relaxed">
+                        See changes instantly as you type. No more guessing how it looks.
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -117,119 +121,261 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="container mx-auto px-6 pb-20">
-        <div className="mx-auto max-w-3xl text-center">
-          <h3 className="text-3xl font-semibold md:text-4xl">Why designers & engineers trust RealCV</h3>
-          <p className="mt-4 text-lg text-muted-foreground">
-            From academic dossiers to design portfolios, you get flexible building blocks, automation, and total control
-            over your personal branding.
-          </p>
-        </div>
-
-        <div className="mt-14 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
-          <FeatureCard
-            icon={<FileText className="h-8 w-8 text-primary" />}
-            title="Signature templates"
-            description="Select from art-directed layouts inspired by proven open-source CV frameworks and tuned for ATS readability."
-          />
-          <FeatureCard
-            icon={<Sparkles className="h-8 w-8 text-accent" />}
-            title="AI blending"
-            description="Fuse saved profiles, job descriptions, and portfolio links. Our AI assistant adapts tone and highlights to each opportunity."
-          />
-          <FeatureCard
-            icon={<Workflow className="h-8 w-8 text-primary" />}
-            title="Profile vaults"
-            description="Store multiple personas—consultant, academic, creator—and switch context instantly without rewriting your story."
-          />
-          <FeatureCard
-            icon={<Download className="h-8 w-8 text-primary" />}
-            title="Pixel-perfect exports"
-            description="Generate PDFs, JSON, or LaTeX sources on demand. Every render is retina-ready and print safe."
-          />
-          <FeatureCard
-            icon={<Zap className="h-8 w-8 text-accent" />}
-            title="Realtime editing"
-            description="Stay in flow with instant previews, keyboard-friendly inputs, and autosaving that never interrupts your momentum."
-          />
-          <FeatureCard
-            icon={<Shield className="h-8 w-8 text-primary" />}
-            title="Secure workspace"
-            description="All input stays encrypted in-memory with optional account sync. Export and delete with one click."
-          />
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="container mx-auto px-6 pb-24">
-        <Card className="surface-high-contrast max-w-5xl mx-auto overflow-hidden border border-primary/30 text-center">
-          <CardHeader className="space-y-3">
-            <CardTitle className="text-3xl md:text-4xl text-high-contrast">
-              Build a resume that moves hiring teams
-            </CardTitle>
-            <CardDescription className="text-lg text-muted-foreground">
-              Join product designers, engineers, and leaders enhancing their applications with our intelligent CV
-              studio.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="flex flex-col items-center gap-4 md:flex-row md:justify-center">
-            <Link href="/dashboard/builder">
-              <Button size="lg" className="rounded-full btn-accessible-primary">
-                Go to dashboard
-                <ArrowRight className="ml-2 h-5 w-5" />
-              </Button>
-            </Link>
-            <Link href="/templates">
-              <Button
-                size="lg"
-                variant="ghost"
-                className="rounded-full surface-glass-accessible border border-border/60 text-high-contrast"
-              >
-                Tour the library
-              </Button>
-            </Link>
-          </CardContent>
-        </Card>
-      </section>
-
-      {/* Footer */}
-      <footer className="border-t border-border/40 surface-high-contrast">
-        <div className="container mx-auto flex flex-col items-center justify-between gap-4 px-6 py-8 md:flex-row">
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-primary/20">
-              <FileText className="h-5 w-5 text-primary" />
+      {/* FlowCV-style Three Features Section */}
+      <section className="section-flowcv bg-white">
+        <div className="container-flowcv">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
+            {/* Feature 1 */}
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-flowcv-feature-blue rounded-2xl flex items-center justify-center mx-auto">
+                <LayoutTemplate className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="heading-2xl">Professional Templates</h3>
+              <p className="text-flowcv-gray-600 leading-relaxed">
+                Choose from dozens of expertly designed templates. Each one is ATS-friendly and optimized for modern hiring processes.
+              </p>
             </div>
-            <div>
-              <span className="text-sm uppercase tracking-[0.35em] text-muted-foreground">RealCV</span>
-              <p className="text-sm text-muted-foreground/90">Next.js • Tailwind • AI-assisted editing</p>
+            
+            {/* Feature 2 */}
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-flowcv-feature-blue rounded-2xl flex items-center justify-center mx-auto">
+                <Zap className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="heading-2xl">Easy to Use</h3>
+              <p className="text-flowcv-gray-600 leading-relaxed">
+                Our intuitive builder makes creating a professional resume simple. No design experience required – just fill in your details.
+              </p>
+            </div>
+            
+            {/* Feature 3 */}
+            <div className="text-center space-y-4">
+              <div className="w-16 h-16 bg-flowcv-feature-blue rounded-2xl flex items-center justify-center mx-auto">
+                <Download className="h-8 w-8 text-white" />
+              </div>
+              <h3 className="heading-2xl">Instant Download</h3>
+              <p className="text-flowcv-gray-600 leading-relaxed">
+                Download your resume as a high-quality PDF instantly. Print-ready and perfect for both digital and physical applications.
+              </p>
             </div>
           </div>
-          <p className="text-center text-sm text-muted-foreground">
-            {new Date().getFullYear()} RealCV Studio. Crafted for ambitious builders.
-          </p>
+        </div>
+      </section>
+      
+      {/* How It Works Section */}
+      <section className="section-flowcv">
+        <div className="container-flowcv">
+          <div className="text-center space-y-4 mb-16">
+            <div className="heading-xs text-flowcv-brand">How It Works</div>
+            <h2 className="heading-4xl max-w-3xl mx-auto">
+              Create your resume in 3 simple steps
+            </h2>
+          </div>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            {/* Left Content */}
+            <div className="space-y-8">
+              {/* Step 1 */}
+              <div className="flex gap-4">
+                <div className="w-12 h-12 bg-flowcv-brand-purple rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-white font-bold">1</span>
+                </div>
+                <div>
+                  <h3 className="heading-xl mb-2">Choose Your Template</h3>
+                  <p className="text-flowcv-gray-600">
+                    Browse our collection of professional templates and pick the one that matches your style and industry.
+                  </p>
+                </div>
+              </div>
+              
+              {/* Step 2 */}
+              <div className="flex gap-4">
+                <div className="w-12 h-12 bg-flowcv-brand-purple rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-white font-bold">2</span>
+                </div>
+                <div>
+                  <h3 className="heading-xl mb-2">Fill in Your Details</h3>
+                  <p className="text-flowcv-gray-600">
+                    Add your personal information, work experience, education, and skills using our easy-to-use form builder.
+                  </p>
+                </div>
+              </div>
+              
+              {/* Step 3 */}
+              <div className="flex gap-4">
+                <div className="w-12 h-12 bg-flowcv-brand-purple rounded-full flex items-center justify-center flex-shrink-0">
+                  <span className="text-white font-bold">3</span>
+                </div>
+                <div>
+                  <h3 className="heading-xl mb-2">Download & Apply</h3>
+                  <p className="text-flowcv-gray-600">
+                    Preview your resume, make final adjustments, and download as a PDF. You're ready to start applying!
+                  </p>
+                </div>
+              </div>
+              
+              <div className="pt-4">
+                <Link href="/dashboard/builder" className="btn-flowcv-primary btn-large">
+                  Get Started Now
+                </Link>
+              </div>
+            </div>
+            
+            {/* Right Image */}
+            <div className="relative">
+              <div className="bg-white rounded-2xl shadow-flowcv-large border border-gray-100 p-6">
+                <div className="space-y-4">
+                  <div className="flex items-center gap-3">
+                    <div className="w-12 h-12 bg-gray-200 rounded-full"></div>
+                    <div className="space-y-1 flex-1">
+                      <div className="h-4 bg-flowcv-brand-purple/20 rounded w-3/4"></div>
+                      <div className="h-3 bg-gray-200 rounded w-1/2"></div>
+                    </div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-3 bg-gray-200 rounded"></div>
+                    <div className="h-3 bg-gray-200 rounded w-5/6"></div>
+                    <div className="h-3 bg-gray-200 rounded w-4/5"></div>
+                  </div>
+                  <div className="space-y-2">
+                    <div className="h-4 bg-flowcv-brand-purple/20 rounded w-1/3"></div>
+                    <div className="h-3 bg-gray-200 rounded"></div>
+                    <div className="h-3 bg-gray-200 rounded w-3/4"></div>
+                  </div>
+                  <div className="flex gap-2">
+                    <div className="px-3 py-1 bg-flowcv-brand-purple/10 rounded-full">
+                      <div className="h-3 bg-flowcv-brand-purple/40 rounded w-12"></div>
+                    </div>
+                    <div className="px-3 py-1 bg-flowcv-brand-purple/10 rounded-full">
+                      <div className="h-3 bg-flowcv-brand-purple/40 rounded w-16"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FlowCV-style CTA Section */}
+      <section className="section-flowcv bg-white">
+        <div className="container-flowcv text-center">
+          <div className="max-w-3xl mx-auto space-y-8">
+            <div className="space-y-4">
+              <h2 className="heading-4xl">
+                Ready to create your professional resume?
+              </h2>
+              <p className="text-flowcv-gray-600 text-lg leading-relaxed">
+                Join thousands of job seekers who have successfully landed their dream jobs using our resume builder.
+              </p>
+            </div>
+            
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+              <Link href="/dashboard/builder" className="btn-flowcv-primary btn-large">
+                Create My Resume
+              </Link>
+              <Link href="/dashboard/templates" className="btn-flowcv-secondary btn-large">
+                View Templates
+              </Link>
+            </div>
+            
+            {/* Social Proof */}
+            <div className="pt-8 border-t border-gray-100">
+              <div className="flex flex-col sm:flex-row items-center justify-center gap-8 text-flowcv-gray-530">
+                <div className="flex items-center gap-2">
+                  <Users className="h-5 w-5" />
+                  <span className="text-sm font-medium">10,000+ users</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Star className="h-5 w-5 fill-yellow-400 text-yellow-400" />
+                  <span className="text-sm font-medium">4.9/5 rating</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-5 w-5" />
+                  <span className="text-sm font-medium">5 min setup</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* FlowCV-style Footer */}
+      <footer className="bg-flowcv-cream-dark border-t border-gray-200">
+        <div className="container-flowcv py-12">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
+            {/* Brand */}
+            <div className="space-y-4">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 bg-flowcv-brand-purple rounded-lg flex items-center justify-center">
+                  <span className="text-white font-bold text-sm">CV</span>
+                </div>
+                <span className="heading-xl text-flowcv-ink">CV Helper</span>
+              </div>
+              <p className="text-flowcv-gray-600 text-sm leading-relaxed">
+                Create professional resumes that get you hired. Fast, easy, and ATS-friendly.
+              </p>
+            </div>
+            
+            {/* Product */}
+            <div className="space-y-4">
+              <h4 className="font-semibold text-flowcv-ink">Product</h4>
+              <div className="space-y-2">
+                <Link href="/dashboard/builder" className="block text-flowcv-gray-600 hover:text-flowcv-ink transition-colors text-sm">
+                  Resume Builder
+                </Link>
+                <Link href="/dashboard/templates" className="block text-flowcv-gray-600 hover:text-flowcv-ink transition-colors text-sm">
+                  Templates
+                </Link>
+                <Link href="/about" className="block text-flowcv-gray-600 hover:text-flowcv-ink transition-colors text-sm">
+                  About
+                </Link>
+              </div>
+            </div>
+            
+            {/* Resources */}
+            <div className="space-y-4">
+              <h4 className="font-semibold text-flowcv-ink">Resources</h4>
+              <div className="space-y-2">
+                <Link href="/discover" className="block text-flowcv-gray-600 hover:text-flowcv-ink transition-colors text-sm">
+                  Career Tips
+                </Link>
+                <Link href="#" className="block text-flowcv-gray-600 hover:text-flowcv-ink transition-colors text-sm">
+                  Resume Examples
+                </Link>
+                <Link href="#" className="block text-flowcv-gray-600 hover:text-flowcv-ink transition-colors text-sm">
+                  Help Center
+                </Link>
+              </div>
+            </div>
+            
+            {/* Company */}
+            <div className="space-y-4">
+              <h4 className="font-semibold text-flowcv-ink">Company</h4>
+              <div className="space-y-2">
+                <Link href="#" className="block text-flowcv-gray-600 hover:text-flowcv-ink transition-colors text-sm">
+                  Privacy Policy
+                </Link>
+                <Link href="#" className="block text-flowcv-gray-600 hover:text-flowcv-ink transition-colors text-sm">
+                  Terms of Service
+                </Link>
+                <Link href="#" className="block text-flowcv-gray-600 hover:text-flowcv-ink transition-colors text-sm">
+                  Contact
+                </Link>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-12 pt-8 border-t border-gray-200 flex flex-col md:flex-row items-center justify-between gap-4">
+            <p className="text-flowcv-gray-530 text-sm">
+              © {new Date().getFullYear()} CV Helper. All rights reserved.
+            </p>
+            <p className="text-flowcv-gray-530 text-sm">
+              Built with Next.js • Powered by AI
+            </p>
+          </div>
         </div>
       </footer>
     </div>
   )
 }
 
-interface FeatureCardProps {
-  icon: React.ReactNode
-  title: string
-  description: string
-}
-
-function FeatureCard({ icon, title, description }: FeatureCardProps) {
-  return (
-    <Card className="surface-high-contrast h-full border border-border/40 text-left transition-all duration-300 hover:-translate-y-1">
-      <CardHeader className="space-y-4">
-        <div className="flex h-12 w-12 items-center justify-center rounded-full bg-primary/15 text-primary">{icon}</div>
-        <CardTitle className="text-xl font-semibold text-high-contrast">{title}</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <CardDescription className="text-base leading-relaxed text-muted-foreground">{description}</CardDescription>
-      </CardContent>
-    </Card>
-  )
-}
