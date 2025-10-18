@@ -5,9 +5,9 @@ import { Users, Target, Award, Zap, Shield, Globe } from "lucide-react"
 
 export default function AboutPage() {
   return (
-    <div className="min-h-screen bg-flowcv-sand">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-bg)' }}>
       {/* Hero Section */}
-      <section className="section-flowcv">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg)' }}>
         <div className="container-flowcv text-center">
           <div className="max-w-4xl mx-auto space-y-8">
             <div className="space-y-4">
@@ -25,7 +25,7 @@ export default function AboutPage() {
       </section>
       
       {/* Stats Section */}
-      <section className="section-flowcv bg-white">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg-secondary)' }}>
         <div className="container-flowcv">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 text-center">
             <div className="space-y-2">
@@ -45,7 +45,7 @@ export default function AboutPage() {
       </section>
       
       {/* Our Story Section */}
-      <section className="section-flowcv">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg)' }}>
         <div className="container-flowcv">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="space-y-6">
@@ -111,7 +111,7 @@ export default function AboutPage() {
       </section>
       
       {/* Features Section */}
-      <section className="section-flowcv bg-white">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg-secondary)' }}>
         <div className="container-flowcv">
           <div className="text-center space-y-4 mb-16">
             <div className="heading-xs text-flowcv-brand">What Makes Us Different</div>
@@ -167,7 +167,7 @@ export default function AboutPage() {
       </section>
       
       {/* CTA Section */}
-      <section className="section-flowcv">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg)' }}>
         <div className="container-flowcv text-center">
           <div className="max-w-3xl mx-auto space-y-8">
             <div className="space-y-4">
@@ -192,7 +192,7 @@ export default function AboutPage() {
       </section>
       
       {/* Footer */}
-      <footer className="bg-flowcv-cream-dark border-t border-gray-200">
+      <footer className="border-t" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
         <div className="container-flowcv py-12">
           <div className="text-center space-y-4">
             <div className="flex items-center justify-center gap-3">

@@ -3,11 +3,22 @@
 import * as React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Menu, X, User, LogOut, RefreshCw } from "lucide-react"
+import { Menu, X, User, LogOut, Settings, Palette, ChevronDown } from "lucide-react"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { ThemeSwitcher } from "@/components/theme-switcher"
+import { useTheme } from "@/lib/theme-context"
 
 type ApiUser = { id: string; name: string; email: string }
 
 export function SiteHeader() {
+  const { theme } = useTheme()
   const [user, setUser] = React.useState<ApiUser | null>(null)
   const [loading, setLoading] = React.useState(false)
   const [mobileMenuOpen, setMobileMenuOpen] = React.useState(false)
@@ -28,6 +39,26 @@ export function SiteHeader() {
 
   React.useEffect(() => {
     fetchMe()
+    
+    // Listen for login events from other tabs/windows
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'auth-refresh') {
+        fetchMe()
+      }
+    }
+    
+    window.addEventListener('storage', handleStorageChange)
+    return () => window.removeEventListener('storage', handleStorageChange)
+  }, [fetchMe])
+  
+  // Trigger refresh after login/register
+  React.useEffect(() => {
+    const handleAuthChange = () => {
+      fetchMe()
+    }
+    
+    window.addEventListener('auth-changed', handleAuthChange)
+    return () => window.removeEventListener('auth-changed', handleAuthChange)
   }, [fetchMe])
 
   const handleLogout = async () => {
@@ -42,43 +73,66 @@ export function SiteHeader() {
 
   return (
     <>
-      {/* FlowCV-style Header */}
+      {/* Theme-aware Header with Accent Border */}
       <header className="sticky top-0 z-50 w-full">
-        <div className="bg-flowcv-sand px-4 py-3">
+        <div className="px-4 py-3" style={{ backgroundColor: 'var(--theme-bg)' }}>
           <div className="container-flowcv">
-            <div className="bg-white rounded-2xl shadow-flowcv-soft border border-gray-100/50 px-6 py-4">
-              <div className="flex items-center justify-between">
+            <div 
+              className="rounded-2xl shadow-lg px-6 py-4 relative overflow-hidden"
+              style={{ 
+                backgroundColor: 'var(--theme-card)',
+                borderWidth: '3px',
+                borderStyle: 'solid',
+                borderColor: 'var(--theme-accent)'
+              }}
+            >
+              {/* Decorative accent gradient overlay */}
+              <div 
+                className="absolute inset-0 opacity-5 pointer-events-none"
+                style={{ 
+                  background: `linear-gradient(135deg, ${theme.accent} 0%, transparent 50%)`
+                }}
+              />
+              
+              <div className="flex items-center justify-between relative z-10">
                 {/* Logo */}
                 <Link href="/" className="flex items-center gap-3">
-                  <div className="w-8 h-8 bg-flowcv-brand-purple rounded-lg flex items-center justify-center">
+                  <div 
+                    className="w-8 h-8 rounded-lg flex items-center justify-center"
+                    style={{ backgroundColor: theme.accent }}
+                  >
                     <span className="text-white font-bold text-sm">CV</span>
                   </div>
-                  <span className="heading-xl text-flowcv-ink">CV Helper</span>
+                  <span className="heading-xl" style={{ color: 'var(--theme-text)' }}>CV Helper</span>
                 </Link>
 
                 {/* Desktop Navigation */}
                 <nav className="hidden lg:flex items-center gap-8">
                   <Link 
                     href="/" 
-                    className="text-flowcv-gray-600 hover:text-flowcv-ink transition-colors duration-200 font-medium text-sm"
+                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70"
+                    style={{ color: 'var(--theme-text-secondary)' }}
                   >
                     Home
                   </Link>
                   <Link 
                     href="/dashboard/templates" 
-                    className="text-flowcv-gray-600 hover:text-flowcv-ink transition-colors duration-200 font-medium text-sm"
+                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70"
+                    style={{ color: 'var(--theme-text-secondary)' }}
                   >
                     Templates
                   </Link>
                   <Link 
                     href="/about" 
-                    className="text-flowcv-gray-600 hover:text-flowcv-ink transition-colors duration-200 font-medium text-sm"
+                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70"
+                    style={{ color: 'var(--theme-text-secondary)' }}
                   >
                     About
                   </Link>
                   <Link 
                     href="/discover" 
-                    className="text-flowcv-gray-600 hover:text-flowcv-ink transition-colors duration-200 font-medium text-sm"
+                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70"
+                    style={{ color: 'var(--theme-text-secondary)' }}
                   >
                     Discover
                   </Link>
@@ -88,37 +142,61 @@ export function SiteHeader() {
                 <div className="hidden lg:flex items-center gap-3">
                   {user ? (
                     <div className="flex items-center gap-3">
-                      {/* User Info */}
-                      <div className="flex items-center gap-2 px-3 py-2 bg-gray-50 rounded-lg">
-                        <User className="h-4 w-4 text-flowcv-gray-600" />
-                        <div className="text-sm">
-                          <div className="font-medium text-flowcv-ink">{user.name}</div>
-                          <div className="text-xs text-flowcv-gray-530">{user.email}</div>
-                        </div>
-                      </div>
-                      
-                      {/* Action Buttons */}
+                      {/* Dashboard Button */}
                       <Link href="/dashboard/builder" className="btn-flowcv-secondary">
                         Dashboard
                       </Link>
                       
-                      <button 
-                        onClick={fetchMe} 
-                        disabled={loading}
-                        className="p-2 text-flowcv-gray-600 hover:text-flowcv-ink transition-colors"
-                        title="Refresh"
-                      >
-                        <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
-                      </button>
-                      
-                      <button 
-                        onClick={handleLogout} 
-                        disabled={loading}
-                        className="p-2 text-flowcv-gray-600 hover:text-red-600 transition-colors"
-                        title="Logout"
-                      >
-                        <LogOut className="h-4 w-4" />
-                      </button>
+                      {/* User Dropdown Menu */}
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <button className="flex items-center gap-2 px-3 py-2 bg-gray-50 hover:bg-gray-100 rounded-lg transition-colors">
+                            <div className="w-8 h-8 bg-flowcv-brand-purple rounded-full flex items-center justify-center">
+                              <User className="h-4 w-4 text-white" />
+                            </div>
+                            <div className="text-sm text-left">
+                              <div className="font-medium text-flowcv-ink">{user.name}</div>
+                              <div className="text-xs text-flowcv-gray-530">{user.email}</div>
+                            </div>
+                            <ChevronDown className="h-4 w-4 text-flowcv-gray-600" />
+                          </button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end" className="w-64">
+                          <DropdownMenuLabel>
+                            <div className="flex flex-col space-y-1">
+                              <p className="text-sm font-medium leading-none">{user.name}</p>
+                              <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
+                            </div>
+                          </DropdownMenuLabel>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem asChild>
+                            <Link href="/dashboard/personal" className="cursor-pointer">
+                              <Settings className="mr-2 h-4 w-4" />
+                              Profile & Settings
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuItem asChild>
+                            <Link href="/dashboard/templates" className="cursor-pointer">
+                              <Palette className="mr-2 h-4 w-4" />
+                              Templates
+                            </Link>
+                          </DropdownMenuItem>
+                          <DropdownMenuSeparator />
+                          <div className="px-2 py-2">
+                            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Theme</p>
+                            <ThemeSwitcher compact />
+                          </div>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuItem 
+                            onClick={handleLogout}
+                            disabled={loading}
+                            className="cursor-pointer text-red-600 focus:text-red-600"
+                          >
+                            <LogOut className="mr-2 h-4 w-4" />
+                            Logout
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   ) : (
                     <>
@@ -214,24 +292,22 @@ export function SiteHeader() {
                     >
                       Dashboard
                     </Link>
-                    <div className="flex gap-2">
-                      <button 
-                        onClick={() => { fetchMe(); setMobileMenuOpen(false); }} 
-                        disabled={loading}
-                        className="btn-flowcv-secondary flex-1 justify-center"
-                      >
-                        <RefreshCw className={`h-4 w-4 mr-2 ${loading ? 'animate-spin' : ''}`} />
-                        Refresh
-                      </button>
-                      <button 
-                        onClick={() => { handleLogout(); setMobileMenuOpen(false); }} 
-                        disabled={loading}
-                        className="btn-flowcv-secondary flex-1 justify-center text-red-600 border-red-200 hover:bg-red-50"
-                      >
-                        <LogOut className="h-4 w-4 mr-2" />
-                        Logout
-                      </button>
-                    </div>
+                    <Link 
+                      href="/dashboard/personal" 
+                      onClick={() => setMobileMenuOpen(false)}
+                      className="btn-flowcv-secondary w-full justify-center"
+                    >
+                      <Settings className="h-4 w-4 mr-2" />
+                      Profile & Settings
+                    </Link>
+                    <button 
+                      onClick={() => { handleLogout(); setMobileMenuOpen(false); }} 
+                      disabled={loading}
+                      className="btn-flowcv-secondary w-full justify-center text-red-600 border-red-200 hover:bg-red-50"
+                    >
+                      <LogOut className="h-4 w-4 mr-2" />
+                      Logout
+                    </button>
                   </div>
                 ) : (
                   <div className="space-y-3">

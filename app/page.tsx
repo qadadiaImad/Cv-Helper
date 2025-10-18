@@ -6,9 +6,9 @@ import { ArrowRight, Download, FileText, Shield, Sparkles, Zap, Workflow, Star, 
 
 export default function HomePage() {
   return (
-    <div className="min-h-screen bg-flowcv-sand">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-bg)' }}>
       {/* FlowCV-style Hero Section */}
-      <section className="section-flowcv relative overflow-hidden">
+      <section className="section-flowcv relative overflow-hidden" style={{ backgroundColor: 'var(--theme-bg)' }}>
         <div className="container-flowcv">
           <div className="text-center space-y-8">
             {/* Micro Heading */}
@@ -122,7 +122,7 @@ export default function HomePage() {
       </section>
 
       {/* FlowCV-style Three Features Section */}
-      <section className="section-flowcv bg-white">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg-secondary)' }}>
         <div className="container-flowcv">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 lg:gap-12">
             {/* Feature 1 */}
@@ -162,7 +162,7 @@ export default function HomePage() {
       </section>
       
       {/* How It Works Section */}
-      <section className="section-flowcv">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg)' }}>
         <div className="container-flowcv">
           <div className="text-center space-y-4 mb-16">
             <div className="heading-xs text-flowcv-brand">How It Works</div>
@@ -257,7 +257,7 @@ export default function HomePage() {
       </section>
 
       {/* FlowCV-style CTA Section */}
-      <section className="section-flowcv bg-white">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg-secondary)' }}>
         <div className="container-flowcv text-center">
           <div className="max-w-3xl mx-auto space-y-8">
             <div className="space-y-4">
@@ -300,7 +300,7 @@ export default function HomePage() {
       </section>
 
       {/* FlowCV-style Footer */}
-      <footer className="bg-flowcv-cream-dark border-t border-gray-200">
+      <footer className="border-t" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
         <div className="container-flowcv py-12">
           <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
             {/* Brand */}

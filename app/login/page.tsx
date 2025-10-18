@@ -29,6 +29,10 @@ export default function LoginPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data?.error || "Login failed")
       toast.success("Welcome back!", { description: data?.user?.email })
+      
+      // Notify header to refresh user state
+      window.dispatchEvent(new Event('auth-changed'))
+      
       router.push("/dashboard/builder")
     } catch (err: any) {
       toast.error("Login failed", { description: err?.message || "Unexpected error" })

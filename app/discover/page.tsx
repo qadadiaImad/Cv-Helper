@@ -5,9 +5,9 @@ import { BookOpen, TrendingUp, Users, Target, CheckCircle, ArrowRight, Clock, St
 
 export default function DiscoverPage() {
   return (
-    <div className="min-h-screen bg-flowcv-sand">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-bg)' }}>
       {/* Hero Section */}
-      <section className="section-flowcv">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg)' }}>
         <div className="container-flowcv text-center">
           <div className="max-w-4xl mx-auto space-y-8">
             <div className="space-y-4">
@@ -25,7 +25,7 @@ export default function DiscoverPage() {
       </section>
       
       {/* Featured Articles */}
-      <section className="section-flowcv bg-white">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg-secondary)' }}>
         <div className="container-flowcv">
           <div className="text-center space-y-4 mb-16">
             <div className="heading-xs text-flowcv-brand">Featured Guides</div>
@@ -109,7 +109,7 @@ export default function DiscoverPage() {
       </section>
       
       {/* Resource Categories */}
-      <section className="section-flowcv">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg)' }}>
         <div className="container-flowcv">
           <div className="text-center space-y-4 mb-16">
             <div className="heading-xs text-flowcv-brand">Browse by Category</div>
@@ -216,7 +216,7 @@ export default function DiscoverPage() {
       </section>
       
       {/* Quick Tips */}
-      <section className="section-flowcv bg-white">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg-secondary)' }}>
         <div className="container-flowcv">
           <div className="text-center space-y-4 mb-16">
             <div className="heading-xs text-flowcv-brand">Quick Tips</div>
@@ -287,7 +287,7 @@ export default function DiscoverPage() {
       </section>
       
       {/* CTA Section */}
-      <section className="section-flowcv">
+      <section className="section-flowcv" style={{ backgroundColor: 'var(--theme-bg)' }}>
         <div className="container-flowcv text-center">
           <div className="max-w-3xl mx-auto space-y-8">
             <div className="space-y-4">
@@ -312,7 +312,7 @@ export default function DiscoverPage() {
       </section>
       
       {/* Footer */}
-      <footer className="bg-flowcv-cream-dark border-t border-gray-200">
+      <footer className="border-t" style={{ backgroundColor: 'var(--theme-bg-secondary)', borderColor: 'var(--theme-border)' }}>
         <div className="container-flowcv py-12">
           <div className="text-center space-y-4">
             <div className="flex items-center justify-center gap-3">

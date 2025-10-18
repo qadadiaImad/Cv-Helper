@@ -43,8 +43,8 @@ export default function PersonalInfoPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-40 border-b border-border bg-background/90 backdrop-blur">
+    <div className="min-h-screen" style={{ backgroundColor: 'var(--theme-bg)' }}>
+      <header className="sticky top-0 z-40 border-b backdrop-blur" style={{ borderColor: 'var(--theme-border)', backgroundColor: 'var(--theme-bg)' }}>
         <div className="container-modern py-4 flex items-center gap-4">
           <Link href="/dashboard/builder">
             <Button variant="outline" className="btn-secondary"><ArrowLeft className="h-4 w-4" /> Back to builder</Button>

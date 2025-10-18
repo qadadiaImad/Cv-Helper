@@ -3,8 +3,7 @@
 import * as React from "react"
 import { useState, useMemo } from "react"
 import { useRouter } from "next/navigation"
-import Image from "next/image"
-import { Search, Sparkles, Check } from "lucide-react"
+import { Search, Sparkles, Check, Eye, X } from "lucide-react"
 import { Input } from "@/components/ui/input"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
@@ -187,55 +186,60 @@ interface TemplateCardProps {
 }
 
 function TemplateCard({ template, isSelected, onClick, onKeyDown }: TemplateCardProps) {
-  const [imageSrc, setImageSrc] = useState(
-    template.thumbnailPath || `/templates/${template.id}.webp`
-  )
-  const [imageError, setImageError] = useState(false)
+  const [showPreview, setShowPreview] = useState(false)
 
-  const handleImageError = () => {
-    // Try SVG fallback if WebP fails
-    if (imageSrc.endsWith('.webp')) {
-      setImageSrc(`/templates/${template.id}.svg`)
-    } else {
-      // No more fallbacks, show placeholder
-      setImageError(true)
-    }
+  const handlePreviewClick = (e: React.MouseEvent) => {
+    e.stopPropagation() // Prevent card selection
+    setShowPreview(true)
   }
 
+  const handleClosePreview = () => {
+    setShowPreview(false)
+  }
+
+  // Close modal on ESC key
+  React.useEffect(() => {
+    if (!showPreview) return
+
+    const handleEscape = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') {
+        handleClosePreview()
+      }
+    }
+
+    document.addEventListener('keydown', handleEscape)
+    return () => document.removeEventListener('keydown', handleEscape)
+  }, [showPreview])
+
   return (
-    <div
-      role="button"
-      tabIndex={0}
-      onClick={onClick}
-      onKeyDown={onKeyDown}
-      className={`
-        group relative overflow-hidden rounded-lg border bg-card transition-all
-        hover:shadow-lg hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 
-        focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer
-        ${isSelected ? 'ring-2 ring-primary shadow-md' : ''}
-      `}
-      aria-label={`Select ${template.name} template`}
-    >
-      {/* Thumbnail Image */}
-      <div className="relative aspect-[8.5/11] bg-muted overflow-hidden">
-        {!imageError ? (
-          <Image
-            src={imageSrc}
-            alt={`${template.name} template preview`}
-            fill
-            className="object-cover object-top transition-transform group-hover:scale-105"
-            onError={handleImageError}
-            sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, (max-width: 1280px) 33vw, 25vw"
-            priority={false}
-          />
-        ) : (
-          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-muted to-muted/50">
-            <div className="text-center p-4">
-              <div className="text-4xl mb-2">📄</div>
-              <p className="text-xs text-muted-foreground">{template.name}</p>
-            </div>
-          </div>
-        )}
+    <>
+      <div
+        role="button"
+        tabIndex={0}
+        onClick={onClick}
+        onKeyDown={onKeyDown}
+        className={`
+          group relative overflow-hidden rounded-lg border bg-card transition-all
+          hover:shadow-lg hover:-translate-y-1 focus-visible:outline-none focus-visible:ring-2 
+          focus-visible:ring-ring focus-visible:ring-offset-2 cursor-pointer
+          ${isSelected ? 'ring-2 ring-primary shadow-md' : ''}
+        `}
+        aria-label={`Select ${template.name} template`}
+      >
+      {/* Dynamic iFrame Preview */}
+      <div className="relative aspect-[8.5/11] bg-white overflow-hidden">
+        <iframe
+          src={`/preview/${template.id}`}
+          className="absolute inset-0 w-full h-full border-0 pointer-events-none"
+          style={{
+            transform: 'scale(0.25)',
+            transformOrigin: 'top left',
+            width: '400%',
+            height: '400%',
+          }}
+          title={`${template.name} preview`}
+          loading="lazy"
+        />
 
         {/* Selected Checkmark */}
         {isSelected && (
@@ -254,9 +258,18 @@ function TemplateCard({ template, isSelected, onClick, onKeyDown }: TemplateCard
           </div>
         )}
 
-        {/* Hover Overlay */}
-        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-          <Button size="sm" variant="secondary">
+        {/* Hover Overlay with Actions */}
+        <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center gap-2">
+          <Button 
+            size="sm" 
+            variant="secondary"
+            onClick={handlePreviewClick}
+            className="gap-2"
+          >
+            <Eye className="h-4 w-4" />
+            Preview
+          </Button>
+          <Button size="sm" variant="default">
             Use this template
           </Button>
         </div>
@@ -280,5 +293,60 @@ function TemplateCard({ template, isSelected, onClick, onKeyDown }: TemplateCard
         </div>
       </div>
     </div>
+
+    {/* Preview Modal */}
+    {showPreview && (
+      <div 
+        className="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-4 animate-in fade-in"
+        onClick={handleClosePreview}
+      >
+        <div 
+          className="relative bg-white rounded-lg shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-hidden"
+          onClick={(e) => e.stopPropagation()}
+        >
+          {/* Modal Header */}
+          <div className="flex items-center justify-between p-4 border-b bg-muted/50">
+            <div>
+              <h2 className="text-xl font-semibold">{template.name}</h2>
+              <p className="text-sm text-muted-foreground">{template.description}</p>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button size="sm" onClick={onClick} className="gap-2">
+                <Check className="h-4 w-4" />
+                Use Template
+              </Button>
+              <Button 
+                size="sm" 
+                variant="ghost" 
+                onClick={handleClosePreview}
+                className="h-8 w-8 p-0"
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+          </div>
+
+          {/* Modal Content - Full Template Preview */}
+          <div className="bg-gray-100 overflow-auto" style={{ height: 'calc(90vh - 80px)' }}>
+            <div className="flex items-center justify-center min-h-full p-8">
+              <div className="bg-white shadow-2xl" style={{ width: '620px', height: '877px' }}>
+                <iframe
+                  src={`/preview/${template.id}`}
+                  className="w-full h-full border-0 pointer-events-none"
+                  style={{
+                    transform: 'scale(0.5)',
+                    transformOrigin: 'top left',
+                    width: '200%',
+                    height: '200%',
+                  }}
+                  title={`${template.name} full preview`}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    )}
+  </>
   )
 }

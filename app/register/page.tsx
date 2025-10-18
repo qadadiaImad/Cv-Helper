@@ -37,6 +37,10 @@ export default function RegisterPage() {
       const data = await res.json()
       if (!res.ok) throw new Error(data?.error || "Registration failed")
       toast.success("Account created!", { description: data?.user?.email })
+      
+      // Notify header to refresh user state
+      window.dispatchEvent(new Event('auth-changed'))
+      
       router.push("/dashboard/builder")
     } catch (err: any) {
       toast.error("Registration failed", { description: err?.message || "Unexpected error" })
