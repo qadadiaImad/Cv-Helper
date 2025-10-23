@@ -1,0 +1,204 @@
+/**
+ * ATLANTIC BLUE TEMPLATE
+ * Dark left sidebar with photo, white content area
+ */
+
+import React from 'react'
+import type { UniversalTemplateProps } from './universal-schema'
+
+export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => (
+  <div style={{
+    display: 'flex',
+    width: '100%',
+    minHeight: '1200px',
+    fontFamily: 'Arial, sans-serif',
+    backgroundColor: '#f5f5f5',
+  }}>
+    {/* Left Sidebar - Dark Blue */}
+    <aside style={{
+      width: '280px',
+      backgroundColor: '#1a3a52',
+      color: '#ffffff',
+      padding: '40px 30px',
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '30px',
+    }}>
+      {/* Photo */}
+      {data.personal.photo && (
+        <div style={{
+          width: '120px',
+          height: '120px',
+          borderRadius: '50%',
+          backgroundColor: '#ffffff',
+          margin: '0 auto',
+          overflow: 'hidden',
+          border: '4px solid rgba(255,255,255,0.1)',
+        }}>
+          <img src={data.personal.photo} alt={data.personal.fullName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        </div>
+      )}
+
+      {/* Name & Title */}
+      <div style={{ textAlign: 'center' }}>
+        <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', lineHeight: '1.2' }}>{data.personal.fullName}</h1>
+        {data.personal.title && <p style={{ fontSize: '14px', opacity: 0.9, fontWeight: '300' }}>{data.personal.title}</p>}
+      </div>
+
+      {/* Contact */}
+      <div style={{ fontSize: '12px', lineHeight: '1.8' }}>
+        <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '12px', borderBottom: '2px solid rgba(255,255,255,0.3)', paddingBottom: '8px', letterSpacing: '0.5px' }}>CONTACT</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+          <p style={{ wordBreak: 'break-word' }}>✉️ {data.personal.email}</p>
+          <p>📱 {data.personal.phone}</p>
+          {data.personal.location && <p>📍 {data.personal.location}</p>}
+          {data.personal.website && <p>🌐 {data.personal.website}</p>}
+          {data.personal.linkedIn && <p>💼 {data.personal.linkedIn}</p>}
+        </div>
+      </div>
+
+      {/* Skills */}
+      {data.skills && data.skills.length > 0 && (
+        <div style={{ fontSize: '12px' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '12px', borderBottom: '2px solid rgba(255,255,255,0.3)', paddingBottom: '8px', letterSpacing: '0.5px' }}>SKILLS</h3>
+          <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
+            {data.skills.map((skill, i) => (
+              <li key={i} style={{ padding: '6px 0 6px 12px', borderLeft: '3px solid #4a90e2', backgroundColor: 'rgba(74, 144, 226, 0.1)' }}>{skill}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+
+      {/* Languages */}
+      {data.languages && data.languages.length > 0 && (
+        <div style={{ fontSize: '12px' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '12px', borderBottom: '2px solid rgba(255,255,255,0.3)', paddingBottom: '8px', letterSpacing: '0.5px' }}>LANGUAGES</h3>
+          {data.languages.map((lang, i) => (
+            <div key={i} style={{ marginBottom: '10px' }}>
+              <p style={{ fontWeight: '600', marginBottom: '2px' }}>{lang.name}</p>
+              <div style={{ display: 'flex', gap: '3px', alignItems: 'center' }}>
+                {[1, 2, 3, 4, 5].map(level => (
+                  <div key={level} style={{
+                    width: '30px',
+                    height: '4px',
+                    backgroundColor: level <= (['Native', 'Fluent'].includes(lang.proficiency) ? 5 : ['Professional'].includes(lang.proficiency) ? 4 : 3) ? '#4a90e2' : 'rgba(255,255,255,0.2)',
+                    borderRadius: '2px',
+                  }} />
+                ))}
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Certifications in sidebar */}
+      {data.certifications && data.certifications.length > 0 && (
+        <div style={{ fontSize: '11px' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '12px', borderBottom: '2px solid rgba(255,255,255,0.3)', paddingBottom: '8px', letterSpacing: '0.5px' }}>CERTIFICATIONS</h3>
+          {data.certifications.map((cert, i) => (
+            <div key={i} style={{ marginBottom: '10px', paddingBottom: '10px', borderBottom: i < data.certifications!.length - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>
+              <p style={{ fontWeight: '600', marginBottom: '4px' }}>{cert.name}</p>
+              <p style={{ opacity: 0.8, fontSize: '10px' }}>{cert.issuer}</p>
+              <p style={{ opacity: 0.7, fontSize: '10px' }}>{cert.date}</p>
+            </div>
+          ))}
+        </div>
+      )}
+    </aside>
+
+    {/* Right Content Area - White */}
+    <main style={{
+      flex: 1,
+      backgroundColor: '#ffffff',
+      padding: '40px 50px',
+    }}>
+      {/* Summary */}
+      {data.summary && (
+        <section style={{ marginBottom: '35px' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '12px', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px' }}>PROFESSIONAL SUMMARY</h2>
+          <p style={{ fontSize: '13px', lineHeight: '1.7', color: '#333', textAlign: 'justify' }}>{data.summary.text}</p>
+        </section>
+      )}
+
+      {/* Experience */}
+      <section style={{ marginBottom: '35px' }}>
+        <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '15px', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px' }}>EXPERIENCE</h2>
+        {data.experience.map((exp, i) => (
+          <div key={i} style={{ marginBottom: '25px', paddingBottom: '25px', borderBottom: i < data.experience.length - 1 ? '1px solid #e0e0e0' : 'none' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '6px' }}>
+              <h3 style={{ fontSize: '16px', fontWeight: 'bold', color: '#1a3a52' }}>{exp.position}</h3>
+              <span style={{ fontSize: '11px', color: '#666', whiteSpace: 'nowrap', marginLeft: '15px' }}>{exp.startDate} - {exp.endDate}</span>
+            </div>
+            <p style={{ fontSize: '13px', fontWeight: '600', color: '#4a90e2', marginBottom: '10px' }}>
+              {exp.company}{exp.location && ` • ${exp.location}`}
+            </p>
+            {exp.description && <p style={{ fontSize: '12px', color: '#555', marginBottom: '8px', fontStyle: 'italic' }}>{exp.description}</p>}
+            <ul style={{ fontSize: '12px', lineHeight: '1.7', paddingLeft: '20px', color: '#444' }}>
+              {exp.achievements.map((ach, j) => <li key={j} style={{ marginBottom: '4px' }}>{ach}</li>)}
+            </ul>
+            {exp.technologies && exp.technologies.length > 0 && (
+              <div style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {exp.technologies.map((tech, k) => (
+                  <span key={k} style={{ fontSize: '10px', padding: '3px 8px', backgroundColor: '#e8f4ff', color: '#1a3a52', borderRadius: '3px' }}>{tech}</span>
+                ))}
+              </div>
+            )}
+          </div>
+        ))}
+      </section>
+
+      {/* Projects */}
+      {data.projects && data.projects.length > 0 && (
+        <section style={{ marginBottom: '35px' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '15px', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px' }}>PROJECTS</h2>
+          {data.projects.map((proj, i) => (
+            <div key={i} style={{ marginBottom: '20px' }}>
+              <h3 style={{ fontSize: '14px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '4px' }}>{proj.name}</h3>
+              <p style={{ fontSize: '12px', color: '#555', marginBottom: '8px' }}>{proj.description}</p>
+              <ul style={{ fontSize: '11px', lineHeight: '1.6', paddingLeft: '20px', color: '#444' }}>
+                {proj.highlights.map((hl, j) => <li key={j}>{hl}</li>)}
+              </ul>
+              <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+                {proj.technologies.map((tech, k) => (
+                  <span key={k} style={{ fontSize: '10px', padding: '3px 8px', backgroundColor: '#f0f0f0', color: '#555', borderRadius: '3px' }}>{tech}</span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </section>
+      )}
+
+      {/* Education */}
+      <section style={{ marginBottom: '35px' }}>
+        <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '15px', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px' }}>EDUCATION</h2>
+        {data.education.map((edu, i) => (
+          <div key={i} style={{ marginBottom: '18px' }}>
+            <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+              <h3 style={{ fontSize: '15px', fontWeight: 'bold', color: '#1a3a52' }}>{edu.degree}{edu.field && ` in ${edu.field}`}</h3>
+              <span style={{ fontSize: '11px', color: '#666', whiteSpace: 'nowrap', marginLeft: '15px' }}>{edu.startDate} - {edu.endDate}</span>
+            </div>
+            <p style={{ fontSize: '13px', color: '#4a90e2', marginBottom: '4px' }}>{edu.institution}{edu.location && ` • ${edu.location}`}</p>
+            {edu.gpa && <p style={{ fontSize: '11px', color: '#666' }}>GPA: {edu.gpa}</p>}
+            {edu.honors && edu.honors.length > 0 && (
+              <p style={{ fontSize: '11px', color: '#555', marginTop: '4px' }}>Honors: {edu.honors.join(', ')}</p>
+            )}
+          </div>
+        ))}
+      </section>
+
+      {/* Awards */}
+      {data.awards && data.awards.length > 0 && (
+        <section>
+          <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '15px', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px' }}>AWARDS & ACHIEVEMENTS</h2>
+          {data.awards.map((award, i) => (
+            <div key={i} style={{ marginBottom: '12px' }}>
+              <h3 style={{ fontSize: '13px', fontWeight: '600', color: '#1a3a52' }}>{award.title}</h3>
+              <p style={{ fontSize: '11px', color: '#4a90e2' }}>{award.issuer} • {award.date}</p>
+              {award.description && <p style={{ fontSize: '11px', color: '#666', marginTop: '4px' }}>{award.description}</p>}
+            </div>
+          ))}
+        </section>
+      )}
+    </main>
+  </div>
+)
