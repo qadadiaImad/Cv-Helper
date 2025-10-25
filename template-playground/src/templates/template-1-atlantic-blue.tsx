@@ -54,6 +54,8 @@ export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => (
           {data.personal.location && <p>📍 {data.personal.location}</p>}
           {data.personal.website && <p>🌐 {data.personal.website}</p>}
           {data.personal.linkedIn && <p>💼 {data.personal.linkedIn}</p>}
+          {data.personal.github && <p>💻 {data.personal.github}</p>}
+          {data.personal.portfolio && <p>🎨 {data.personal.portfolio}</p>}
         </div>
       </div>
 
@@ -99,7 +101,9 @@ export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => (
             <div key={i} style={{ marginBottom: '10px', paddingBottom: '10px', borderBottom: i < data.certifications!.length - 1 ? '1px solid rgba(255,255,255,0.1)' : 'none' }}>
               <p style={{ fontWeight: '600', marginBottom: '4px' }}>{cert.name}</p>
               <p style={{ opacity: 0.8, fontSize: '10px' }}>{cert.issuer}</p>
-              <p style={{ opacity: 0.7, fontSize: '10px' }}>{cert.date}</p>
+              <p style={{ opacity: 0.7, fontSize: '10px' }}>{cert.date}{cert.expiryDate && ` - ${cert.expiryDate}`}</p>
+              {cert.credentialId && <p style={{ opacity: 0.6, fontSize: '9px', marginTop: '2px' }}>ID: {cert.credentialId}</p>}
+              {cert.url && <a href={cert.url} style={{ opacity: 0.9, fontSize: '9px', color: '#4a90e2', display: 'block', marginTop: '2px' }}>🔗 Verify</a>}
             </div>
           ))}
         </div>
@@ -153,15 +157,25 @@ export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => (
           <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '15px', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px' }}>PROJECTS</h2>
           {data.projects.map((proj, i) => (
             <div key={i} style={{ marginBottom: '20px' }}>
-              <h3 style={{ fontSize: '14px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '4px' }}>{proj.name}</h3>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '4px' }}>
+                <h3 style={{ fontSize: '14px', fontWeight: 'bold', color: '#1a3a52' }}>{proj.name}</h3>
+                {(proj.startDate || proj.endDate) && (
+                  <span style={{ fontSize: '10px', color: '#666', whiteSpace: 'nowrap' }}>
+                    {proj.startDate} {proj.endDate && `- ${proj.endDate}`}
+                  </span>
+                )}
+              </div>
+              {proj.role && <p style={{ fontSize: '11px', color: '#4a90e2', marginBottom: '4px' }}>{proj.role}</p>}
               <p style={{ fontSize: '12px', color: '#555', marginBottom: '8px' }}>{proj.description}</p>
               <ul style={{ fontSize: '11px', lineHeight: '1.6', paddingLeft: '20px', color: '#444' }}>
                 {proj.highlights.map((hl, j) => <li key={j}>{hl}</li>)}
               </ul>
-              <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
+              <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
                 {proj.technologies.map((tech, k) => (
                   <span key={k} style={{ fontSize: '10px', padding: '3px 8px', backgroundColor: '#f0f0f0', color: '#555', borderRadius: '3px' }}>{tech}</span>
                 ))}
+                {proj.url && <a href={proj.url} style={{ fontSize: '10px', color: '#4a90e2', marginLeft: '8px' }}>🔗 Live Demo</a>}
+                {proj.github && <a href={proj.github} style={{ fontSize: '10px', color: '#4a90e2', marginLeft: '8px' }}>💻 GitHub</a>}
               </div>
             </div>
           ))}
@@ -182,19 +196,74 @@ export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => (
             {edu.honors && edu.honors.length > 0 && (
               <p style={{ fontSize: '11px', color: '#555', marginTop: '4px' }}>Honors: {edu.honors.join(', ')}</p>
             )}
+            {edu.coursework && edu.coursework.length > 0 && (
+              <p style={{ fontSize: '11px', color: '#555', marginTop: '4px' }}>Relevant Coursework: {edu.coursework.join(', ')}</p>
+            )}
           </div>
         ))}
       </section>
 
       {/* Awards */}
       {data.awards && data.awards.length > 0 && (
-        <section>
+        <section style={{ marginBottom: '35px' }}>
           <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '15px', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px' }}>AWARDS & ACHIEVEMENTS</h2>
           {data.awards.map((award, i) => (
             <div key={i} style={{ marginBottom: '12px' }}>
               <h3 style={{ fontSize: '13px', fontWeight: '600', color: '#1a3a52' }}>{award.title}</h3>
               <p style={{ fontSize: '11px', color: '#4a90e2' }}>{award.issuer} • {award.date}</p>
               {award.description && <p style={{ fontSize: '11px', color: '#666', marginTop: '4px' }}>{award.description}</p>}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {/* Volunteer Experience */}
+      {data.volunteer && data.volunteer.length > 0 && (
+        <section style={{ marginBottom: '35px' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '15px', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px' }}>VOLUNTEER EXPERIENCE</h2>
+          {data.volunteer.map((vol, i) => (
+            <div key={i} style={{ marginBottom: '20px' }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline' }}>
+                <h3 style={{ fontSize: '14px', fontWeight: 'bold', color: '#1a3a52' }}>{vol.role}</h3>
+                <span style={{ fontSize: '11px', color: '#666', whiteSpace: 'nowrap' }}>{vol.startDate} - {vol.endDate}</span>
+              </div>
+              <p style={{ fontSize: '13px', color: '#4a90e2', marginBottom: '8px' }}>{vol.organization}</p>
+              {vol.description && <p style={{ fontSize: '12px', color: '#555', marginBottom: '6px' }}>{vol.description}</p>}
+              {vol.achievements && vol.achievements.length > 0 && (
+                <ul style={{ fontSize: '11px', lineHeight: '1.6', paddingLeft: '20px', color: '#444' }}>
+                  {vol.achievements.map((ach, j) => <li key={j}>{ach}</li>)}
+                </ul>
+              )}
+            </div>
+          ))}
+        </section>
+      )}
+
+      {/* Interests */}
+      {data.interests && data.interests.length > 0 && (
+        <section style={{ marginBottom: '35px' }}>
+          <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '15px', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px' }}>INTERESTS</h2>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
+            {data.interests.map((interest, i) => (
+              <div key={i} style={{ fontSize: '12px', color: '#555' }}>
+                <strong>{interest.name}</strong>
+                {interest.description && <span style={{ fontSize: '11px', color: '#666', marginLeft: '4px' }}>- {interest.description}</span>}
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {/* References */}
+      {data.references && data.references.length > 0 && (
+        <section>
+          <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '15px', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px' }}>REFERENCES</h2>
+          {data.references.map((ref, i) => (
+            <div key={i} style={{ marginBottom: '15px' }}>
+              <h3 style={{ fontSize: '13px', fontWeight: '600', color: '#1a3a52' }}>{ref.name}</h3>
+              <p style={{ fontSize: '11px', color: '#4a90e2' }}>{ref.title} at {ref.company}</p>
+              <p style={{ fontSize: '11px', color: '#666' }}>{ref.email} • {ref.phone}</p>
+              <p style={{ fontSize: '10px', color: '#888', fontStyle: 'italic' }}>Relationship: {ref.relationship}</p>
             </div>
           ))}
         </section>

@@ -107,17 +107,13 @@ export const UNIVERSAL_TEMPLATE_REGISTRY: UniversalTemplateMetadata[] = [
     category: 'academic',
     tags: ['academic', 'minimal', 'education-first', 'research', 'simple'],
     author: 'CV-Helper',
-    license: 'MIT',
-    type: 'react',
-    hidden: false,
-    thumbnailPath: '/templates/harvard.webp',
-    requiredFields: ['name', 'email', 'phone', 'experience', 'education'],
-    fieldMap: {
-      basic: ['name', 'email', 'phone'],
-      experience: ['company', 'role', 'period', 'details'],
-      custom: ['title'],
-    },
     features: ['Education listed first', 'Categorized skills', 'Research-friendly', 'Minimal clean design'],
+    bestFor: [
+      'Students',
+      'Recent graduates',
+      'Academic positions',
+      'Research roles',
+    ],
     popularity: 85,
   },
   {
@@ -135,6 +131,22 @@ export const UNIVERSAL_TEMPLATE_REGISTRY: UniversalTemplateMetadata[] = [
       'Skill-heavy roles',
     ],
     popularity: 88,
+  },
+  {
+    id: 'youngcurve',
+    name: 'YoungCurve',
+    description: 'Academic CV with burgundy accents and numbered publications',
+    category: 'academic',
+    tags: ['academic', 'research', 'publications', 'photo', 'clean'],
+    author: 'CV-Helper',
+    features: ['Burgundy square markers', 'Numbered publications', 'Photo in header', 'Research-focused'],
+    bestFor: [
+      'PhD candidates',
+      'Researchers',
+      'Academics',
+      'Publication-heavy CVs',
+    ],
+    popularity: 82,
   },
 ]
 

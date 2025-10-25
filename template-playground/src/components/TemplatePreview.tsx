@@ -17,6 +17,7 @@ const TEMPLATE_COMPONENT_MAP: Record<string, keyof typeof UniversalTemplates> = 
   'classic': 'ClassicTemplate',
   'harvard': 'Harvard',
   'evergreen': 'Evergreen',
+  'youngcurve': 'YoungCurve',
 }
 
 export function TemplatePreview({ templateId, data }: TemplatePreviewProps) {
