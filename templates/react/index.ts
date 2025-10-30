@@ -36,13 +36,7 @@ export type {
 } from './universal-schema'
 
 // Export registry and utilities
-export {
-  UNIVERSAL_TEMPLATE_REGISTRY,
-  getUniversalTemplateById,
-  getUniversalTemplates,
-  getUniversalTemplatesByCategory,
-  searchUniversalTemplates,
-} from './universal-registry'
+// Universal registry functions removed - use lib/template-registry.ts instead
 
 // Export sample data for testing
 export { COMPLETE_SAMPLE_DATA } from './sample-data-universal'

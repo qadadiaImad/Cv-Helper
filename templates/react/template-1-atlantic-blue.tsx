@@ -6,56 +6,77 @@
 import React from 'react'
 import type { UniversalTemplateProps } from './universal-schema'
 
-export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => (
-  <div style={{
-    display: 'flex',
-    width: '100%',
-    minHeight: '1200px',
-    fontFamily: 'Arial, sans-serif',
-    backgroundColor: '#f5f5f5',
-  }}>
-    {/* Left Sidebar - Dark Blue */}
-    <aside style={{
-      width: '280px',
-      backgroundColor: '#1a3a52',
-      color: '#ffffff',
-      padding: '40px 30px',
+export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => {
+  console.log('🎨 AtlanticBlue template rendering with:', data.personal?.fullName)
+  
+  // Photo configuration with defaults
+  const photoConfig = data.personal?.photo
+  const photoSize = photoConfig?.size || 120
+  const photoBorderRadius = photoConfig?.borderRadius ?? 50
+  const photoUrl = photoConfig?.url
+  const photoHidden = photoConfig?.effects?.hidden
+  const photoGrayscale = photoConfig?.effects?.grayscale
+  const photoBorder = photoConfig?.effects?.border
+
+  return (
+    <div style={{
       display: 'flex',
-      flexDirection: 'column',
-      gap: '30px',
+      width: '100%',
+      minHeight: '1200px',
+      fontFamily: 'Arial, sans-serif',
+      backgroundColor: '#f5f5f5',
     }}>
-      {/* Photo */}
-      {data.personal.photo && (
-        <div style={{
-          width: '120px',
-          height: '120px',
-          borderRadius: '50%',
-          backgroundColor: '#ffffff',
-          margin: '0 auto',
-          overflow: 'hidden',
-          border: '4px solid rgba(255,255,255,0.1)',
-        }}>
-          <img src={data.personal.photo} alt={data.personal.fullName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-        </div>
-      )}
+      {/* Left Sidebar - Dark Blue */}
+      <aside style={{
+        width: '280px',
+        backgroundColor: '#1a3a52',
+        color: '#ffffff',
+        padding: '40px 30px',
+        display: 'flex',
+        flexDirection: 'column',
+        gap: '30px',
+      }}>
+        {/* Photo */}
+        {photoUrl && !photoHidden && (
+          <div style={{
+            width: `${photoSize}px`,
+            height: `${photoSize}px`,
+            borderRadius: `${photoBorderRadius}%`,
+            backgroundColor: '#ffffff',
+            margin: '0 auto',
+            overflow: 'hidden',
+            border: photoBorder ? '4px solid rgba(255,255,255,0.3)' : '4px solid rgba(255,255,255,0.1)',
+          }}>
+            <img 
+              src={photoUrl} 
+              alt={data.personal?.fullName || 'Profile'} 
+              style={{ 
+                width: '100%', 
+                height: '100%', 
+                objectFit: 'cover',
+                filter: photoGrayscale ? 'grayscale(100%)' : 'none',
+              }} 
+            />
+          </div>
+        )}
 
       {/* Name & Title */}
       <div style={{ textAlign: 'center' }}>
-        <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', lineHeight: '1.2' }}>{data.personal.fullName}</h1>
-        {data.personal.title && <p style={{ fontSize: '14px', opacity: 0.9, fontWeight: '300' }}>{data.personal.title}</p>}
+        <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', lineHeight: '1.2' }}>{data.personal?.fullName || 'Your Name'}</h1>
+        {data.personal?.title && <p style={{ fontSize: '14px', opacity: 0.9, fontWeight: '300' }}>{data.personal.title}</p>}
       </div>
 
       {/* Contact */}
       <div style={{ fontSize: '12px', lineHeight: '1.8' }}>
         <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '12px', borderBottom: '2px solid rgba(255,255,255,0.3)', paddingBottom: '8px', letterSpacing: '0.5px' }}>CONTACT</h3>
         <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-          <p style={{ wordBreak: 'break-word' }}>✉️ {data.personal.email}</p>
-          <p>📱 {data.personal.phone}</p>
-          {data.personal.location && <p>📍 {data.personal.location}</p>}
-          {data.personal.website && <p>🌐 {data.personal.website}</p>}
-          {data.personal.linkedIn && <p>💼 {data.personal.linkedIn}</p>}
-          {data.personal.github && <p>💻 {data.personal.github}</p>}
-          {data.personal.portfolio && <p>🎨 {data.personal.portfolio}</p>}
+          <p style={{ wordBreak: 'break-word' }}>✉️ {data.personal?.email || 'email@example.com'}</p>
+          <p>📱 {data.personal?.phone || '123-456-7890'}</p>
+          {data.personal?.location && <p>📍 {data.personal.location}</p>}
+          {data.personal?.website && <p>🌐 {data.personal.website}</p>}
+          {data.personal?.linkedIn && <p>💼 {data.personal.linkedIn}</p>}
+          {data.personal?.github && <p>💻 {data.personal.github}</p>}
+          {data.personal?.portfolio && <p>🎨 {data.personal.portfolio}</p>}
         </div>
       </div>
 
@@ -137,9 +158,11 @@ export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => (
               {exp.company}{exp.location && ` • ${exp.location}`}
             </p>
             {exp.description && <p style={{ fontSize: '12px', color: '#555', marginBottom: '8px', fontStyle: 'italic' }}>{exp.description}</p>}
-            <ul style={{ fontSize: '12px', lineHeight: '1.7', paddingLeft: '20px', color: '#444' }}>
-              {exp.achievements.map((ach, j) => <li key={j} style={{ marginBottom: '4px' }}>{ach}</li>)}
-            </ul>
+            {exp.achievements && exp.achievements.length > 0 && (
+              <ul style={{ fontSize: '12px', lineHeight: '1.7', paddingLeft: '20px', color: '#444' }}>
+                {exp.achievements.map((ach, j) => <li key={j} style={{ marginBottom: '4px' }}>{ach}</li>)}
+              </ul>
+            )}
             {exp.technologies && exp.technologies.length > 0 && (
               <div style={{ marginTop: '10px', display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                 {exp.technologies.map((tech, k) => (
@@ -167,11 +190,13 @@ export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => (
               </div>
               {proj.role && <p style={{ fontSize: '11px', color: '#4a90e2', marginBottom: '4px' }}>{proj.role}</p>}
               <p style={{ fontSize: '12px', color: '#555', marginBottom: '8px' }}>{proj.description}</p>
-              <ul style={{ fontSize: '11px', lineHeight: '1.6', paddingLeft: '20px', color: '#444' }}>
-                {proj.highlights.map((hl, j) => <li key={j}>{hl}</li>)}
-              </ul>
+              {proj.highlights && proj.highlights.length > 0 && (
+                <ul style={{ fontSize: '11px', lineHeight: '1.6', paddingLeft: '20px', color: '#444' }}>
+                  {proj.highlights.map((hl, j) => <li key={j}>{hl}</li>)}
+                </ul>
+              )}
               <div style={{ marginTop: '8px', display: 'flex', flexWrap: 'wrap', gap: '6px', alignItems: 'center' }}>
-                {proj.technologies.map((tech, k) => (
+                {proj.technologies && proj.technologies.map((tech, k) => (
                   <span key={k} style={{ fontSize: '10px', padding: '3px 8px', backgroundColor: '#f0f0f0', color: '#555', borderRadius: '3px' }}>{tech}</span>
                 ))}
                 {proj.url && <a href={proj.url} style={{ fontSize: '10px', color: '#4a90e2', marginLeft: '8px' }}>🔗 Live Demo</a>}
@@ -270,4 +295,5 @@ export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => (
       )}
     </main>
   </div>
-)
+  )
+}

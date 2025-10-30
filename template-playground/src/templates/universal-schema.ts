@@ -1,32 +1,15 @@
 /**
  * UNIVERSAL RESUME DATA SCHEMA
- * This schema can represent 100% of any resume template
- * Templates are pure visual shells that consume this data
+ * Re-export from main schema library
+ * 
+ * This playground uses the same schemas as the main app
  */
 
-export interface PersonalInfo {
-  fullName: string
-  title?: string
-  email: string
-  phone: string
-  location?: string
-  website?: string
-  linkedIn?: string
-  github?: string
-  portfolio?: string
-  photo?: string // URL or base64
-}
+// Re-export all types from the main schema library
+export * from '../../../lib/schemas'
 
-export interface SocialLink {
-  platform: string
-  url: string
-  username?: string
-}
-
-export interface Summary {
-  text: string
-}
-
+// Kept for reference - these are now defined in lib/schemas
+/*
 export interface Experience {
   company: string
   position: string
@@ -125,47 +108,5 @@ export interface Reference {
   relationship: string
 }
 
-/**
- * COMPLETE UNIVERSAL RESUME DATA MODEL
- * Every template can use any subset of this data
- */
-export interface UniversalResumeData {
-  // Core sections (used by 100% of templates)
-  personal: PersonalInfo
-  summary?: Summary
-  
-  // Professional sections
-  experience: Experience[]
-  education: Education[]
-  
-  // Skills (can be flat or categorized)
-  skills?: string[] // Simple list
-  skillCategories?: SkillCategory[] // Categorized
-  
-  // Optional sections
-  projects?: Project[]
-  certifications?: Certification[]
-  languages?: Language[]
-  publications?: Publication[]
-  awards?: Award[]
-  volunteer?: Volunteer[]
-  interests?: Interest[]
-  references?: Reference[]
-  
-  // Social links (alternative to embedding in personal)
-  socialLinks?: SocialLink[]
-  
-  // Custom sections for flexibility
-  customSections?: {
-    title: string
-    content: string | string[]
-  }[]
-}
-
-/**
- * Template Component Props
- * All new templates must use this interface
- */
-export interface UniversalTemplateProps {
-  data: UniversalResumeData
-}
+// UniversalResumeData and UniversalTemplateProps are now exported from lib/schemas
+*/

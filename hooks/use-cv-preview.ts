@@ -1,20 +1,21 @@
 import { useState, useCallback } from "react"
-import type { ResumeData, TemplateId } from "@/lib/react-templates"
+import type { TemplateId } from "@/lib/react-templates"
+import type { UniversalResumeData } from "@/lib/schemas"
 
 export function useCVPreview() {
-  const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>('classic_minimal')
-  const [resumeData, setResumeData] = useState<ResumeData>({
-    name: "",
-    email: "",
-    phone: "",
-    links: [],
+  const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>('atlantic_blue')
+  const [resumeData, setResumeData] = useState<UniversalResumeData>({
+    personal: {
+      fullName: "",
+      email: "",
+      phone: "",
+    },
     education: [],
     experience: [],
-    projects: [],
     skills: [],
   })
 
-  const updateResumeData = useCallback((updates: Partial<ResumeData>) => {
+  const updateResumeData = useCallback((updates: Partial<UniversalResumeData>) => {
     setResumeData(prev => ({ ...prev, ...updates }))
   }, [])
 
@@ -39,7 +40,7 @@ export function useCVPreview() {
       const url = window.URL.createObjectURL(blob)
       const a = document.createElement('a')
       a.href = url
-      a.download = `${resumeData.name.replace(/\s+/g, '_')}_resume.pdf`
+      a.download = `${resumeData.personal.fullName.replace(/\s+/g, '_')}_resume.pdf`
       document.body.appendChild(a)
       a.click()
       document.body.removeChild(a)

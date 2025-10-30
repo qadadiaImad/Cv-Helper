@@ -384,8 +384,22 @@ export function validateRequiredFields(
 
   const missing: string[] = []
   
+  // Field mapping for UniversalResumeData
+  const fieldMap: Record<string, any> = {
+    name: resumeData.personal?.fullName,
+    email: resumeData.personal?.email,
+    phone: resumeData.personal?.phone,
+    title: resumeData.personal?.title,
+    location: resumeData.personal?.location,
+    experience: resumeData.experience,
+    education: resumeData.education,
+    skills: resumeData.skills,
+    projects: resumeData.projects,
+    summary: resumeData.summary,
+  }
+  
   for (const field of template.requiredFields) {
-    const value = resumeData[field]
+    const value = fieldMap[field] !== undefined ? fieldMap[field] : resumeData[field]
     
     if (value === undefined || value === null || value === '' || 
         (Array.isArray(value) && value.length === 0)) {

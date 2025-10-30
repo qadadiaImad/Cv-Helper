@@ -86,8 +86,18 @@ export function DataEditor({ data, onChange }: DataEditorProps) {
         <textarea
           value={jsonText}
           onChange={(e) => {
-            setJsonText(e.target.value)
-            setError(null)
+            const newValue = e.target.value
+            setJsonText(newValue)
+            
+            // Try to parse and update live
+            try {
+              const parsed = JSON.parse(newValue)
+              onChange(parsed)  // ← LIVE UPDATE!
+              setError(null)
+            } catch (e) {
+              // Invalid JSON - just show error, don't update preview
+              setError(e instanceof Error ? e.message : 'Invalid JSON')
+            }
           }}
           className="w-full h-full p-4 font-mono text-sm resize-none focus:outline-none bg-gray-50"
           spellCheck={false}

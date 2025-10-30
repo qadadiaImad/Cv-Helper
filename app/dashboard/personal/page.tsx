@@ -2,30 +2,34 @@
 
 import * as React from "react"
 import Link from "next/link"
-import { useResumeStore } from "@/hooks/use-resume-store"
+import { useCVStore } from "@/hooks/use-cv-store"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
-import { ArrowLeft, Plus, Trash2, Link2 } from "lucide-react"
+import { ArrowLeft, Plus, Trash2 } from "lucide-react"
 import { Textarea } from "@/components/ui/textarea"
+import type { Experience, Project, Education } from "@/lib/schemas"
 
 export default function PersonalInfoPage() {
-  const { resumeData, updateResumeData } = useResumeStore()
-
-  const addLink = () => {
-    updateResumeData({ links: [...resumeData.links, { label: "", url: "" }] })
+  const { activeCV, activeCVId, updateCVData } = useCVStore()
+  
+  if (!activeCV || !activeCVId) {
+    return (
+      <div className="p-8">
+        <p>No active CV. Please go to <a href="/dashboard/cvs" className="text-blue-600 underline">CV Management</a> to create or select a CV.</p>
+      </div>
+    )
   }
-
-  const removeLink = (index: number) => {
-    updateResumeData({ links: resumeData.links.filter((_, i) => i !== index) })
-  }
+  
+  const resumeData = activeCV.data
+  const updateResumeData = (updates: any) => updateCVData(activeCVId, updates)
 
   const addExperience = () => {
     updateResumeData({
       experience: [
         ...resumeData.experience,
-        { role: "", company: "", period: "", details: [""] },
+        { company: "", position: "", startDate: "", endDate: "", achievements: [] },
       ],
     })
   }
@@ -35,11 +39,29 @@ export default function PersonalInfoPage() {
   }
 
   const addProject = () => {
-    updateResumeData({ projects: [...resumeData.projects, { title: "", description: "", link: "" }] })
+    updateResumeData({ 
+      projects: [
+        ...(resumeData.projects || []), 
+        { name: "", description: "", technologies: [], highlights: [] }
+      ] 
+    })
   }
 
   const removeProject = (index: number) => {
-    updateResumeData({ projects: resumeData.projects.filter((_, i) => i !== index) })
+    updateResumeData({ projects: resumeData.projects?.filter((_, i) => i !== index) })
+  }
+
+  const addEducation = () => {
+    updateResumeData({
+      education: [
+        ...resumeData.education,
+        { institution: "", degree: "", startDate: "", endDate: "" },
+      ],
+    })
+  }
+
+  const removeEducation = (index: number) => {
+    updateResumeData({ education: resumeData.education.filter((_, i) => i !== index) })
   }
 
   return (
@@ -67,63 +89,113 @@ export default function PersonalInfoPage() {
               <div className="grid gap-4 md:grid-cols-2">
                 <div className="space-y-2">
                   <Label htmlFor="name">Full name</Label>
-                  <Input id="name" className="input-modern" value={resumeData.name} onChange={(e) => updateResumeData({ name: e.target.value })} />
+                  <Input 
+                    id="name" 
+                    className="input-modern" 
+                    value={resumeData.personal.fullName} 
+                    onChange={(e) => updateResumeData({ 
+                      personal: { ...resumeData.personal, fullName: e.target.value } 
+                    })} 
+                  />
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="email">Email</Label>
-                  <Input id="email" type="email" className="input-modern" value={resumeData.email} onChange={(e) => updateResumeData({ email: e.target.value })} />
+                  <Input 
+                    id="email" 
+                    type="email" 
+                    className="input-modern" 
+                    value={resumeData.personal.email} 
+                    onChange={(e) => updateResumeData({ 
+                      personal: { ...resumeData.personal, email: e.target.value } 
+                    })} 
+                  />
                 </div>
                 <div className="space-y-2 md:col-span-2">
                   <Label htmlFor="phone">Phone</Label>
-                  <Input id="phone" className="input-modern" value={resumeData.phone} onChange={(e) => updateResumeData({ phone: e.target.value })} />
+                  <Input 
+                    id="phone" 
+                    className="input-modern" 
+                    value={resumeData.personal.phone} 
+                    onChange={(e) => updateResumeData({ 
+                      personal: { ...resumeData.personal, phone: e.target.value } 
+                    })} 
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="title">Job Title</Label>
+                  <Input 
+                    id="title" 
+                    className="input-modern" 
+                    placeholder="Software Engineer"
+                    value={resumeData.personal.title || ""} 
+                    onChange={(e) => updateResumeData({ 
+                      personal: { ...resumeData.personal, title: e.target.value } 
+                    })} 
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="location">Location</Label>
+                  <Input 
+                    id="location" 
+                    className="input-modern" 
+                    placeholder="New York, NY"
+                    value={resumeData.personal.location || ""} 
+                    onChange={(e) => updateResumeData({ 
+                      personal: { ...resumeData.personal, location: e.target.value } 
+                    })} 
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="linkedin">LinkedIn</Label>
+                  <Input 
+                    id="linkedin" 
+                    className="input-modern" 
+                    placeholder="https://linkedin.com/in/username"
+                    value={resumeData.personal.linkedIn || ""} 
+                    onChange={(e) => updateResumeData({ 
+                      personal: { ...resumeData.personal, linkedIn: e.target.value } 
+                    })} 
+                  />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="github">GitHub</Label>
+                  <Input 
+                    id="github" 
+                    className="input-modern" 
+                    placeholder="https://github.com/username"
+                    value={resumeData.personal.github || ""} 
+                    onChange={(e) => updateResumeData({ 
+                      personal: { ...resumeData.personal, github: e.target.value } 
+                    })} 
+                  />
                 </div>
               </div>
               <p className="text-xs text-muted-foreground">Autosaves as you type.</p>
             </CardContent>
           </Card>
 
-          {/* Links */}
+          {/* Skills */}
           <Card className="card-modern">
             <CardHeader>
-              <CardTitle className="flex items-center gap-2"><Link2 className="h-4 w-4" /> Links</CardTitle>
+              <CardTitle>Skills</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              {resumeData.links.map((l, i) => (
-                <div key={i} className="grid gap-3 md:grid-cols-[1fr_2fr_min-content] items-end">
-                  <div className="space-y-1">
-                    <Label>Label</Label>
-                    <Input
-                      className="input-modern"
-                      placeholder="GitHub"
-                      value={l.label}
-                      onChange={(e) => {
-                        const links = [...resumeData.links]
-                        links[i] = { ...l, label: e.target.value }
-                        updateResumeData({ links })
-                      }}
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <Label>URL</Label>
-                    <Input
-                      className="input-modern"
-                      placeholder="https://github.com/username"
-                      value={l.url}
-                      onChange={(e) => {
-                        const links = [...resumeData.links]
-                        links[i] = { ...l, url: e.target.value }
-                        updateResumeData({ links })
-                      }}
-                    />
-                  </div>
-                  <Button variant="ghost" onClick={() => removeLink(i)} className="text-destructive">
-                    <Trash2 className="h-4 w-4" />
-                  </Button>
-                </div>
-              ))}
-              <div>
-                <Button variant="outline" onClick={addLink} className="btn-secondary"><Plus className="h-4 w-4" /> Add link</Button>
-              </div>
+              <Label>Skills (comma-separated)</Label>
+              <Textarea
+                className="input-modern"
+                rows={3}
+                placeholder="JavaScript, React, Node.js, TypeScript"
+                value={resumeData.skills?.join(", ") || ""}
+                onChange={(e) =>
+                  updateResumeData({
+                    skills: e.target.value
+                      .split(",")
+                      .map((s) => s.trim())
+                      .filter(Boolean),
+                  })
+                }
+              />
+              <p className="text-xs text-muted-foreground">Separate skills with commas</p>
             </CardContent>
           </Card>
 
@@ -140,13 +212,14 @@ export default function PersonalInfoPage() {
                 <Card key={index} className="card-feature">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <Label>Role</Label>
+                      <Label>Position</Label>
                       <Input
                         className="input-modern"
-                        value={exp.role}
+                        placeholder="Software Engineer"
+                        value={exp.position}
                         onChange={(e) => {
                           const experience = [...resumeData.experience]
-                          experience[index] = { ...exp, role: e.target.value }
+                          experience[index] = { ...exp, position: e.target.value }
                           updateResumeData({ experience })
                         }}
                       />
@@ -155,6 +228,7 @@ export default function PersonalInfoPage() {
                       <Label>Company</Label>
                       <Input
                         className="input-modern"
+                        placeholder="Tech Corp"
                         value={exp.company}
                         onChange={(e) => {
                           const experience = [...resumeData.experience]
@@ -163,27 +237,42 @@ export default function PersonalInfoPage() {
                         }}
                       />
                     </div>
-                    <div className="md:col-span-2">
-                      <Label>Period</Label>
+                    <div>
+                      <Label>Start Date</Label>
                       <Input
                         className="input-modern"
-                        value={exp.period}
+                        placeholder="2023-01"
+                        value={exp.startDate}
                         onChange={(e) => {
                           const experience = [...resumeData.experience]
-                          experience[index] = { ...exp, period: e.target.value }
+                          experience[index] = { ...exp, startDate: e.target.value }
+                          updateResumeData({ experience })
+                        }}
+                      />
+                    </div>
+                    <div>
+                      <Label>End Date</Label>
+                      <Input
+                        className="input-modern"
+                        placeholder="Present"
+                        value={exp.endDate}
+                        onChange={(e) => {
+                          const experience = [...resumeData.experience]
+                          experience[index] = { ...exp, endDate: e.target.value }
                           updateResumeData({ experience })
                         }}
                       />
                     </div>
                     <div className="md:col-span-2">
-                      <Label>Details (one per line)</Label>
+                      <Label>Achievements (one per line)</Label>
                       <Textarea
                         className="input-modern"
                         rows={3}
-                        value={exp.details.join("\n")}
+                        placeholder="Led team of 5 developers&#10;Improved performance by 40%"
+                        value={exp.achievements.join("\n")}
                         onChange={(e) => {
                           const experience = [...resumeData.experience]
-                          experience[index] = { ...exp, details: e.target.value.split("\n").filter(Boolean) }
+                          experience[index] = { ...exp, achievements: e.target.value.split("\n").filter(Boolean) }
                           updateResumeData({ experience })
                         }}
                       />
@@ -208,17 +297,17 @@ export default function PersonalInfoPage() {
               <div className="flex justify-end">
                 <Button variant="outline" className="btn-secondary" onClick={addProject}><Plus className="h-4 w-4" /> Add project</Button>
               </div>
-              {resumeData.projects.map((p, index) => (
+              {resumeData.projects?.map((p, index) => (
                 <Card key={index} className="card-feature">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <Label>Title</Label>
                       <Input
                         className="input-modern"
-                        value={p.title}
+                        value={p.name}
                         onChange={(e) => {
-                          const projects = [...resumeData.projects]
-                          projects[index] = { ...p, title: e.target.value }
+                          const projects = [...(resumeData.projects || [])]
+                          projects[index] = { ...p, name: e.target.value }
                           updateResumeData({ projects })
                         }}
                       />
@@ -227,10 +316,10 @@ export default function PersonalInfoPage() {
                       <Label>Link</Label>
                       <Input
                         className="input-modern"
-                        value={p.link || ""}
+                        value={p.url || ""}
                         onChange={(e) => {
-                          const projects = [...resumeData.projects]
-                          projects[index] = { ...p, link: e.target.value }
+                          const projects = [...(resumeData.projects || [])]
+                          projects[index] = { ...p, url: e.target.value }
                           updateResumeData({ projects })
                         }}
                       />
@@ -242,7 +331,7 @@ export default function PersonalInfoPage() {
                         rows={3}
                         value={p.description}
                         onChange={(e) => {
-                          const projects = [...resumeData.projects]
+                          const projects = [...(resumeData.projects || [])]
                           projects[index] = { ...p, description: e.target.value }
                           updateResumeData({ projects })
                         }}
@@ -269,7 +358,7 @@ export default function PersonalInfoPage() {
               <Textarea
                 className="input-modern"
                 rows={3}
-                value={resumeData.skills.join(", ")}
+                value={resumeData?.skills?.join(", ")}
                 onChange={(e) =>
                   updateResumeData({
                     skills: e.target.value

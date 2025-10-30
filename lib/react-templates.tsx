@@ -17,17 +17,7 @@ import {
   YoungCurve,
 } from "@/templates/react";
 
-// Legacy type - kept for backward compatibility
-export type ResumeData = {
-  name: string;
-  email: string;
-  phone: string;
-  links: { label: string; url: string }[];
-  education: { school: string; degree: string; year: string }[];
-  experience: { company: string; role: string; period: string; details: string[] }[];
-  projects: { title: string; description: string; link?: string }[];
-  skills: string[];
-};
+// Legacy ResumeData type removed - now using UniversalResumeData from @/lib/schemas
 
 /**
  * REACT_TEMPLATES Registry

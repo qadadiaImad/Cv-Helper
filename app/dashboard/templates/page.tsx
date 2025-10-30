@@ -6,18 +6,16 @@ import Link from "next/link"
 import { ArrowLeft } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { TemplateGallery } from "@/components/template-gallery"
-import { useResumeStore } from "@/hooks/use-resume-store"
 import { useTheme } from "@/lib/theme-context"
 import { ThemeSwitcher } from "@/components/theme-switcher"
 
 export default function TemplateLibraryPage() {
   const router = useRouter()
   const { theme } = useTheme()
-  const { selectedTemplate } = useResumeStore()
 
-  const handleTemplateSelect = (templateId: string) => {
-    // Navigate to builder with template ID
-    router.push(`/dashboard/builder?templateId=${templateId}`)
+  const handleSelectTemplate = (templateId: string) => {
+    // Redirect to CV management page to create a new CV with this template
+    router.push(`/dashboard/cvs`)
   }
 
   return (
@@ -81,8 +79,8 @@ export default function TemplateLibraryPage() {
 
           {/* Template Gallery */}
           <TemplateGallery
-            selectedTemplateId={selectedTemplate}
-            onTemplateSelect={handleTemplateSelect}
+            selectedTemplateId={undefined}
+            onTemplateSelect={handleSelectTemplate}
           />
         </div>
       </main>

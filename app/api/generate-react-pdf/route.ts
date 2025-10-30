@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server"
-import type { ResumeData, TemplateId } from "@/lib/react-templates"
+import type { TemplateId } from "@/lib/react-templates"
+import type { UniversalResumeData } from "@/lib/schemas"
 
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json()
-    const { data, templateId = 'classic_minimal' }: { data: ResumeData; templateId?: TemplateId } = body
+    const { data, templateId = 'atlantic_blue' }: { data: UniversalResumeData; templateId?: TemplateId } = body
 
     console.log('[v0] Received PDF generation request for template:', templateId)
     console.log('[v0] Resume data:', JSON.stringify(data, null, 2))
