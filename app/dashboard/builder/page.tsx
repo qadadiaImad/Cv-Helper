@@ -185,45 +185,47 @@ export default function ReactBuilderPage() {
           <div className="lg:col-span-4 space-y-4">
             <Card className="p-6">
               <h2 className="text-xl font-semibold mb-6">Build Your Resume</h2>
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {SECTIONS.map((section, index) => {
                   const isComplete = completedSections.has(section.id)
                   const isOpen = activeSection === section.id
+                  const shouldShow = activeSection === null || isOpen
+                  
+                  if (!shouldShow) return null
                   
                   return (
                     <div
                       key={section.id}
                       className={cn(
-                        "rounded-lg border-2 transition-all",
-                        isComplete && "border-green-500 bg-green-50",
-                        !isComplete && "border-slate-200"
+                        "rounded-lg border-2 transition-all duration-300 shadow-sm hover:shadow-md",
+                        isComplete && "border-green-500 bg-green-50/50",
+                        !isComplete && "border-slate-200 bg-white",
+                        isOpen && "ring-2 ring-blue-500 ring-offset-2"
                       )}
                     >
                       {/* Section Header */}
                       <button
                         onClick={() => setActiveSection(isOpen ? null : section.id)}
-                        className="w-full text-left p-4 flex items-center justify-between hover:bg-slate-50 transition-colors rounded-lg"
+                        className="w-full text-left p-4 flex items-center justify-between hover:bg-slate-50/80 transition-all duration-200 rounded-lg group"
                       >
                         <div className="flex items-center gap-3 flex-1">
-                          <span className="text-sm font-medium text-slate-500">
-                            {index + 1}
-                          </span>
+                          <div className={cn(
+                            "h-8 w-8 rounded-full flex items-center justify-center text-sm font-semibold transition-all duration-200",
+                            isComplete ? "bg-green-500 text-white" : "bg-slate-100 text-slate-600 group-hover:bg-slate-200"
+                          )}>
+                            {isComplete ? <Check className="h-4 w-4" /> : index + 1}
+                          </div>
                           <div>
-                            <h3 className="font-semibold">{section.title}</h3>
-                            <p className="text-xs text-muted-foreground">
+                            <h3 className="font-semibold text-slate-900">{section.title}</h3>
+                            <p className="text-xs text-slate-500">
                               {section.description}
                             </p>
                           </div>
                         </div>
                         <div className="flex items-center gap-2">
-                          {isComplete && (
-                            <div className="h-6 w-6 rounded-full bg-green-500 flex items-center justify-center">
-                              <Check className="h-4 w-4 text-white" />
-                            </div>
-                          )}
                           <ChevronRight 
                             className={cn(
-                              "h-5 w-5 text-slate-400 transition-transform",
+                              "h-5 w-5 text-slate-400 transition-transform duration-200",
                               isOpen && "rotate-90"
                             )} 
                           />
@@ -232,7 +234,7 @@ export default function ReactBuilderPage() {
 
                       {/* Collapsible Form Content */}
                       {isOpen && localCVData && (
-                        <div className="px-4 pb-4 border-t">
+                        <div className="px-4 pb-4 border-t animate-in fade-in slide-in-from-top-2 duration-300">
                           <div className="pt-4">
                             {section.id === 'personal' && <PersonalForm data={localCVData} onChange={handleDataChange} />}
                             {section.id === 'experience' && <ExperienceForm data={localCVData} onChange={handleDataChange} />}
@@ -248,20 +250,22 @@ export default function ReactBuilderPage() {
               </div>
             </Card>
 
-            {/* Tips Card */}
-            <Card className="p-4 bg-blue-50 border-blue-200">
-              <div className="flex gap-3">
-                <AlertCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
-                <div>
-                  <h3 className="font-semibold text-blue-900 mb-1">Quick Tips</h3>
-                  <ul className="text-sm text-blue-800 space-y-1">
-                    <li>• Fill required sections to unlock PDF export</li>
-                    <li>• Your progress is saved automatically</li>
-                    <li>• Click any section to edit anytime</li>
-                  </ul>
+            {/* Tips Card - Only show when no section is open */}
+            {!activeSection && (
+              <Card className="p-4 bg-gradient-to-br from-blue-50 to-indigo-50 border-blue-200 shadow-sm animate-in fade-in slide-in-from-bottom-2 duration-300">
+                <div className="flex gap-3">
+                  <AlertCircle className="h-5 w-5 text-blue-600 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <h3 className="font-semibold text-blue-900 mb-1">Quick Tips</h3>
+                    <ul className="text-sm text-blue-800 space-y-1">
+                      <li>• Fill required sections to unlock PDF export</li>
+                      <li>• Your progress is saved automatically</li>
+                      <li>• Click any section to edit anytime</li>
+                    </ul>
+                  </div>
                 </div>
-              </div>
-            </Card>
+              </Card>
+            )}
           </div>
 
           {/* Right - Preview */}
@@ -297,7 +301,6 @@ export default function ReactBuilderPage() {
                 </div>
                 {ready && activeCV && localCVData && (
                   <>
-                    {console.log('🏗️ Builder passing to CVPreview:', localCVData.personal?.fullName)}
                     <CVPreview 
                       data={localCVData} 
                       selectedTemplate={activeCV.templateId} 

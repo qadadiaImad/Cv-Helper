@@ -3,7 +3,7 @@
 import * as React from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
-import { Menu, X, User, LogOut, Settings, Palette, ChevronDown } from "lucide-react"
+import { Menu, X, User, LogOut, Settings, Palette, ChevronDown, LayoutTemplate } from "lucide-react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -103,37 +103,52 @@ export function SiteHeader() {
                   >
                     <span className="text-white font-bold text-sm">CV</span>
                   </div>
-                  <span className="heading-xl" style={{ color: 'var(--theme-text)' }}>CV Helper</span>
+                  <div className="flex flex-col">
+                    <span className="heading-xl" style={{ color: 'var(--theme-text)' }}>CV Helper</span>
+                    <span className="text-xs font-medium tracking-wide animate-pulse" style={{ color: 'var(--theme-text-secondary)' }}>
+                      Resume writing
+                    </span>
+                  </div>
                 </Link>
 
                 {/* Desktop Navigation */}
                 <nav className="hidden lg:flex items-center gap-8">
                   <Link 
                     href="/" 
-                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70"
+                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70 flex items-center gap-2"
                     style={{ color: 'var(--theme-text-secondary)' }}
                   >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
                     Home
                   </Link>
                   <Link 
                     href="/dashboard/templates" 
-                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70"
+                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70 flex items-center gap-2"
                     style={{ color: 'var(--theme-text-secondary)' }}
                   >
+                    <LayoutTemplate className="w-4 h-4" />
                     Templates
                   </Link>
                   <Link 
                     href="/about" 
-                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70"
+                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70 flex items-center gap-2"
                     style={{ color: 'var(--theme-text-secondary)' }}
                   >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     About
                   </Link>
                   <Link 
                     href="/discover" 
-                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70"
+                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70 flex items-center gap-2"
                     style={{ color: 'var(--theme-text-secondary)' }}
                   >
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
                     Discover
                   </Link>
                 </nav>
@@ -143,7 +158,7 @@ export function SiteHeader() {
                   {user ? (
                     <div className="flex items-center gap-3">
                       {/* Dashboard Button */}
-                      <Link href="/dashboard/builder" className="btn-flowcv-secondary">
+                      <Link href="/dashboard/cvs" className="btn-flowcv-secondary">
                         Dashboard
                       </Link>
                       
@@ -169,12 +184,6 @@ export function SiteHeader() {
                             </div>
                           </DropdownMenuLabel>
                           <DropdownMenuSeparator />
-                          <DropdownMenuItem asChild>
-                            <Link href="/dashboard/personal" className="cursor-pointer">
-                              <Settings className="mr-2 h-4 w-4" />
-                              Profile & Settings
-                            </Link>
-                          </DropdownMenuItem>
                           <DropdownMenuItem asChild>
                             <Link href="/dashboard/templates" className="cursor-pointer">
                               <Palette className="mr-2 h-4 w-4" />
@@ -203,7 +212,7 @@ export function SiteHeader() {
                       <Link href="/login" className="btn-flowcv-secondary">
                         Login
                       </Link>
-                      <Link href="/dashboard/builder" className="btn-flowcv-primary btn-large">
+                      <Link href="/dashboard/cvs" className="btn-flowcv-primary btn-large">
                         Start Building
                       </Link>
                     </>
@@ -241,38 +250,48 @@ export function SiteHeader() {
               </div>
 
               {/* Mobile Navigation */}
-              <nav className="flex-1 px-6 py-8">
-                <div className="space-y-6">
+              <div className="flex-1 overflow-y-auto p-6">
+                <nav className="space-y-4">
                   <Link 
                     href="/" 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block text-flowcv-ink font-medium text-lg hover:text-flowcv-brand transition-colors"
+                    className="flex items-center gap-3 text-flowcv-ink font-medium text-lg hover:text-flowcv-brand transition-colors"
                   >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
                     Home
                   </Link>
                   <Link 
                     href="/dashboard/templates" 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block text-flowcv-ink font-medium text-lg hover:text-flowcv-brand transition-colors"
+                    className="flex items-center gap-3 text-flowcv-ink font-medium text-lg hover:text-flowcv-brand transition-colors"
                   >
+                    <LayoutTemplate className="w-5 h-5" />
                     Templates
                   </Link>
                   <Link 
                     href="/about" 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block text-flowcv-ink font-medium text-lg hover:text-flowcv-brand transition-colors"
+                    className="flex items-center gap-3 text-flowcv-ink font-medium text-lg hover:text-flowcv-brand transition-colors"
                   >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
                     About
                   </Link>
                   <Link 
                     href="/discover" 
                     onClick={() => setMobileMenuOpen(false)}
-                    className="block text-flowcv-ink font-medium text-lg hover:text-flowcv-brand transition-colors"
+                    className="flex items-center gap-3 text-flowcv-ink font-medium text-lg hover:text-flowcv-brand transition-colors"
                   >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                    </svg>
                     Discover
                   </Link>
-                </div>
-              </nav>
+                </nav>
+              </div>
 
               {/* Mobile CTA */}
               <div className="p-6 border-t border-gray-100">
@@ -286,19 +305,11 @@ export function SiteHeader() {
                       </div>
                     </div>
                     <Link 
-                      href="/dashboard/builder" 
+                      href="/dashboard/cvs" 
                       onClick={() => setMobileMenuOpen(false)}
                       className="btn-flowcv-primary w-full justify-center"
                     >
                       Dashboard
-                    </Link>
-                    <Link 
-                      href="/dashboard/personal" 
-                      onClick={() => setMobileMenuOpen(false)}
-                      className="btn-flowcv-secondary w-full justify-center"
-                    >
-                      <Settings className="h-4 w-4 mr-2" />
-                      Profile & Settings
                     </Link>
                     <button 
                       onClick={() => { handleLogout(); setMobileMenuOpen(false); }} 
@@ -319,7 +330,7 @@ export function SiteHeader() {
                       Login
                     </Link>
                     <Link 
-                      href="/dashboard/builder" 
+                      href="/dashboard/cvs" 
                       onClick={() => setMobileMenuOpen(false)}
                       className="btn-flowcv-primary w-full justify-center btn-large"
                     >

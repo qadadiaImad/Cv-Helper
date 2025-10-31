@@ -61,11 +61,6 @@ export function useCVStore() {
     return activeCVRaw ? { ...activeCVRaw } : null
   }, [version, store.activeCVId])
   
-  // Debug log
-  React.useEffect(() => {
-    console.log('🎯 activeCV updated:', activeCV?.data.personal?.fullName, 'updatedAt:', activeCV?.updatedAt)
-  }, [activeCV?.updatedAt])
-
   // Create new CV
   const createCV = (name: string, templateId: TemplateId) => {
     const newCV = createCVDocument(name, templateId)
@@ -78,8 +73,6 @@ export function useCVStore() {
 
   // Update CV data
   const updateCVData = (cvId: string, updates: Partial<UniversalResumeData>) => {
-    console.log('🔄 updateCVData called:', { cvId, updates })
-    
     setStore(prev => {
       const newCvs = prev.cvs.map(cv => {
         if (cv.id !== cvId) return cv
@@ -94,11 +87,6 @@ export function useCVStore() {
           projects: updates.projects !== undefined ? updates.projects : cv.data.projects,
         }
         
-        console.log('✅ CV data updated:', { 
-          oldName: cv.data.personal?.fullName, 
-          newName: updatedData.personal?.fullName 
-        })
-        
         return {
           ...cv,
           data: updatedData,
@@ -110,11 +98,6 @@ export function useCVStore() {
         ...prev,
         cvs: newCvs
       }
-      
-      console.log('📦 New store created:', { 
-        activeCVId: newStore.activeCVId,
-        cvsCount: newStore.cvs.length 
-      })
       
       return newStore
     })

@@ -27,7 +27,7 @@ export default function HomePage() {
             
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-              <Link href="/dashboard/builder" className="btn-flowcv-primary btn-large">
+              <Link href="/dashboard/cvs" className="btn-flowcv-primary btn-large">
                 Create My Resume
               </Link>
               <Link href="/dashboard/templates" className="btn-flowcv-secondary btn-large">
@@ -214,7 +214,7 @@ export default function HomePage() {
               </div>
               
               <div className="pt-4">
-                <Link href="/dashboard/builder" className="btn-flowcv-primary btn-large">
+                <Link href="/dashboard/cvs" className="btn-flowcv-primary btn-large">
                   Get Started Now
                 </Link>
               </div>
@@ -270,7 +270,7 @@ export default function HomePage() {
             </div>
             
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/dashboard/builder" className="btn-flowcv-primary btn-large">
+              <Link href="/dashboard/cvs" className="btn-flowcv-primary btn-large">
                 Create My Resume
               </Link>
               <Link href="/dashboard/templates" className="btn-flowcv-secondary btn-large">
