@@ -35,7 +35,7 @@ export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => (
           overflow: 'hidden',
           border: '4px solid rgba(255,255,255,0.1)',
         }}>
-          <img src={data.personal.photo} alt={data.personal.fullName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={typeof data.personal.photo === 'string' ? data.personal.photo : data.personal.photo?.url} alt={data.personal.fullName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
       )}
 
@@ -120,8 +120,7 @@ export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => (
       {data.summary && (
         <section style={{ marginBottom: '35px' }}>
           <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '12px', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px' }}>PROFESSIONAL SUMMARY</h2>
-          <p style={{ fontSize: '13px', lineHeight: '1.7', color: '#333', textAlign: 'justify' }}>{data.summary.text}</p>
-        </section>
+          <p style={{ fontSize: '13px', lineHeight: '1.7', color: '#333', textAlign: 'justify' }}>{data.summary}</p>        </section>
       )}
 
       {/* Experience */}

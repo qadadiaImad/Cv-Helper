@@ -6,7 +6,7 @@ import { CVPreview } from "@/components/cv-preview"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ArrowLeft, Check, ChevronRight, Eye, EyeOff, Save, Download, AlertCircle } from "lucide-react"
+import { ArrowLeft, Check, ChevronRight, Eye, EyeOff, Save, Download, AlertCircle, X } from "lucide-react"
 import Link from "next/link"
 import { useCVStore } from "@/hooks/use-cv-store"
 import { cn } from "@/lib/utils"
@@ -16,6 +16,114 @@ import { ExperienceForm } from "@/components/builder/experience-form"
 import { EducationForm } from "@/components/builder/education-form"
 import { SkillsForm } from "@/components/builder/skills-form"
 import { ProjectsForm } from "@/components/builder/projects-form"
+import type { UniversalResumeData } from "@/lib/schemas"
+
+// Sample data for template preview
+const SAMPLE_CV_DATA: UniversalResumeData = {
+  personal: {
+    fullName: "John Anderson",
+    title: "Senior Software Engineer",
+    email: "john.anderson@email.com",
+    phone: "+1 (555) 123-4567",
+    location: "San Francisco, CA",
+    linkedIn: "linkedin.com/in/johnanderson",
+    github: "github.com/johnanderson",
+    website: "johnanderson.dev",
+  },
+  summary: "Experienced software engineer with 8+ years of expertise in full-stack development, cloud architecture, and team leadership. Proven track record of delivering scalable solutions and mentoring junior developers. Passionate about clean code, best practices, and continuous learning.",
+  experience: [
+    {
+      company: "Tech Innovations Inc.",
+      position: "Senior Software Engineer",
+      startDate: "Jan 2020",
+      endDate: "Present",
+      location: "San Francisco, CA",
+      achievements: [
+        "Led development of microservices architecture serving 2M+ daily users",
+        "Reduced system latency by 40% through optimization and caching strategies",
+        "Mentored team of 5 junior developers and conducted code reviews",
+        "Implemented CI/CD pipeline reducing deployment time by 60%"
+      ]
+    },
+    {
+      company: "Digital Solutions Corp",
+      position: "Software Engineer",
+      startDate: "Jun 2017",
+      endDate: "Dec 2019",
+      location: "Seattle, WA",
+      achievements: [
+        "Developed RESTful APIs handling 100K+ requests per day",
+        "Built responsive web applications using React and TypeScript",
+        "Collaborated with cross-functional teams in Agile environment",
+        "Improved test coverage from 45% to 85%"
+      ]
+    },
+    {
+      company: "StartupXYZ",
+      position: "Junior Developer",
+      startDate: "Aug 2015",
+      endDate: "May 2017",
+      location: "Austin, TX",
+      achievements: [
+        "Contributed to full-stack development of SaaS platform",
+        "Implemented user authentication and authorization features",
+        "Participated in daily standups and sprint planning"
+      ]
+    }
+  ],
+  education: [
+    {
+      institution: "University of California, Berkeley",
+      degree: "Bachelor of Science",
+      field: "Computer Science",
+      startDate: "2011",
+      endDate: "2015",
+      gpa: "3.8/4.0",
+      honors: ["Dean's List", "Cum Laude"]
+    }
+  ],
+  skills: [
+    "JavaScript", "TypeScript", "React", "Node.js", "Python",
+    "AWS", "Docker", "Kubernetes", "PostgreSQL", "MongoDB",
+    "Git", "CI/CD", "Agile/Scrum", "REST APIs", "GraphQL"
+  ],
+  projects: [
+    {
+      name: "E-Commerce Platform",
+      description: "Full-stack e-commerce solution with payment integration",
+      technologies: ["React", "Node.js", "Stripe", "PostgreSQL"],
+      url: "github.com/johnanderson/ecommerce",
+      highlights: [
+        "Processed $500K+ in transactions",
+        "Implemented secure payment gateway",
+        "Built admin dashboard for inventory management"
+      ]
+    },
+    {
+      name: "Real-Time Chat Application",
+      description: "WebSocket-based chat app with end-to-end encryption",
+      technologies: ["React", "Socket.io", "Express", "Redis"],
+      url: "github.com/johnanderson/chat-app",
+      highlights: [
+        "Supports 10K+ concurrent users",
+        "End-to-end encryption for privacy",
+        "Real-time message delivery"
+      ]
+    }
+  ],
+  languages: [
+    { name: "English", proficiency: "Native" },
+    { name: "Spanish", proficiency: "Professional" }
+  ],
+  certifications: [
+    {
+      name: "AWS Certified Solutions Architect",
+      issuer: "Amazon Web Services",
+      date: "2022",
+      credentialId: "AWS-SA-12345"
+    }
+  ]
+}
 
 type SectionId = 'personal' | 'experience' | 'education' | 'skills' | 'projects'
 
@@ -66,6 +174,8 @@ export default function ReactBuilderPage() {
   const [activeSection, setActiveSection] = useState<SectionId | null>(null)
   const [previewVisible, setPreviewVisible] = useState(true)
   const [completedSections, setCompletedSections] = useState<Set<SectionId>>(new Set())
+  const [showTemplatePreview, setShowTemplatePreview] = useState(false)
+  const [previewTemplateId, setPreviewTemplateId] = useState<TemplateId | null>(null)
   
   // Local state (like playground's resumeData)
   const [localCVData, setLocalCVData] = useState<any>(null)
@@ -290,9 +400,23 @@ export default function ReactBuilderPage() {
                         </SelectTrigger>
                         <SelectContent>
                           {Object.keys(REACT_TEMPLATES).map((id) => (
-                            <SelectItem key={id} value={id}>
-                              {id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                            </SelectItem>
+                            <div key={id} className="flex items-center justify-between px-2 py-1 hover:bg-slate-100 rounded group">
+                              <SelectItem value={id} className="flex-1 border-0">
+                                {id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                              </SelectItem>
+                              <Button
+                                variant="ghost"
+                                size="sm"
+                                className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  setPreviewTemplateId(id as TemplateId)
+                                  setShowTemplatePreview(true)
+                                }}
+                              >
+                                <Eye className="h-3 w-3" />
+                              </Button>
+                            </div>
                           ))}
                         </SelectContent>
                       </Select>
@@ -313,6 +437,87 @@ export default function ReactBuilderPage() {
           )}
         </div>
       </main>
+
+      {/* Template Preview Modal */}
+      {showTemplatePreview && previewTemplateId && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] overflow-hidden flex flex-col animate-in fade-in zoom-in-95 duration-300">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
+              <div>
+                <h3 className="text-xl font-bold">Template Preview</h3>
+                <p className="text-sm text-slate-600">
+                  {previewTemplateId.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())} - Sample Data
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                {previewTemplateId !== activeCV?.templateId && (
+                  <Button
+                    onClick={() => {
+                      if (activeCVId) {
+                        changeTemplate(activeCVId, previewTemplateId)
+                        setShowTemplatePreview(false)
+                      }
+                    }}
+                    className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                  >
+                    <Check className="h-4 w-4 mr-2" />
+                    Use This Template
+                  </Button>
+                )}
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setShowTemplatePreview(false)}
+                  className="rounded-full"
+                >
+                  <X className="h-5 w-5" />
+                </Button>
+              </div>
+            </div>
+
+            {/* Preview Content */}
+            <div className="flex-1 overflow-y-auto p-6 bg-slate-50">
+              <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-lg overflow-hidden">
+                <CVPreview 
+                  data={SAMPLE_CV_DATA} 
+                  selectedTemplate={previewTemplateId} 
+                  showToolbar={false} 
+                />
+              </div>
+            </div>
+
+            {/* Footer */}
+            <div className="px-6 py-4 border-t bg-white flex items-center justify-between">
+              <p className="text-sm text-slate-600">
+                Preview with sample data - Your content will replace this when you use the template
+              </p>
+              <div className="flex gap-2">
+                <Button
+                  variant="outline"
+                  onClick={() => setShowTemplatePreview(false)}
+                >
+                  Close
+                </Button>
+                {previewTemplateId !== activeCV?.templateId && (
+                  <Button
+                    onClick={() => {
+                      if (activeCVId) {
+                        changeTemplate(activeCVId, previewTemplateId)
+                        setShowTemplatePreview(false)
+                      }
+                    }}
+                    className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                  >
+                    <Check className="h-4 w-4 mr-2" />
+                    Use This Template
+                  </Button>
+                )}
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
     </div>
   )

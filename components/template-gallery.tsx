@@ -22,6 +22,81 @@ import {
   type TemplateMetadata,
   type TemplateCategory,
 } from "@/lib/template-registry"
+import { CVPreview } from "@/components/cv-preview"
+import type { UniversalResumeData } from "@/lib/schemas"
+
+// Sample data for template preview (same as builder)
+const SAMPLE_CV_DATA: UniversalResumeData = {
+  personal: {
+    fullName: "John Anderson",
+    title: "Senior Software Engineer",
+    email: "john.anderson@email.com",
+    phone: "+1 (555) 123-4567",
+    location: "San Francisco, CA",
+    linkedIn: "linkedin.com/in/johnanderson",
+    github: "github.com/johnanderson",
+    website: "johnanderson.dev",
+  },
+  summary: "Experienced software engineer with 8+ years of expertise in full-stack development, cloud architecture, and team leadership. Proven track record of delivering scalable solutions and mentoring junior developers.",
+  experience: [
+    {
+      company: "Tech Innovations Inc.",
+      position: "Senior Software Engineer",
+      startDate: "Jan 2020",
+      endDate: "Present",
+      location: "San Francisco, CA",
+      achievements: [
+        "Led development of microservices architecture serving 2M+ daily users",
+        "Reduced system latency by 40% through optimization strategies",
+        "Mentored team of 5 junior developers",
+        "Implemented CI/CD pipeline reducing deployment time by 60%"
+      ]
+    },
+    {
+      company: "Digital Solutions Corp",
+      position: "Software Engineer",
+      startDate: "Jun 2017",
+      endDate: "Dec 2019",
+      location: "Seattle, WA",
+      achievements: [
+        "Developed RESTful APIs handling 100K+ requests per day",
+        "Built responsive web applications using React and TypeScript",
+        "Improved test coverage from 45% to 85%"
+      ]
+    }
+  ],
+  education: [
+    {
+      institution: "University of California, Berkeley",
+      degree: "Bachelor of Science",
+      field: "Computer Science",
+      startDate: "2011",
+      endDate: "2015",
+      gpa: "3.8/4.0"
+    }
+  ],
+  skills: [
+    "JavaScript", "TypeScript", "React", "Node.js", "Python",
+    "AWS", "Docker", "Kubernetes", "PostgreSQL", "MongoDB",
+    "Git", "CI/CD", "Agile/Scrum", "REST APIs", "GraphQL"
+  ],
+  projects: [
+    {
+      name: "E-Commerce Platform",
+      description: "Full-stack e-commerce solution with payment integration",
+      technologies: ["React", "Node.js", "Stripe", "PostgreSQL"],
+      url: "github.com/johnanderson/ecommerce",
+      highlights: [
+        "Processed $500K+ in transactions",
+        "Implemented secure payment gateway"
+      ]
+    }
+  ],
+  languages: [
+    { name: "English", proficiency: "Native" },
+    { name: "Spanish", proficiency: "Professional" }
+  ]
+}
 
 const CATEGORIES: { value: TemplateCategory | 'all'; label: string }[] = [
   { value: 'all', label: 'All Templates' },
@@ -226,18 +301,12 @@ function TemplateCard({ template, isSelected, onClick, onKeyDown }: TemplateCard
         `}
         aria-label={`Select ${template.name} template`}
       >
-      {/* Dynamic iFrame Preview */}
+      {/* Static Thumbnail Preview */}
       <div className="relative aspect-[8.5/11] bg-white overflow-hidden">
-        <iframe
-          src={`/preview/${template.id}`}
-          className="absolute inset-0 w-full h-full border-0 pointer-events-none"
-          style={{
-            transform: 'scale(0.25)',
-            transformOrigin: 'top left',
-            width: '400%',
-            height: '400%',
-          }}
-          title={`${template.name} preview`}
+        <img
+          src={`/template-thumbnails/${template.id}-thumb.png`}
+          alt={`${template.name} preview`}
+          className="absolute inset-0 w-full h-full object-cover object-top"
           loading="lazy"
         />
 
@@ -327,19 +396,13 @@ function TemplateCard({ template, isSelected, onClick, onKeyDown }: TemplateCard
           </div>
 
           {/* Modal Content - Full Template Preview */}
-          <div className="bg-gray-100 overflow-auto" style={{ height: 'calc(90vh - 80px)' }}>
+          <div className="bg-slate-50 overflow-auto" style={{ height: 'calc(90vh - 80px)' }}>
             <div className="flex items-center justify-center min-h-full p-8">
-              <div className="bg-white shadow-2xl" style={{ width: '620px', height: '877px' }}>
-                <iframe
-                  src={`/preview/${template.id}`}
-                  className="w-full h-full border-0 pointer-events-none"
-                  style={{
-                    transform: 'scale(0.5)',
-                    transformOrigin: 'top left',
-                    width: '200%',
-                    height: '200%',
-                  }}
-                  title={`${template.name} full preview`}
+              <div className="bg-white shadow-2xl rounded-lg overflow-hidden max-w-4xl w-full">
+                <CVPreview 
+                  data={SAMPLE_CV_DATA} 
+                  selectedTemplate={template.id as any} 
+                  showToolbar={false} 
                 />
               </div>
             </div>
