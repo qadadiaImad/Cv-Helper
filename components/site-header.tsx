@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Menu, X, User, LogOut, Settings, Palette, ChevronDown, LayoutTemplate } from "lucide-react"
 import {
@@ -95,61 +96,124 @@ export function SiteHeader() {
               />
               
               <div className="flex items-center justify-between relative z-10">
-                {/* Logo */}
-                <Link href="/" className="flex items-center gap-3">
-                  <div 
-                    className="w-8 h-8 rounded-lg flex items-center justify-center"
-                    style={{ backgroundColor: theme.accent }}
-                  >
-                    <span className="text-white font-bold text-sm">CV</span>
+                {/* ResuMagic Brand Logo */}
+                <Link href="/" className="flex items-center gap-3 group">
+                  {/* Stylized Logo Icon */}
+                  <div className="relative">
+                    {/* Animated magical glow effect */}
+                    <div 
+                      className="absolute inset-0 rounded-2xl opacity-40 blur-lg transition-all duration-300 group-hover:opacity-60 group-hover:blur-xl animate-pulse"
+                      style={{ backgroundColor: theme.accent }}
+                    />
+                    {/* Logo container with gradient */}
+                    <div 
+                      className="relative w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 shadow-xl overflow-hidden"
+                      style={{ 
+                        background: `linear-gradient(135deg, ${theme.accent} 0%, ${theme.accent}dd 100%)`
+                      }}
+                    >
+                      {/* Animated shine overlay */}
+                      <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                      
+                      {/* RM monogram with sparkle */}
+                      <div className="relative z-10 flex items-center justify-center">
+                        <span className="text-white font-black text-2xl leading-none tracking-tighter">R</span>
+                        <span className="text-white font-black text-lg leading-none tracking-tighter opacity-90">M</span>
+                        <span className="absolute -top-1 -right-1 text-yellow-300 text-xs animate-pulse">✨</span>
+                      </div>
+                    </div>
                   </div>
+                  
+                  {/* Brand name and tagline */}
                   <div className="flex flex-col">
-                    <span className="heading-xl" style={{ color: 'var(--theme-text)' }}>CV Helper</span>
-                    <span className="text-xs font-medium tracking-wide animate-pulse" style={{ color: 'var(--theme-text-secondary)' }}>
-                      Resume writing
+                    <div className="flex items-baseline gap-0.5">
+                      <span 
+                        className="text-2xl font-black tracking-tight transition-all duration-300 group-hover:scale-105"
+                        style={{ color: theme.text }}
+                      >
+                        Resu
+                      </span>
+                      <span 
+                        className="text-2xl font-black tracking-tight transition-all duration-300 group-hover:scale-105 italic"
+                        style={{ 
+                          backgroundImage: `linear-gradient(135deg, ${theme.accent} 0%, ${theme.accent}aa 100%)`,
+                          WebkitBackgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          backgroundClip: 'text'
+                        }}
+                      >
+                        Magic
+                      </span>
+                      <span className="text-xl animate-bounce">✨</span>
+                    </div>
+                    <span 
+                      className="text-xs font-semibold tracking-wider uppercase animate-pulse"
+                      style={{ color: theme.textSecondary }}
+                    >
+                      🪄 Create Perfect Resumes
                     </span>
                   </div>
                 </Link>
 
-                {/* Desktop Navigation */}
-                <nav className="hidden lg:flex items-center gap-8">
+                {/* Enhanced Desktop Navigation */}
+                <nav className="hidden lg:flex items-center gap-6">
                   <Link 
                     href="/" 
-                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70 flex items-center gap-2"
+                    className="group relative px-3 py-2 rounded-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
                     style={{ color: 'var(--theme-text-secondary)' }}
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {/* Hover background */}
+                    <div 
+                      className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                      style={{ backgroundColor: theme.accent }}
+                    />
+                    <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:-translate-y-0.5 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
                     </svg>
-                    Home
+                    <span className="font-semibold text-sm relative z-10">Home</span>
                   </Link>
                   <Link 
                     href="/dashboard/templates" 
-                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70 flex items-center gap-2"
+                    className="group relative px-3 py-2 rounded-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
                     style={{ color: 'var(--theme-text-secondary)' }}
                   >
-                    <LayoutTemplate className="w-4 h-4" />
-                    Templates
-                  </Link>
-                  <Link 
-                    href="/about" 
-                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70 flex items-center gap-2"
-                    style={{ color: 'var(--theme-text-secondary)' }}
-                  >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                    </svg>
-                    About
+                    {/* Hover background */}
+                    <div 
+                      className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                      style={{ backgroundColor: theme.accent }}
+                    />
+                    <LayoutTemplate className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-6 relative z-10" />
+                    <span className="font-semibold text-sm relative z-10">Templates</span>
                   </Link>
                   <Link 
                     href="/discover" 
-                    className="transition-colors duration-200 font-medium text-sm hover:opacity-70 flex items-center gap-2"
+                    className="group relative px-3 py-2 rounded-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
                     style={{ color: 'var(--theme-text-secondary)' }}
                   >
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    {/* Hover background */}
+                    <div 
+                      className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                      style={{ backgroundColor: theme.accent }}
+                    />
+                    <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    Discover
+                    <span className="font-semibold text-sm relative z-10">Discover</span>
+                  </Link>
+                  <Link 
+                    href="/about" 
+                    className="group relative px-3 py-2 rounded-lg transition-all duration-300 hover:scale-105 flex items-center gap-2"
+                    style={{ color: 'var(--theme-text-secondary)' }}
+                  >
+                    {/* Hover background */}
+                    <div 
+                      className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"
+                      style={{ backgroundColor: theme.accent }}
+                    />
+                    <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-180 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                    <span className="font-semibold text-sm relative z-10">About</span>
                   </Link>
                 </nav>
 

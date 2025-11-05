@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import Image from "next/image"
 import { useCVStore } from "@/hooks/use-cv-store"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -10,9 +11,12 @@ import { Plus, FileText, Trash2, Edit2, Copy, Sparkles, Clock, CheckCircle2, X }
 import Link from "next/link"
 import { REACT_TEMPLATES, type TemplateId } from "@/lib/react-templates"
 import { TemplateGallery } from "@/components/template-gallery"
+import { getTemplateTheme } from "@/lib/template-themes"
+import { useTheme } from "@/lib/theme-context"
 
 export default function CVsPage() {
   const { ready, cvs, createCV, deleteCV, duplicateCV, setActiveCV } = useCVStore()
+  const { theme } = useTheme()
   const [showCreateDialog, setShowCreateDialog] = useState(false)
   const [newCVName, setNewCVName] = useState("")
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>("atlantic_blue")
@@ -39,44 +43,147 @@ export default function CVsPage() {
     }
   }
 
+  // Check if CV is completed (has all required sections filled)
+  const isCVCompleted = (cv: any) => {
+    const hasPersonal = cv.data?.personal?.fullName && cv.data?.personal?.email
+    const hasExperience = cv.data?.experience && cv.data.experience.length > 0
+    const hasEducation = cv.data?.education && cv.data.education.length > 0
+    const hasSkills = cv.data?.skills && cv.data.skills.length > 0
+    
+    return hasPersonal && hasExperience && hasEducation && hasSkills
+  }
+
   if (!ready) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-        <div className="text-center">
-          <div className="inline-block h-12 w-12 animate-spin rounded-full border-4 border-solid border-blue-600 border-r-transparent mb-4"></div>
-          <p className="text-slate-600 font-medium">Loading your resumes...</p>
+      <div 
+        className="min-h-screen flex items-center justify-center relative overflow-hidden"
+        style={{ background: theme.bg }}
+      >
+        {/* Animated background gradient */}
+        <div 
+          className="absolute inset-0 opacity-20"
+          style={{
+            background: `radial-gradient(circle at 50% 50%, ${theme.accent}30 0%, transparent 70%)`
+          }}
+        />
+        
+        <div className="text-center relative z-10">
+          {/* Stylish animated loader */}
+          <div className="relative inline-block mb-6">
+            {/* Outer rotating ring */}
+            <div 
+              className="h-20 w-20 rounded-full border-4 border-t-transparent animate-spin"
+              style={{ borderColor: `${theme.accent} transparent transparent transparent` }}
+            />
+            {/* Inner pulsing circle */}
+            <div 
+              className="absolute inset-0 m-auto h-12 w-12 rounded-full animate-pulse"
+              style={{ background: `${theme.accent}40` }}
+            />
+            {/* Center icon */}
+            <div 
+              className="absolute inset-0 m-auto h-8 w-8 rounded-full flex items-center justify-center"
+              style={{ background: theme.accent }}
+            >
+              <FileText className="h-4 w-4 text-white animate-bounce" />
+            </div>
+          </div>
+          
+          <h2 
+            className="text-2xl font-bold mb-2 animate-pulse"
+            style={{ color: theme.text }}
+          >
+            Loading your resumes...
+          </h2>
+          <p 
+            className="text-sm font-medium"
+            style={{ color: theme.textSecondary }}
+          >
+            Preparing your workspace
+          </p>
         </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
-      {/* Header with Glassmorphism */}
-      <header className="border-b border-white/20 bg-white/60 backdrop-blur-xl shadow-lg">
-        <div className="container mx-auto px-4 py-8">
+    <div className="min-h-screen" style={{ background: theme.bg }}>
+      {/* Enhanced Header with Theme-Aware Gradient */}
+      <header 
+        className="border-b backdrop-blur-xl shadow-2xl relative overflow-hidden transition-all duration-500"
+        style={{
+          background: `linear-gradient(135deg, ${theme.bg} 0%, ${theme.bgSecondary} 50%, ${theme.bg} 100%)`,
+          borderColor: theme.border
+        }}
+      >
+        {/* Subtle animated overlay */}
+        <div 
+          className="absolute inset-0 opacity-30 animate-pulse"
+          style={{
+            background: `radial-gradient(circle at 20% 50%, ${theme.accent}15 0%, transparent 50%)`
+          }}
+        />
+        
+        <div className="container mx-auto px-4 py-10 relative z-10">
           <div className="flex items-center justify-between">
-            <div>
-              <div className="flex items-center gap-3 mb-2">
-                <div className="h-12 w-12 rounded-2xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg">
-                  <FileText className="h-6 w-6 text-white" />
+            <div className="flex items-center gap-4">
+              {/* Icon with Glow Effect */}
+              <div className="relative group cursor-pointer">
+                <div 
+                  className="absolute inset-0 rounded-2xl opacity-50 blur-xl transition-all duration-300 group-hover:opacity-75 group-hover:blur-2xl"
+                  style={{ background: theme.accent }}
+                />
+                <div 
+                  className="relative h-14 w-14 rounded-2xl flex items-center justify-center shadow-2xl transition-all duration-300 group-hover:scale-110 group-hover:rotate-3"
+                  style={{ background: theme.accent }}
+                >
+                  <FileText className="h-7 w-7 text-white" />
                 </div>
-                <div>
-                  <h1 className="text-4xl font-bold bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">My Resumes</h1>
-                  <p className="text-slate-600 text-sm font-medium flex items-center gap-2">
-                    <Sparkles className="h-4 w-4 text-blue-500" />
-                    {cvs.length} {cvs.length === 1 ? 'resume' : 'resumes'} ready
-                  </p>
+              </div>
+              
+              {/* Title and Stats */}
+              <div>
+                <h1 
+                  className="text-5xl font-extrabold mb-1 transition-all duration-300 hover:scale-105 inline-block"
+                  style={{ color: theme.text }}
+                >
+                  My Resumes
+                </h1>
+                <div className="flex items-center gap-3">
+                  <div 
+                    className="flex items-center gap-1.5 px-3 py-1 rounded-full transition-all duration-300 hover:scale-105"
+                    style={{ 
+                      background: `${theme.accent}20`,
+                      border: `1px solid ${theme.accent}40`
+                    }}
+                  >
+                    <Sparkles className="h-4 w-4" style={{ color: theme.accent }} />
+                    <span 
+                      className="text-sm font-semibold"
+                      style={{ color: theme.textSecondary }}
+                    >
+                      {cvs.length} {cvs.length === 1 ? 'resume' : 'resumes'} ready
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
+            
+            {/* Enhanced Button */}
             <Button 
               onClick={() => setShowCreateDialog(true)} 
               size="lg"
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              className="shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 hover:-translate-y-1 font-semibold text-base px-8 py-6 relative group overflow-hidden"
+              style={{ 
+                background: theme.accent,
+                color: 'white',
+                border: 'none'
+              }}
             >
-              <Plus className="h-5 w-5 mr-2" />
-              Create New Resume
+              {/* Button shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-700" />
+              <Plus className="h-5 w-5 mr-2 relative z-10" />
+              <span className="relative z-10">Create New Resume</span>
             </Button>
           </div>
         </div>
@@ -140,7 +247,8 @@ export default function CVsPage() {
                 <Button 
                   onClick={handleCreateCV} 
                   disabled={!newCVName.trim()}
-                  className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 h-12 text-lg"
+                  className="flex-1 h-12 text-lg"
+                  style={{ background: theme.accent, color: 'white' }}
                 >
                   <Sparkles className="h-5 w-5 mr-2" />
                   Create Resume
@@ -159,43 +267,101 @@ export default function CVsPage() {
 
         {/* CV List */}
         {cvs.length === 0 ? (
-          <Card className="p-16 text-center bg-white/60 backdrop-blur-sm border-2 border-dashed border-slate-300 hover:border-blue-400 transition-all duration-300">
-            <div className="inline-block p-6 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 mb-6">
-              <FileText className="h-16 w-16 text-blue-600" />
+          <Card 
+            className="p-20 text-center backdrop-blur-sm border-2 border-dashed transition-all duration-500 hover:scale-[1.02] relative overflow-hidden group"
+            style={{
+              background: `${theme.card}95`,
+              borderColor: theme.border
+            }}
+          >
+            {/* Animated background effect */}
+            <div 
+              className="absolute inset-0 opacity-0 group-hover:opacity-10 transition-opacity duration-500"
+              style={{
+                background: `radial-gradient(circle at 50% 50%, ${theme.accent} 0%, transparent 70%)`
+              }}
+            />
+            
+            {/* Animated Icon Container */}
+            <div className="relative inline-block mb-8">
+              {/* Outer glow ring */}
+              <div 
+                className="absolute inset-0 rounded-full blur-2xl opacity-30 animate-pulse"
+                style={{ background: theme.accent }}
+              />
+              {/* Rotating ring */}
+              <div 
+                className="absolute inset-0 rounded-full border-4 border-dashed animate-spin-slow"
+                style={{ borderColor: `${theme.accent}40` }}
+              />
+              {/* Icon container */}
+              <div 
+                className="relative p-8 rounded-full transition-all duration-500 group-hover:scale-110 group-hover:rotate-6"
+                style={{ 
+                  background: `linear-gradient(135deg, ${theme.accent}20 0%, ${theme.accent}40 100%)`
+                }}
+              >
+                <FileText 
+                  className="h-20 w-20 animate-bounce"
+                  style={{ color: theme.accent }}
+                />
+              </div>
             </div>
-            <h2 className="text-3xl font-bold mb-3 bg-gradient-to-r from-slate-900 to-slate-700 bg-clip-text text-transparent">No resumes yet</h2>
-            <p className="text-slate-600 mb-8 text-lg">
-              Create your first resume to get started on your career journey
+            
+            <h2 
+              className="text-4xl font-extrabold mb-4 animate-fade-in"
+              style={{ color: theme.text }}
+            >
+              No resumes yet
+            </h2>
+            <p 
+              className="text-lg mb-10 max-w-md mx-auto"
+              style={{ color: theme.textSecondary }}
+            >
+              Create your first resume to get started on your career journey ✨
             </p>
+            
             <Button 
               onClick={() => setShowCreateDialog(true)} 
               size="lg"
-              className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-105"
+              className="shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 hover:-translate-y-1 font-semibold text-base px-10 py-6 relative group/btn overflow-hidden"
+              style={{ 
+                background: theme.accent,
+                color: 'white',
+                border: 'none'
+              }}
             >
-              <Plus className="h-5 w-5 mr-2" />
-              Create Your First Resume
+              {/* Button shine effect */}
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent translate-x-[-200%] group-hover/btn:translate-x-[200%] transition-transform duration-700" />
+              <Plus className="h-5 w-5 mr-2 relative z-10" />
+              <span className="relative z-10">Create Your First Resume</span>
             </Button>
           </Card>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {cvs.map((cv, index) => {
-              const colors = {
-                atlantic_blue: 'from-blue-500 to-cyan-500',
-                modern_minimal: 'from-slate-700 to-slate-900',
-                creative_purple: 'from-purple-500 to-pink-500',
-                professional_green: 'from-green-500 to-emerald-500'
-              }
-              const gradient = colors[cv.templateId as keyof typeof colors] || 'from-blue-500 to-indigo-500'
+              const isCompleted = isCVCompleted(cv)
+              const templateTheme = getTemplateTheme(cv.templateId)
               
               return (
                 <Card 
                   key={cv.id} 
-                  className="group p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 bg-white/80 backdrop-blur-sm border-2 hover:border-blue-300 animate-in fade-in slide-in-from-bottom-4"
-                  style={{ animationDelay: `${index * 100}ms` }}
+                  className="group p-6 hover:shadow-2xl transition-all duration-300 hover:scale-105 backdrop-blur-sm border-2 animate-in fade-in-from-bottom-4"
+                  style={{ 
+                    animationDelay: `${index * 100}ms`,
+                    background: templateTheme.background,
+                    borderColor: templateTheme.border
+                  }}
                 >
-                  {/* Template Preview */}
-                  <div className={`h-32 w-full rounded-xl bg-gradient-to-br ${gradient} mb-4 relative overflow-hidden group-hover:scale-105 transition-transform duration-300`}>
-                    <div className="absolute inset-0 bg-white/10 backdrop-blur-sm" />
+                  {/* Status Image Preview */}
+                  <div className="h-48 w-full rounded-xl mb-4 relative overflow-hidden bg-white/50 flex items-center justify-center">
+                    <Image
+                      src={isCompleted ? '/images/Resumer_compeleted.png' : '/images/not_yet_completed.png'}
+                      alt={isCompleted ? 'Resume completed' : 'Resume in progress'}
+                      width={200}
+                      height={200}
+                      className="object-contain group-hover:scale-110 transition-transform duration-300"
+                    />
                     <div className="absolute bottom-2 right-2 bg-white/90 backdrop-blur-sm px-3 py-1 rounded-full text-xs font-semibold text-slate-700">
                       {cv.templateId.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
                     </div>
@@ -212,17 +378,25 @@ export default function CVsPage() {
                       <Clock className="h-3 w-3" />
                       <span>{new Date(cv.updatedAt).toLocaleDateString()}</span>
                     </div>
-                    <div className="flex items-center gap-1">
-                      <CheckCircle2 className="h-3 w-3 text-green-600" />
-                      <span className="text-green-600 font-medium">Ready</span>
-                    </div>
+                    {isCompleted ? (
+                      <div className="flex items-center gap-1">
+                        <CheckCircle2 className="h-3 w-3 text-green-600" />
+                        <span className="text-green-600 font-medium">Complete</span>
+                      </div>
+                    ) : (
+                      <div className="flex items-center gap-1">
+                        <Clock className="h-3 w-3 text-amber-600" />
+                        <span className="text-amber-600 font-medium">In Progress</span>
+                      </div>
+                    )}
                   </div>
 
                   <div className="flex gap-2">
                     <Button 
                       onClick={() => handleEditCV(cv.id)}
-                      className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                      className="flex-1"
                       size="sm"
+                      style={{ background: theme.accent, color: 'white' }}
                     >
                       <Edit2 className="h-4 w-4 mr-2" />
                       Edit

@@ -1,0 +1,327 @@
+{
+  "id": "b454378c-064c-47d4-aa3b-cc7f3c5bfb29",
+  "revision": 0,
+  "last_node_id": 16,
+  "last_link_id": 17,
+  "nodes": [
+    {
+      "id": 5,
+      "type": "BasicScheduler",
+      "pos": [50, 500],
+      "size": [315, 106],
+      "flags": {},
+      "order": 11,
+      "mode": 0,
+      "inputs": [{"name": "model", "type": "MODEL", "link": 4}],
+      "outputs": [{"name": "SIGMAS", "type": "SIGMAS", "links": [6]}],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "BasicScheduler",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": ["simple", 20, 1]
+    },
+    {
+      "id": 10,
+      "type": "SamplerCustomAdvanced",
+      "pos": [1150, 200],
+      "size": [355.2, 106],
+      "flags": {"pinned": true},
+      "order": 12,
+      "mode": 0,
+      "inputs": [
+        {"name": "noise", "type": "NOISE", "link": 8},
+        {"name": "guider", "type": "GUIDER", "link": 10},
+        {"name": "sampler", "type": "SAMPLER", "link": 9},
+        {"name": "sigmas", "type": "SIGMAS", "link": 6},
+        {"name": "latent_image", "type": "LATENT", "link": 11}
+      ],
+      "outputs": [
+        {"name": "output", "type": "LATENT", "links": [12]},
+        {"name": "denoised_output", "type": "LATENT", "links": null}
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "SamplerCustomAdvanced",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 11,
+      "type": "EmptyLatentImage",
+      "pos": [1150, 400],
+      "size": [315, 106],
+      "flags": {},
+      "order": 0,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "LATENT", "type": "LATENT", "links": [11]}],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "EmptyLatentImage",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [1024, 1024, 8]
+    },
+    {
+      "id": 13,
+      "type": "VAELoader",
+      "pos": [1150, 550],
+      "size": [315, 58],
+      "flags": {},
+      "order": 1,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "VAE", "type": "VAE", "links": [13]}],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "VAELoader",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": ["ae.safetensors"]
+    },
+    {
+      "id": 8,
+      "type": "KSamplerSelect",
+      "pos": [750, 601.8181818181816],
+      "size": [315, 58],
+      "flags": {},
+      "order": 2,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "SAMPLER", "type": "SAMPLER", "links": [9]}],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "KSamplerSelect",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": ["euler"]
+    },
+    {
+      "id": 12,
+      "type": "VAEDecode",
+      "pos": [1550, 200],
+      "size": [210, 46],
+      "flags": {},
+      "order": 13,
+      "mode": 0,
+      "inputs": [
+        {"name": "samples", "type": "LATENT", "link": 12},
+        {"name": "vae", "type": "VAE", "link": 13}
+      ],
+      "outputs": [{"name": "IMAGE", "type": "IMAGE", "links": [17]}],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "VAEDecode",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 9,
+      "type": "BasicGuider",
+      "pos": [860.5, 503.3],
+      "size": [222.3, 46],
+      "flags": {},
+      "order": 10,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "MODEL", "link": 4},
+        {"name": "conditioning", "type": "CONDITIONING", "link": 7}
+      ],
+      "outputs": [{"name": "GUIDER", "type": "GUIDER", "links": [10]}],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "BasicGuider",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": []
+    },
+    {
+      "id": 15,
+      "type": "ModelSamplingFlux",
+      "pos": [403.71818181818134, 317.3636363636364],
+      "size": [315, 130],
+      "flags": {"pinned": true},
+      "order": 6,
+      "mode": 0,
+      "inputs": [{"name": "model", "type": "MODEL", "link": 15}],
+      "outputs": [{"name": "MODEL", "type": "MODEL", "links": [3]}],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "ModelSamplingFlux",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [1.15, 0.5, 1024, 1024]
+    },
+    {
+      "id": 3,
+      "type": "UNETLoader",
+      "pos": [50, 300],
+      "size": [315, 82],
+      "flags": {"pinned": true},
+      "order": 3,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "MODEL", "type": "MODEL", "links": [15]}],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "UNETLoader",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": ["flux1-dev-fp8.safetensors", "fp8_e4m3fn_fast"]
+    },
+    {
+      "id": 1,
+      "type": "DualCLIPLoader",
+      "pos": [50, 50],
+      "size": [315, 130],
+      "flags": {"pinned": true},
+      "order": 4,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "CLIP", "type": "CLIP", "links": [1]}],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "DualCLIPLoader",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": ["clip_l.safetensors", "clip_l.safetensors", "flux", "default"]
+    },
+    {
+      "id": 4,
+      "type": "LoraLoader",
+      "pos": [750, 300],
+      "size": [315, 126],
+      "flags": {"pinned": true},
+      "order": 7,
+      "mode": 0,
+      "inputs": [
+        {"name": "model", "type": "MODEL", "link": 3},
+        {"name": "clip", "type": "CLIP", "link": 1}
+      ],
+      "outputs": [
+        {"name": "MODEL", "type": "MODEL", "links": [4]},
+        {"name": "CLIP", "type": "CLIP", "links": [5]}
+      ],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "LoraLoader",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": ["VibrantTech3D_v1.safetensors", 1, 1]
+    },
+    {
+      "id": 6,
+      "type": "FluxGuidance",
+      "pos": [861, 9],
+      "size": [317.4, 58],
+      "flags": {},
+      "order": 9,
+      "mode": 0,
+      "inputs": [{"name": "conditioning", "type": "CONDITIONING", "link": 2}],
+      "outputs": [{"name": "CONDITIONING", "type": "CONDITIONING", "links": [7]}],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "FluxGuidance",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [3.5]
+    },
+    {
+      "id": 7,
+      "type": "RandomNoise",
+      "pos": [800, 200],
+      "size": [315, 82],
+      "flags": {},
+      "order": 5,
+      "mode": 0,
+      "inputs": [],
+      "outputs": [{"name": "NOISE", "type": "NOISE", "links": [8]}],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "RandomNoise",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": [566408847467231, "randomize"]
+    },
+    {
+      "id": 16,
+      "type": "SaveImage",
+      "pos": [1857.0121120985953, 180.35927179514613],
+      "size": [315, 270],
+      "flags": {},
+      "order": 14,
+      "mode": 0,
+      "inputs": [{"name": "images", "type": "IMAGE", "link": 17}],
+      "outputs": [],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": ["ComfyUI"]
+    },
+    {
+      "id": 2,
+      "type": "CLIPTextEncode",
+      "pos": [380.90909090909105, -120.90909090909084],
+      "size": [400, 200],
+      "flags": {},
+      "order": 8,
+      "mode": 0,
+      "inputs": [{"name": "clip", "type": "CLIP", "link": 5}],
+      "outputs": [{"name": "CONDITIONING", "type": "CONDITIONING", "links": [2]}],
+      "properties": {
+        "cnr_id": "comfy-core",
+        "ver": "0.3.67",
+        "Node name for S&R": "CLIPTextEncode",
+        "widget_ue_connectable": {}
+      },
+      "widgets_values": ["2D icon of Job Resume templates Seller\n\n"]
+    }
+  ],
+  "links": [
+    [1, 1, 0, 4, 1, "CLIP"],
+    [2, 2, 0, 6, 0, "CONDITIONING"],
+    [3, 15, 0, 4, 0, "MODEL"],
+    [4, 4, 0, 9, 0, "MODEL"],
+    [5, 4, 1, 2, 0, "CLIP"],
+    [6, 5, 0, 10, 3, "SIGMAS"],
+    [7, 6, 0, 9, 1, "CONDITIONING"],
+    [8, 7, 0, 10, 0, "NOISE"],
+    [9, 8, 0, 10, 2, "SAMPLER"],
+    [10, 9, 0, 10, 1, "GUIDER"],
+    [11, 11, 0, 10, 4, "LATENT"],
+    [12, 10, 0, 12, 0, "LATENT"],
+    [13, 13, 0, 12, 1, "VAE"],
+    [15, 3, 0, 15, 0, "MODEL"],
+    [17, 12, 0, 16, 0, "IMAGE"]
+  ],
+  "groups": [],
+  "config": {},
+  "extra": {
+    "ds": {
+      "scale": 0.9233052104106928,
+      "offset": [802.7675470306154, 175.05216783557685]
+    },
+    "ue_links": [],
+    "links_added_by_ue": [],
+    "frontendVersion": "1.28.8"
+  },
+  "version": 0.4
+}
