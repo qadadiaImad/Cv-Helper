@@ -314,11 +314,13 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
                   <EditableText
                     value={exp.startDate || ''}
                     onChange={(v: string) => updateArrayField('experience', i, 'startDate', v)}
+                    isDate={true}
                   />
                   {' - '}
                   <EditableText
                     value={exp.endDate || ''}
                     onChange={(v: string) => updateArrayField('experience', i, 'endDate', v)}
+                    isDate={true}
                   />
                 </p>
               </div>
@@ -429,11 +431,13 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
                   <EditableText
                     value={edu.startDate || ''}
                     onChange={(v: string) => updateArrayField('education', i, 'startDate', v)}
+                    isDate={true}
                   />
                   {' - '}
                   <EditableText
                     value={edu.endDate || ''}
                     onChange={(v: string) => updateArrayField('education', i, 'endDate', v)}
+                    isDate={true}
                   />
                 </p>
               </div>

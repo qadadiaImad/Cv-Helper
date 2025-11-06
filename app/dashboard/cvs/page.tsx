@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Image from "next/image"
 import { useCVStore } from "@/hooks/use-cv-store"
 import { Button } from "@/components/ui/button"
@@ -20,6 +20,12 @@ export default function CVsPage() {
   const [showCreateDialog, setShowCreateDialog] = useState(false)
   const [newCVName, setNewCVName] = useState("")
   const [selectedTemplate, setSelectedTemplate] = useState<TemplateId>("atlantic_blue")
+  const [mounted, setMounted] = useState(false)
+
+  // Prevent hydration mismatch by only rendering theme-dependent content after mount
+  useEffect(() => {
+    setMounted(true)
+  }, [])
 
   const handleCreateCV = () => {
     if (newCVName.trim()) {
@@ -53,17 +59,25 @@ export default function CVsPage() {
     return hasPersonal && hasExperience && hasEducation && hasSkills
   }
 
+  // Use default colors during SSR to prevent hydration mismatch
+  const displayTheme = mounted ? theme : {
+    bg: '#FAF5FF',
+    accent: '#A855F7',
+    text: '#581C87',
+    textSecondary: '#7E22CE'
+  }
+
   if (!ready) {
     return (
       <div 
         className="min-h-screen flex items-center justify-center relative overflow-hidden"
-        style={{ background: theme.bg }}
+        style={{ background: displayTheme.bg }}
       >
         {/* Animated background gradient */}
         <div 
           className="absolute inset-0 opacity-20"
           style={{
-            background: `radial-gradient(circle at 50% 50%, ${theme.accent}30 0%, transparent 70%)`
+            background: `radial-gradient(circle at 50% 50%, ${displayTheme.accent}30 0%, transparent 70%)`
           }}
         />
         
@@ -73,17 +87,17 @@ export default function CVsPage() {
             {/* Outer rotating ring */}
             <div 
               className="h-20 w-20 rounded-full border-4 border-t-transparent animate-spin"
-              style={{ borderColor: `${theme.accent} transparent transparent transparent` }}
+              style={{ borderColor: `${displayTheme.accent} transparent transparent transparent` }}
             />
             {/* Inner pulsing circle */}
             <div 
               className="absolute inset-0 m-auto h-12 w-12 rounded-full animate-pulse"
-              style={{ background: `${theme.accent}40` }}
+              style={{ background: `${displayTheme.accent}40` }}
             />
             {/* Center icon */}
             <div 
               className="absolute inset-0 m-auto h-8 w-8 rounded-full flex items-center justify-center"
-              style={{ background: theme.accent }}
+              style={{ background: displayTheme.accent }}
             >
               <FileText className="h-4 w-4 text-white animate-bounce" />
             </div>
@@ -91,13 +105,13 @@ export default function CVsPage() {
           
           <h2 
             className="text-2xl font-bold mb-2 animate-pulse"
-            style={{ color: theme.text }}
+            style={{ color: displayTheme.text }}
           >
             Loading your resumes...
           </h2>
           <p 
             className="text-sm font-medium"
-            style={{ color: theme.textSecondary }}
+            style={{ color: displayTheme.textSecondary }}
           >
             Preparing your workspace
           </p>
@@ -107,7 +121,7 @@ export default function CVsPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: theme.bg }}>
+    <div className="min-h-screen" style={{ background: displayTheme.bg }}>
       {/* Enhanced Header with Theme-Aware Gradient */}
       <header 
         className="border-b backdrop-blur-xl shadow-2xl relative overflow-hidden transition-all duration-500"

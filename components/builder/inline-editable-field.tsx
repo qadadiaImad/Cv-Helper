@@ -1,7 +1,9 @@
 "use client"
 
 import React, { useState, useRef, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { cn } from '@/lib/utils'
+import { MonthYearPicker } from './month-year-picker'
 
 interface InlineEditableFieldProps {
   value: string
@@ -11,6 +13,7 @@ interface InlineEditableFieldProps {
   placeholder?: string
   multiline?: boolean
   disabled?: boolean
+  isDate?: boolean // New prop to indicate this is a date field
 }
 
 export function InlineEditableField({
@@ -20,23 +23,50 @@ export function InlineEditableField({
   style,
   placeholder = 'Click to edit...',
   multiline = false,
-  disabled = false
+  disabled = false,
+  isDate = false
 }: InlineEditableFieldProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [tempValue, setTempValue] = useState(value)
+  const [showDatePicker, setShowDatePicker] = useState(false)
+  const [mounted, setMounted] = useState(false)
+  const [buttonPosition, setButtonPosition] = useState({ top: 0, left: 0 })
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    setMounted(true)
+  }, [])
+
+  // Sync tempValue when value prop changes (important for external updates)
+  useEffect(() => {
+    if (!isEditing) {
+      setTempValue(value)
+    }
+  }, [value, isEditing])
 
   useEffect(() => {
     if (isEditing && inputRef.current) {
       inputRef.current.focus()
       inputRef.current.select()
+      
+      // Calculate button position
+      const rect = inputRef.current.getBoundingClientRect()
+      setButtonPosition({
+        top: rect.bottom + window.scrollY + 4,
+        left: rect.left + window.scrollX
+      })
     }
   }, [isEditing])
 
   const handleClick = () => {
     if (!disabled) {
-      setIsEditing(true)
-      setTempValue(value)
+      if (isDate) {
+        setShowDatePicker(true)
+      } else {
+        setIsEditing(true)
+        setTempValue(value)
+      }
     }
   }
 
@@ -59,18 +89,53 @@ export function InlineEditableField({
     }
   }
 
-  const handleBlur = () => {
-    // Small delay to allow clicking save button
+  const handleBlur = (e: React.FocusEvent) => {
+    // Don't auto-save if clicking on buttons
+    // Check if the related target is one of our buttons
+    const relatedTarget = e.relatedTarget as HTMLElement
+    if (relatedTarget && relatedTarget.closest('.inline-edit-buttons')) {
+      return
+    }
+    
+    // Auto-save after a delay
     setTimeout(() => {
-      handleSave()
-    }, 150)
+      if (isEditing) {
+        handleSave()
+      }
+    }, 200)
   }
 
   if (isEditing) {
     const InputComponent = multiline ? 'textarea' : 'input'
     
+    const buttons = mounted ? createPortal(
+      <div 
+        className="inline-edit-buttons fixed z-[9999] flex gap-2 text-xs"
+        style={{
+          top: `${buttonPosition.top}px`,
+          left: `${buttonPosition.left}px`
+        }}
+      >
+        <button
+          onMouseDown={(e) => e.preventDefault()} // Prevent blur
+          onClick={handleSave}
+          className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 shadow-lg"
+        >
+          ✓ Save
+        </button>
+        <button
+          onMouseDown={(e) => e.preventDefault()} // Prevent blur
+          onClick={handleCancel}
+          className="px-2 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300 shadow-lg"
+        >
+          ✕ Cancel
+        </button>
+      </div>,
+      document.body
+    ) : null
+    
     return (
-      <div className="relative inline-block w-full">
+      <>
         <InputComponent
           ref={inputRef as any}
           value={tempValue}
@@ -86,21 +151,33 @@ export function InlineEditableField({
           placeholder={placeholder}
           rows={multiline ? 3 : undefined}
         />
-        <div className="absolute -bottom-8 left-0 flex gap-2 text-xs">
-          <button
-            onClick={handleSave}
-            className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            ✓ Save
-          </button>
-          <button
-            onClick={handleCancel}
-            className="px-2 py-1 bg-gray-200 text-gray-700 rounded hover:bg-gray-300"
-          >
-            ✕ Cancel
-          </button>
-        </div>
-      </div>
+        {buttons}
+      </>
+    )
+  }
+
+  // Render date picker
+  if (showDatePicker) {
+    return (
+      <>
+        <span
+          className={cn(
+            "cursor-pointer bg-blue-50 outline outline-2 outline-blue-500 rounded px-1",
+            className
+          )}
+          style={style}
+        >
+          {value || placeholder}
+        </span>
+        <MonthYearPicker
+          value={value}
+          onChange={(newValue) => {
+            onChange(newValue)
+            setShowDatePicker(false)
+          }}
+          onClose={() => setShowDatePicker(false)}
+        />
+      </>
     )
   }
 
