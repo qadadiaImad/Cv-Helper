@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ivy League Template - Standalone</title>
+  <link href="https://fonts.googleapis.com/css2?family=PT+Sans:wght@400;700&family=Volkhov:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'PT Sans', Arial, Helvetica, sans-serif;
+      background: #e0e0e0;
+      padding: 20px;
+      display: flex;
+      justify-content: center;
+    }
+    
+    .template-container {
+      width: 850px;
+      min-height: 1200px;
+      background: #ffffff;
+      padding: 50px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    
+    /* Header */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+      padding: 6px 12px;
+    }
+    
+    h1 {
+      font-family: 'Volkhov', Georgia, serif;
+      text-transform: uppercase;
+      color: #002b7f;
+      font-size: 22px;
+      line-height: 28px;
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+    
+    .subtitle {
+      color: #56acf2;
+      font-size: 18px;
+      line-height: 22px;
+      font-weight: 400;
+      margin-bottom: 12px;
+    }
+    
+    .contact-info {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      line-height: 16px;
+      color: #333;
+      flex-wrap: wrap;
+    }
+    
+    /* Sections */
+    section {
+      margin-bottom: 24px;
+    }
+    
+    .section-title {
+      font-family: 'Volkhov', Georgia, serif;
+      border-bottom: 1px solid #002b7f;
+      color: #002b7f;
+      font-size: 18px;
+      line-height: 23px;
+      font-weight: 700;
+      margin-bottom: 12px;
+      padding: 6px 12px 4px;
+    }
+    
+    .section-content {
+      padding: 6px 12px;
+    }
+    
+    /* Achievements Grid */
+    .achievements-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+    
+    .achievement-item {
+      padding: 6px 12px;
+    }
+    
+    .achievement-title {
+      color: #002b7f;
+      font-size: 15px;
+      line-height: 18px;
+      font-weight: 400;
+      margin-bottom: 4px;
+    }
+    
+    .achievement-desc {
+      font-size: 13px;
+      line-height: 16px;
+      color: #333;
+    }
+    
+    /* Experience/Education Items */
+    .item {
+      padding: 6px 12px;
+      margin-bottom: 12px;
+    }
+    
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 4px;
+    }
+    
+    .company-name {
+      color: #56acf2;
+      font-size: 18px;
+      line-height: 22px;
+      font-weight: 400;
+    }
+    
+    .location {
+      font-size: 15px;
+      line-height: 18px;
+      color: #333;
+      text-align: right;
+    }
+    
+    .position {
+      color: #002b7f;
+      font-size: 15px;
+      line-height: 18px;
+      font-weight: 400;
+    }
+    
+    .date-range {
+      font-size: 15px;
+      line-height: 18px;
+      color: #333;
+      font-weight: 400;
+      text-align: right;
+    }
+    
+    /* Skills */
+    .skills-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    
+    .skill-tag {
+      font-size: 13px;
+      line-height: 16px;
+      color: #333;
+      padding: 4px 8px;
+      background: #f0f0f0;
+      border-radius: 4px;
+    }
+    
+    p {
+      font-size: 13px;
+      line-height: 18px;
+      color: #333;
+      text-align: left;
+    }
+  </style>
+</head>
+<body>
+  <div class="template-container">
+    <!-- Header -->
+    <header>
+      <h1>AHMAD HADDOU</h1>
+      <div class="subtitle">Quantitative Researcher | Financial Modeling | Data Analysis | Risk Management</div>
+      <div class="contact-info">
+        <span>ahmad.haddou@email.com</span>
+        <span>•</span>
+        <span>linkedin.com/in/ahmad-haddou</span>
+        <span>•</span>
+        <span>Grenoble</span>
+      </div>
+    </header>
+
+    <!-- Summary -->
+    <section>
+      <h2 class="section-title">Résumé</h2>
+      <div class="section-content">
+        <p>A strong foundation in quantitative analysis and financial markets is held, supported by diverse experiences at top-tier financial institutions. A keen interest in leveraging advanced quantitative techniques to drive impactful decisions is present.</p>
+      </div>
+    </section>
+
+    <!-- Achievements -->
+    <section>
+      <h2 class="section-title">Réalisations</h2>
+      <div class="achievements-grid">
+        <div class="achievement-item">
+          <div class="achievement-title">Enhanced Model Efficiency</div>
+          <div class="achievement-desc">Increased trading model efficiency by 25%, reducing processing time for financial forecasts.</div>
+        </div>
+        <div class="achievement-item">
+          <div class="achievement-title">Improved Risk Assessment</div>
+          <div class="achievement-desc">Developed quantitative algorithms that improved risk assessment by 30% at HSBC.</div>
+        </div>
+        <div class="achievement-item">
+          <div class="achievement-title">Automated Data Processing</div>
+          <div class="achievement-desc">Automated data processing tools that reduced data handling time by 40% at BNP Paribas.</div>
+        </div>
+        <div class="achievement-item">
+          <div class="achievement-title">Boosted Fund Performance</div>
+          <div class="achievement-desc">Conducted analysis leading to 15% increase in fund performance at Ostrum Asset Management.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Experience -->
+    <section>
+      <h2 class="section-title">Expérience</h2>
+      
+      <div class="item">
+        <div class="item-header">
+          <div class="company-name">Crédit Agricole CIB</div>
+          <div class="location">Montrouge, France</div>
+        </div>
+        <div class="item-header">
+          <div class="position">Quantitative Researcher</div>
+          <div class="date-range">07/2023 - Présent</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-header">
+          <div class="company-name">HSBC</div>
+          <div class="location">Paris, France</div>
+        </div>
+        <div class="item-header">
+          <div class="position">Analyste quantitatif</div>
+          <div class="date-range">05/2021 - 07/2023</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-header">
+          <div class="company-name">BNP Paribas CIB</div>
+          <div class="location">Paris, France</div>
+        </div>
+        <div class="item-header">
+          <div class="position">IT Commando</div>
+          <div class="date-range">09/2019 - 01/2021</div>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item-header">
+          <div class="company-name">Ostrum Asset Management</div>
+          <div class="location">Région de Paris, France</div>
+        </div>
+        <div class="item-header">
+          <div class="position">Stagiaire</div>
+          <div class="date-range">03/2019 - 08/2019</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section>
+      <h2 class="section-title">Éducation</h2>
+      
+      <div class="item">
+        <div class="item-header">
+          <div class="company-name">National School of Computer Science and Applied Mathematics of Grenoble</div>
+          <div class="date-range">01/2015 - 12/2018</div>
+        </div>
+        <div class="position">Engineering Degree in Computer Science</div>
+      </div>
+    </section>
+
+    <!-- Skills -->
+    <section>
+      <h2 class="section-title">Compétences</h2>
+      <div class="section-content">
+        <div class="skills-container">
+          <span class="skill-tag">Python</span>
+          <span class="skill-tag">R</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">Machine Learning</span>
+          <span class="skill-tag">Financial Modeling</span>
+          <span class="skill-tag">Risk Management</span>
+          <span class="skill-tag">Data Analysis</span>
+          <span class="skill-tag">Quantitative Research</span>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

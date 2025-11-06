@@ -1,8 +1,9 @@
 import * as UniversalTemplates from '../templates/universal-templates'
 import { getUniversalTemplateById } from '../templates/universal-registry'
 import type { UniversalResumeData } from '../templates/universal-schema'
-import { AlertCircle, Maximize2, Minimize2 } from 'lucide-react'
-import { useState } from 'react'
+import { AlertCircle, Maximize2, Minimize2, Download } from 'lucide-react'
+import { useState, useRef } from 'react'
+import { generatePDFFromTemplate } from '../utils/pdf-generator'
 
 interface TemplatePreviewProps {
   templateId: string
@@ -18,13 +19,53 @@ const TEMPLATE_COMPONENT_MAP: Record<string, keyof typeof UniversalTemplates> = 
   'harvard': 'Harvard',
   'evergreen': 'Evergreen',
   'youngcurve': 'YoungCurve',
+  'simple_hipster': 'SimpleHipster',
+  'simple_hipster_proper': 'SimpleHipsterProper',
+  'jack_sparrow': 'JackSparrow',
+  'creative_cv': 'CreativeCV',
+  'academic_cv': 'AcademicCV',
+  'cv9': 'CV9Template',
+  'cv1': 'CV1Template',
+  'cv12': 'CV12Template',
+  'modern_resume': 'ModernResumeTemplate',
+  'ivy_league': 'IvyLeagueTemplate',
+  'stockholm': 'StockholmTemplate',
+  'double-column': 'DoubleColumnTemplate',
+  'creative-orange': 'CreativeOrangeTemplate',
+  'teal-modern': 'TealModernTemplate',
+  'beige-sidebar': 'BeigeSidebarTemplate',
+  'dark-blue-orange': 'DarkBlueOrangeTemplate',
+  'gray-minimal': 'GrayMinimalTemplate',
+  'dark-professional': 'DarkProfessionalTemplate',
+  'orange-sidebar': 'OrangeSidebarTemplate',
+  'teal-rounded': 'TealRoundedTemplate',
+  'navy-professional': 'NavyProfessionalTemplate',
+  'blue-circular': 'BlueCircularTemplate',
 }
 
 export function TemplatePreview({ templateId, data }: TemplatePreviewProps) {
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [isGeneratingPDF, setIsGeneratingPDF] = useState(false)
+  const templateRef = useRef<HTMLDivElement>(null)
   const template = getUniversalTemplateById(templateId)
   const componentName = TEMPLATE_COMPONENT_MAP[templateId]
   const TemplateComponent = componentName ? UniversalTemplates[componentName] : null
+
+  const handleDownloadPDF = async () => {
+    if (!templateRef.current || !template) return
+
+    try {
+      setIsGeneratingPDF(true)
+
+      // Use the same PDF generation mechanism as CV-Helper main project
+      await generatePDFFromTemplate(templateRef.current, data, template.name)
+    } catch (error) {
+      console.error('Error generating PDF:', error)
+      alert('Failed to generate PDF. Please try again.')
+    } finally {
+      setIsGeneratingPDF(false)
+    }
+  }
 
   if (!template) {
     return (
@@ -58,22 +99,34 @@ export function TemplatePreview({ templateId, data }: TemplatePreviewProps) {
           <h3 className="font-semibold text-gray-900">{template.name}</h3>
           <p className="text-xs text-gray-600">{template.description}</p>
         </div>
-        <button
-          onClick={() => setIsFullscreen(!isFullscreen)}
-          className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
-          title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
-        >
-          {isFullscreen ? (
-            <Minimize2 className="w-5 h-5 text-gray-600" />
-          ) : (
-            <Maximize2 className="w-5 h-5 text-gray-600" />
-          )}
-        </button>
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleDownloadPDF}
+            disabled={isGeneratingPDF}
+            className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-400 disabled:cursor-not-allowed transition-colors flex items-center gap-2"
+            title="Download as PDF"
+          >
+            <Download className="w-4 h-4" />
+            {isGeneratingPDF ? 'Generating...' : 'Download PDF'}
+          </button>
+          <button
+            onClick={() => setIsFullscreen(!isFullscreen)}
+            className="p-2 hover:bg-gray-100 rounded-lg transition-colors"
+            title={isFullscreen ? 'Exit fullscreen' : 'Enter fullscreen'}
+          >
+            {isFullscreen ? (
+              <Minimize2 className="w-5 h-5 text-gray-600" />
+            ) : (
+              <Maximize2 className="w-5 h-5 text-gray-600" />
+            )}
+          </button>
+        </div>
       </div>
 
       {/* Preview Content */}
       <div className="flex-1 overflow-auto p-6 bg-gray-100">
         <div 
+          ref={templateRef}
           className={`bg-white shadow-lg mx-auto transition-all ${
             isFullscreen ? 'max-w-full' : 'max-w-4xl'
           }`}

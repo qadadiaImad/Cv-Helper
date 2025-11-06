@@ -15,12 +15,15 @@ export const COMPLETE_SAMPLE_DATA: UniversalResumeData = {
     linkedIn: 'linkedin.com/in/brianwayne',
     github: 'github.com/brianwayne',
     portfolio: 'portfolio.brianwayne.com',
-    photo: 'https://i.pravatar.cc/200?img=12',
+    photo: {
+      url: 'https://i.pravatar.cc/200?img=12',
+      size: 120,
+      aspectRatio: 1,
+      borderRadius: 50,
+    },
   },
 
-  summary: {
-    text: 'Results-driven Product Manager with 8+ years of experience leading cross-functional teams to deliver innovative solutions. Proven track record of launching successful products that drive business growth and enhance user experience. Skilled in agile methodologies, data analysis, and stakeholder management.',
-  },
+  summary: 'Results-driven Product Manager with 8+ years of experience leading cross-functional teams to deliver innovative solutions. Proven track record of launching successful products that drive business growth and enhance user experience. Skilled in agile methodologies, data analysis, and stakeholder management.',
 
   experience: [
     {

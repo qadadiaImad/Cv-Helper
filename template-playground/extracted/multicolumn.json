@@ -1,0 +1,72 @@
+{
+  "templateId": "multicolumn",
+  "templateInfo": {
+    "index": 14,
+    "name": "Multicolumn",
+    "imageUrl": "https://cdn.enhancv.com/predefined-examples/kEiukJdYj2uZ07c65K9GRqBkyFge5sfV7xIM0pAQ/image.png"
+  },
+  "htmlLength": 33698,
+  "computedStyles": {
+    "columnStyles": {
+      "display": "flex",
+      "gridTemplateColumns": "none",
+      "gap": "normal",
+      "width": "852px",
+      "height": "122px",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "fontFamily": "Inter, Helvetica, Arial, Sans-Serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "color": "rgb(62, 62, 62)",
+      "borderBottom": "1px solid rgba(0, 0, 0, 0)",
+      "lineHeight": "normal",
+      "textTransform": "none"
+    },
+    "nameStyles": {
+      "display": "block",
+      "gridTemplateColumns": "none",
+      "gap": "normal",
+      "width": "706px",
+      "height": "36px",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "fontFamily": "Rubik, Arial, Helvetica, \"Noto Sans Devanagari\", \"Noto Sans CJK SC Thin\", \"Noto Sans SC\", \"Noto Sans Hebrew\", \"Noto Sans Bengali\", sans-serif",
+      "fontSize": "34px",
+      "fontWeight": "500",
+      "color": "rgb(0, 0, 0)",
+      "borderBottom": "0px none rgb(0, 0, 0)",
+      "lineHeight": "34px",
+      "textTransform": "uppercase"
+    },
+    "titleStyles": {
+      "display": "block",
+      "gridTemplateColumns": "none",
+      "gap": "normal",
+      "width": "706px",
+      "height": "21px",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "fontFamily": "Rubik, Arial, Helvetica, \"Noto Sans Devanagari\", \"Noto Sans CJK SC Thin\", \"Noto Sans SC\", \"Noto Sans Hebrew\", \"Noto Sans Bengali\", sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(30, 144, 255)",
+      "borderBottom": "0px none rgb(30, 144, 255)",
+      "lineHeight": "19px",
+      "textTransform": "none"
+    },
+    "headerStyles": {
+      "display": "block",
+      "gridTemplateColumns": "none",
+      "gap": "normal",
+      "width": "217.594px",
+      "height": "19px",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "fontFamily": "Rubik, Arial, Helvetica, \"Noto Sans Devanagari\", \"Noto Sans CJK SC Thin\", \"Noto Sans SC\", \"Noto Sans Hebrew\", \"Noto Sans Bengali\", sans-serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "color": "rgb(0, 0, 0)",
+      "borderBottom": "2px solid rgb(0, 0, 0)",
+      "lineHeight": "17px",
+      "textTransform": "uppercase"
+    }
+  },
+  "extractedAt": "2025-11-02T22:32:37.747Z"
+}

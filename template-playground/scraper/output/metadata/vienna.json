@@ -1,0 +1,51 @@
+{
+  "id": "vienna",
+  "name": "Vienna",
+  "source": "enhancv",
+  "url": "https://app.enhancv.com/templates/vienna",
+  "scrapedAt": "2025-11-02T20:03:27.752Z",
+  "colors": {
+    "all": [
+      "#000000",
+      "#384347",
+      "#fafbfd",
+      "#ffffff",
+      "#d4d8df",
+      "#212121",
+      "#2dc08d",
+      "#f4f4f4",
+      "#1863dc",
+      "#008000",
+      "#ebebeb",
+      "#d0d5d2",
+      "#293c5b",
+      "#ededed",
+      "#e7ecf5",
+      "#9cb2dc",
+      "#5f4dc7",
+      "#2d3639",
+      "#afb4b5",
+      "#60696c",
+      "#f0f0f0",
+      "#c1c1c1"
+    ],
+    "primary": "#000000",
+    "accent": "#384347",
+    "background": "#ffffff",
+    "text": "#333333"
+  },
+  "fonts": {
+    "all": [
+      "sans-serif",
+      "Inter",
+      "Rubik",
+      "Times New Roman"
+    ],
+    "heading": "sans-serif",
+    "body": "Inter"
+  },
+  "dimensions": {
+    "width": 850,
+    "height": 1200
+  }
+}
