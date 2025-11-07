@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Template 6 - CV1 Comparison (FIXED)</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Helvetica Neue', Arial, sans-serif;
+      background: #e0e0e0;
+      padding: 20px;
+    }
+    
+    .comparison-container {
+      display: flex;
+      gap: 20px;
+      justify-content: center;
+      max-width: 1800px;
+      margin: 0 auto;
+    }
+    
+    .panel {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    
+    .panel-header {
+      background: #333;
+      color: white;
+      padding: 15px 20px;
+      font-weight: bold;
+    }
+    
+    .original-image {
+      width: 850px;
+    }
+    
+    .original-image img {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    
+    /* Template 6 - CV1 Accurate Layout */
+    .template-container {
+      width: 850px;
+      height: 1200px;
+      background: #ffffff;
+      font-family: 'Arial', sans-serif;
+      display: flex;
+      overflow: hidden;
+    }
+    
+    /* Left sidebar - Orange */
+    .sidebar {
+      width: 30%;
+      background: #f39c12;
+      color: white;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+    
+    /* Photo section */
+    .photo-section {
+      background: #3a3a3a;
+      padding: 25px;
+      text-align: center;
+    }
+    
+    .photo-frame {
+      width: 140px;
+      height: 140px;
+      margin: 0 auto;
+      border: 8px solid #f39c12;
+      background: white;
+      overflow: hidden;
+    }
+    
+    .photo-frame img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    
+    /* Sidebar content */
+    .sidebar-content {
+      padding: 25px 20px;
+      flex: 1;
+      overflow-y: auto;
+    }
+    
+    .sidebar-section {
+      margin-bottom: 25px;
+    }
+    
+    .sidebar-title {
+      font-size: 12px;
+      font-weight: bold;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      letter-spacing: 1px;
+    }
+    
+    .sidebar-text {
+      font-size: 10px;
+      line-height: 1.7;
+      text-align: justify;
+    }
+    
+    .contact-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      font-size: 10px;
+      gap: 8px;
+    }
+    
+    .contact-icon {
+      font-size: 12px;
+    }
+    
+    .qualification-item {
+      margin-bottom: 12px;
+      font-size: 10px;
+      line-height: 1.6;
+    }
+    
+    .qualification-item strong {
+      display: block;
+      margin-bottom: 4px;
+      font-size: 11px;
+    }
+    
+    /* Main content area - White */
+    .main-content {
+      width: 70%;
+      background: white;
+      padding: 35px 30px;
+      overflow-y: auto;
+    }
+    
+    .header {
+      margin-bottom: 30px;
+    }
+    
+    .name {
+      font-size: 36px;
+      font-weight: bold;
+      color: #f39c12;
+      margin-bottom: 8px;
+    }
+    
+    .section {
+      margin-bottom: 25px;
+    }
+    
+    .section-title {
+      font-size: 13px;
+      font-weight: bold;
+      color: #333;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      padding-bottom: 8px;
+      border-bottom: 2px solid #f39c12;
+      letter-spacing: 1px;
+    }
+    
+    .experience-item {
+      margin-bottom: 18px;
+    }
+    
+    .experience-header {
+      margin-bottom: 5px;
+    }
+    
+    .experience-date {
+      font-size: 10px;
+      color: #f39c12;
+      font-weight: bold;
+      margin-bottom: 3px;
+    }
+    
+    .experience-title {
+      font-size: 12px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 2px;
+    }
+    
+    .experience-company {
+      font-size: 11px;
+      color: #666;
+      margin-bottom: 8px;
+    }
+    
+    .experience-description ul {
+      list-style: none;
+      padding: 0;
+      font-size: 10px;
+      color: #666;
+      line-height: 1.7;
+    }
+    
+    .experience-description li {
+      margin-bottom: 5px;
+      padding-left: 15px;
+      position: relative;
+    }
+    
+    .experience-description li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #f39c12;
+    }
+    
+    .education-item {
+      margin-bottom: 15px;
+    }
+    
+    .education-year {
+      font-size: 10px;
+      color: #f39c12;
+      font-weight: bold;
+      margin-bottom: 3px;
+    }
+    
+    .education-degree {
+      font-size: 11px;
+      font-weight: bold;
+      color: #333;
+      margin-bottom: 2px;
+    }
+    
+    .education-school {
+      font-size: 10px;
+      color: #666;
+    }
+    
+    .languages-list {
+      font-size: 10px;
+      color: #666;
+      line-height: 1.8;
+    }
+    
+    .languages-list li {
+      list-style: none;
+      padding-left: 15px;
+      position: relative;
+    }
+    
+    .languages-list li::before {
+      content: '•';
+      position: absolute;
+      left: 0;
+      color: #f39c12;
+    }
+  </style>
+</head>
+<body>
+  <div class="comparison-container">
+    <!-- Original Image -->
+    <div class="panel original-image">
+      <div class="panel-header">📸 Original Template 6 (CV1)</div>
+      <img src="https://assets.livecareer.co.uk/blobimages/lcintl-lp/luk/lukrsmlp09/images/template-cv1.svg" alt="Original Template">
+    </div>
+    
+    <!-- Generated HTML/CSS -->
+    <div class="panel">
+      <div class="panel-header">🎨 Generated HTML/CSS - Template 6 (FIXED)</div>
+      <div class="template-container">
+        <!-- Left Sidebar - Orange -->
+        <aside class="sidebar">
+          <div class="photo-section">
+            <div class="photo-frame">
+              <div style="width: 100%; height: 100%; background: #ddd; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #999;">PHOTO</div>
+            </div>
+          </div>
+          
+          <div class="sidebar-content">
+            <div class="sidebar-section">
+              <div class="contact-item">
+                <span class="contact-icon">📍</span>
+                <span>Hinton SN14</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-icon">📞</span>
+                <span>0702288776</span>
+              </div>
+              <div class="contact-item">
+                <span class="contact-icon">✉️</span>
+                <span>olivia@taylor.com</span>
+              </div>
+            </div>
+            
+            <div class="sidebar-section">
+              <h3 class="sidebar-title">Professional Summary</h3>
+              <p class="sidebar-text">
+                Meticulous sales professional with 4+ years of retail outlet experience. 
+                Proven track record of exceeding monthly sales targets at a co-operative store. 
+                Possess product knowledge assessments at Primark. Seeking to leverage proven 
+                sales skills in a more dynamic setting with Zara. Repeatedly scoring 95%+ on 
+                product knowledge assessments.
+              </p>
+            </div>
+            
+            <div class="sidebar-section">
+              <h3 class="sidebar-title">Core Qualifications</h3>
+              <div class="qualification-item">
+                <strong>Product knowledge:</strong>
+                Rapidly gaining and successfully maintaining complete knowledge of products, 
+                proven by track record of product knowledge assessment.
+              </div>
+              <div class="qualification-item">
+                <strong>Upselling:</strong>
+                Proven track record in creating extra turnover by upselling products at 
+                the counter and on the shop floor.
+              </div>
+              <div class="qualification-item">
+                <strong>Visual merchandising:</strong>
+                Contributed to award-winning shop floor arrangements.
+              </div>
+              <div class="qualification-item">
+                <strong>New employee training:</strong>
+                Successfully trained multiple new colleagues for sales-related positions.
+              </div>
+              <div class="qualification-item">
+                <strong>Interpersonal skills:</strong>
+                Built warm relationships with regular customers resulting in repeat business.
+              </div>
+            </div>
+          </div>
+        </aside>
+        
+        <!-- Main Content - White -->
+        <main class="main-content">
+          <header class="header">
+            <h1 class="name">Olivia Taylor</h1>
+          </header>
+          
+          <section class="section">
+            <h2 class="section-title">Experience</h2>
+            
+            <div class="experience-item">
+              <div class="experience-header">
+                <div class="experience-date">February 2018 - Current</div>
+                <div class="experience-title">Sales Assistant</div>
+                <div class="experience-company">Co-Operative, Bath</div>
+              </div>
+              <div class="experience-description">
+                <ul>
+                  <li>Operated checkout and assisted customers at high-traffic location with £750K+ in annual turnover.</li>
+                  <li>Exceeded monthly sales target by a minimum of 5% for 18 months in a row.</li>
+                  <li>Achieved £150 extra daily turnover by upselling products at the counter.</li>
+                  <li>Reduced stock losses by 30%.</li>
+                  <li>Trained 2 new full-time and part-time team members, and also updating them on company policy and procedures.</li>
+                  <li>Created and fostered warm customer relationships.</li>
+                  <li>Took charge of opening and closing up the shop at times, cashing up, stock control and visual merchandising.</li>
+                </ul>
+              </div>
+            </div>
+            
+            <div class="experience-item">
+              <div class="experience-header">
+                <div class="experience-date">June 2016 - February 2018</div>
+                <div class="experience-title">Sales Assistant</div>
+                <div class="experience-company">Primark, Bath</div>
+              </div>
+              <div class="experience-description">
+                <ul>
+                  <li>Maintained sales floor presence at shopping center fashion outlet that exceed £2m in annual sales.</li>
+                  <li>Regularly assisted 250+ customers a day on the shop floor, following up and upselling.</li>
+                  <li>Contributed to visual appearance of the store that won national award for best presented store in the chain.</li>
+                  <li>Repeatedly scoring 95%+ on product knowledge assessments.</li>
+                </ul>
+              </div>
+            </div>
+          </section>
+          
+          <section class="section">
+            <h2 class="section-title">Education</h2>
+            
+            <div class="education-item">
+              <div class="education-year">2016</div>
+              <div class="education-degree">5 GCSEs including Mathematics and English</div>
+              <div class="education-school">Greenford Academy, London, UK</div>
+            </div>
+          </section>
+          
+          <section class="section">
+            <h2 class="section-title">Languages</h2>
+            <ul class="languages-list">
+              <li>English (Native)</li>
+              <li>Spanish (Fluent)</li>
+              <li>French (Intermediate)</li>
+            </ul>
+          </section>
+        </main>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

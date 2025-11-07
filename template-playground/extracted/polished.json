@@ -1,0 +1,58 @@
+{
+  "templateId": "polished",
+  "templateInfo": {
+    "index": 4,
+    "name": "Polished",
+    "imageUrl": "https://cdn.enhancv.com/predefined-examples/DnCZ9A1LCR5AzyBf1fqt3xz4LsdViubXXsjCISF9/image.png"
+  },
+  "htmlLength": 31346,
+  "computedStyles": {
+    "columnStyles": {
+      "display": "grid",
+      "gridTemplateColumns": "300px 552px",
+      "gap": "normal 16px",
+      "width": "868px",
+      "height": "447px",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "fontFamily": "Inter, Helvetica, Arial, Sans-Serif",
+      "fontSize": "14px",
+      "fontWeight": "400",
+      "color": "rgb(62, 62, 62)",
+      "borderBottom": "0px none rgb(62, 62, 62)",
+      "lineHeight": "normal",
+      "textTransform": "none"
+    },
+    "nameStyles": null,
+    "titleStyles": {
+      "display": "block",
+      "gridTemplateColumns": "none",
+      "gap": "normal",
+      "width": "506px",
+      "height": "24px",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "fontFamily": "Inter, Arial, Helvetica, \"Noto Sans Devanagari\", \"Noto Sans CJK SC Thin\", \"Noto Sans SC\", \"Noto Sans Hebrew\", \"Noto Sans Bengali\", sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(0, 140, 255)",
+      "borderBottom": "0px none rgb(0, 140, 255)",
+      "lineHeight": "20px",
+      "textTransform": "none"
+    },
+    "headerStyles": {
+      "display": "block",
+      "gridTemplateColumns": "none",
+      "gap": "normal",
+      "width": "518px",
+      "height": "29px",
+      "backgroundColor": "rgba(0, 0, 0, 0)",
+      "fontFamily": "Rubik, Arial, Helvetica, \"Noto Sans Devanagari\", \"Noto Sans CJK SC Thin\", \"Noto Sans SC\", \"Noto Sans Hebrew\", \"Noto Sans Bengali\", sans-serif",
+      "fontSize": "16px",
+      "fontWeight": "400",
+      "color": "rgb(62, 62, 62)",
+      "borderBottom": "1px solid rgb(189, 189, 189)",
+      "lineHeight": "20px",
+      "textTransform": "uppercase"
+    }
+  },
+  "extractedAt": "2025-11-02T22:29:38.672Z"
+}
