@@ -15,11 +15,12 @@ import Link from "next/link"
 import { useCVStore } from "@/hooks/use-cv-store"
 import { cn } from "@/lib/utils"
 import { REACT_TEMPLATES, type TemplateId } from "@/lib/react-templates"
-import { PersonalForm } from "@/components/builder/personal-form"
-import { ExperienceForm } from "@/components/builder/experience-form"
-import { EducationForm } from "@/components/builder/education-form"
-import { SkillsForm } from "@/components/builder/skills-form"
-import { ProjectsForm } from "@/components/builder/projects-form"
+import { PersonalForm } from '@/components/builder/personal-form'
+import { SummaryForm } from '@/components/builder/summary-form'
+import { ExperienceForm } from '@/components/builder/experience-form'
+import { EducationForm } from '@/components/builder/education-form'
+import { SkillsForm } from '@/components/builder/skills-form'
+import { ProjectsForm } from '@/components/builder/projects-form'
 import { AnimatedBackground } from "@/components/animated-background"
 import { WritingAnimationIcon } from "@/components/writing-animation-icon"
 import { getTemplateTheme } from "@/lib/template-themes"
@@ -202,7 +203,7 @@ const SAMPLE_CV_DATA: UniversalResumeData = {
   ]
 }
 
-type SectionId = 'personal' | 'experience' | 'education' | 'skills' | 'projects'
+type SectionId = 'personal' | 'summary' | 'experience' | 'education' | 'skills' | 'projects'
 
 interface Section {
   id: SectionId
@@ -217,6 +218,12 @@ const SECTIONS: Section[] = [
     title: 'Personal Information',
     description: 'Your basic contact details',
     requiredFields: ['personal.fullName', 'personal.email', 'personal.phone'],
+  },
+  {
+    id: 'summary',
+    title: 'Professional Summary',
+    description: 'Brief overview of your profile',
+    requiredFields: [],
   },
   {
     id: 'experience',
@@ -259,6 +266,9 @@ export default function ReactBuilderPage() {
   const [editingSection, setEditingSection] = useState<string | null>(null)
   const [tempData, setTempData] = useState<UniversalResumeData | null>(null)
   
+  // Edit mode toggle: true = field-editable, false = normal template with forms
+  const [useFieldEditable, setUseFieldEditable] = useState(true)
+  
   // Sync local state when activeCV changes
   useEffect(() => {
     if (activeCV) {
@@ -292,6 +302,8 @@ export default function ReactBuilderPage() {
     switch (sectionId) {
       case 'personal':
         return !!(activeCV.data.personal.fullName && activeCV.data.personal.email && activeCV.data.personal.phone)
+      case 'summary':
+        return !!(activeCV.data.summary && activeCV.data.summary.length > 20) // At least 20 chars
       case 'experience':
         return activeCV.data.experience.length > 0
       case 'education':
@@ -349,6 +361,28 @@ export default function ReactBuilderPage() {
             </div>
             
             <div className="flex items-center gap-2">
+              {/* Edit Mode Toggle */}
+              <div className="flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-lg border border-slate-200">
+                <span className="text-xs font-medium text-slate-600">Edit Mode:</span>
+                <button
+                  onClick={() => setUseFieldEditable(!useFieldEditable)}
+                  className={cn(
+                    "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
+                    useFieldEditable ? "bg-blue-600" : "bg-slate-300"
+                  )}
+                >
+                  <span
+                    className={cn(
+                      "inline-block h-4 w-4 transform rounded-full bg-white transition-transform",
+                      useFieldEditable ? "translate-x-6" : "translate-x-1"
+                    )}
+                  />
+                </button>
+                <span className="text-xs font-medium text-slate-700">
+                  {useFieldEditable ? 'In Template' : 'With Forms'}
+                </span>
+              </div>
+              
               <Button variant="outline" size="sm" onClick={handleSaveDraft}>
                 <Save className="h-4 w-4 mr-2" />
                 Save Draft
@@ -376,17 +410,36 @@ export default function ReactBuilderPage() {
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">
-        <div className="max-w-5xl mx-auto">
-          {/* Inline Editable CV Preview */}
-          {ready && activeCV && localCVData && (
-            <div className="relative">
-              {/* Writing Animation Icon */}
-              <div className="fixed bottom-8 right-8 z-40">
-                <WritingAnimationIcon 
-                  progress={progress} 
-                  isEditing={false}
-                />
+        {useFieldEditable ? (
+          // Field-Editable Mode: Full-width template with inline editing
+          <div className="max-w-5xl mx-auto">
+            {ready && activeCV && localCVData && (
+              <div className="relative">
+                {/* Writing Animation Icon */}
+                <div className="fixed bottom-8 right-8 z-40">
+                  <WritingAnimationIcon 
+                    progress={progress} 
+                    isEditing={false}
+                  />
+                </div>
+                
+                <Card className="p-0 shadow-2xl bg-white overflow-hidden">
+                  {(() => {
+                    const TemplateComponent = getFieldEditableTemplate(activeCV.templateId)
+                    return (
+                      <TemplateComponent
+                        data={localCVData}
+                        editMode={true}
+                        onFieldChange={(path, value) => {
+                          const updatedData = updateNestedField(localCVData, path, value)
+                          handleDataChange(updatedData)
+                        }}
+                      />
+                    )
+                  })()}
+                </Card>
               </div>
+<<<<<<< Updated upstream
               
               <Card className="p-0 shadow-2xl bg-white overflow-hidden">
                 <AtlanticBlueFieldEditable
@@ -404,6 +457,13 @@ export default function ReactBuilderPage() {
 
         {/* OLD SIDEBAR LAYOUT - KEEPING FOR REFERENCE, WILL REMOVE LATER */}
         <div className="hidden grid-cols-1 lg:grid-cols-12 gap-6">
+=======
+            )}
+          </div>
+        ) : (
+          // Normal Mode: Sidebar with forms + read-only template preview
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+>>>>>>> Stashed changes
           {/* Left Sidebar - Collapsible Sections */}
           <div className="lg:col-span-4 space-y-4">
             <Card 
@@ -466,6 +526,7 @@ export default function ReactBuilderPage() {
                         <div className="px-4 pb-4 border-t animate-in fade-in slide-in-from-top-2 duration-300">
                           <div className="pt-4">
                             {section.id === 'personal' && <PersonalForm data={localCVData} onChange={handleDataChange} />}
+                            {section.id === 'summary' && <SummaryForm data={localCVData} onChange={handleDataChange} />}
                             {section.id === 'experience' && <ExperienceForm data={localCVData} onChange={handleDataChange} />}
                             {section.id === 'education' && <EducationForm data={localCVData} onChange={handleDataChange} />}
                             {section.id === 'skills' && <SkillsForm data={localCVData} onChange={handleDataChange} />}
@@ -506,63 +567,18 @@ export default function ReactBuilderPage() {
           </div>
 
           {/* Right - Preview */}
-          {previewVisible && (
+          {previewVisible && ready && activeCV && localCVData && (
             <div className="lg:col-span-8">
-              <Card className="p-6">
-                <div className="flex items-center justify-between mb-4">
-                  <h2 className="font-semibold">Live Preview</h2>
-                  {activeCV && (
-                    <div className="flex items-center gap-2">
-                      <label className="text-sm text-muted-foreground">Template:</label>
-                      <Select
-                        value={activeCV.templateId}
-                        onValueChange={(templateId: TemplateId) => {
-                          if (activeCVId) {
-                            changeTemplate(activeCVId, templateId)
-                          }
-                        }}
-                      >
-                        <SelectTrigger className="w-[200px]">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent>
-                          {Object.keys(REACT_TEMPLATES).map((id) => (
-                            <div key={id} className="flex items-center justify-between px-2 py-1 hover:bg-slate-100 rounded group">
-                              <SelectItem value={id} className="flex-1 border-0">
-                                {id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                              </SelectItem>
-                              <Button
-                                variant="ghost"
-                                size="sm"
-                                className="h-6 w-6 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                                onClick={(e) => {
-                                  e.stopPropagation()
-                                  setPreviewTemplateId(id as TemplateId)
-                                  setShowTemplatePreview(true)
-                                }}
-                              >
-                                <Eye className="h-3 w-3" />
-                              </Button>
-                            </div>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                    </div>
-                  )}
-                </div>
-                {ready && activeCV && localCVData && (
-                  <>
-                    <CVPreview 
-                      data={localCVData} 
-                      selectedTemplate={activeCV.templateId} 
-                      showToolbar={false} 
-                    />
-                  </>
-                )}
+              <Card className="p-0 shadow-2xl bg-white overflow-hidden sticky top-24">
+                {(() => {
+                  const TemplateComponent = REACT_TEMPLATES[activeCV.templateId]
+                  return <TemplateComponent data={localCVData} />
+                })()}
               </Card>
             </div>
           )}
         </div>
+        )}
       </main>
 
       {/* Template Preview Modal */}

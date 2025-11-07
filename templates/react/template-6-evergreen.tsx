@@ -26,7 +26,7 @@ export const Evergreen: React.FC<UniversalTemplateProps> = ({ data }) => (
       alignItems: 'center',
     }}>
       {/* Photo */}
-      {data.personal.photo && (
+      {data.personal.photo?.url && (
         <div style={{
           width: '130px',
           height: '130px',
@@ -36,7 +36,7 @@ export const Evergreen: React.FC<UniversalTemplateProps> = ({ data }) => (
           backgroundColor: '#fff',
           border: '5px solid rgba(255,255,255,0.2)',
         }}>
-          <img src={data.personal.photo} alt={data.personal.fullName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={data.personal.photo.url} alt={data.personal.fullName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
       )}
 
@@ -81,7 +81,7 @@ export const Evergreen: React.FC<UniversalTemplateProps> = ({ data }) => (
         {data.summary && (
           <section style={{ marginBottom: '35px' }}>
             <h2 style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '15px', color: '#333' }}>Profile</h2>
-            <p style={{ fontSize: '11px', lineHeight: '1.7', textAlign: 'justify', color: '#444' }}>{data.summary.text}</p>
+            <p style={{ fontSize: '11px', lineHeight: '1.7', textAlign: 'justify', color: '#444' }}>{data.summary}</p>
           </section>
         )}
 
