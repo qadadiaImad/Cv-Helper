@@ -6,7 +6,6 @@ import { CVPreview } from "@/components/cv-preview"
 import { InlineCVPreview } from "@/components/inline-cv-preview"
 import { AtlanticBlueEditable } from "@/templates/react/template-1-atlantic-blue-editable"
 import { AtlanticBlueFieldEditable } from "@/templates/react/template-1-atlantic-blue-field-editable"
-import { getFieldEditableTemplate } from "@/lib/field-editable-templates"
 import { updateNestedField } from "@/lib/field-updater"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -390,19 +389,14 @@ export default function ReactBuilderPage() {
               </div>
               
               <Card className="p-0 shadow-2xl bg-white overflow-hidden">
-                {(() => {
-                  const TemplateComponent = getFieldEditableTemplate(activeCV.templateId)
-                  return (
-                    <TemplateComponent
-                      data={localCVData}
-                      editMode={true}
-                      onFieldChange={(path, value) => {
-                        const updatedData = updateNestedField(localCVData, path, value)
-                        handleDataChange(updatedData)
-                      }}
-                    />
-                  )
-                })()}
+                <AtlanticBlueFieldEditable
+                  data={localCVData}
+                  editMode={true}
+                  onFieldChange={(path, value) => {
+                    const updatedData = updateNestedField(localCVData, path, value)
+                    handleDataChange(updatedData)
+                  }}
+                />
               </Card>
             </div>
           )}

@@ -9,18 +9,29 @@
     "preview": "vite preview",
     "sync:from-main": "node scripts/sync-from-main.js",
     "sync:to-main": "node scripts/sync-to-main.js",
-    "sync-templates": "npm run sync:from-main"
+    "sync-templates": "npm run sync:from-main",
+    "extract:all": "node scripts/extract-templates.js --provider enhancv --all",
+    "extract:template": "node scripts/extract-templates.js --provider enhancv --template",
+    "extract:templates": "node scripts/extract-templates.js --provider enhancv --templates",
+    "extract:index": "node scripts/extract-templates-v2.js --provider enhancv --index",
+    "extract:auto": "node scripts/extract-templates-v2.js --provider enhancv --all",
+    "integrate": "node scripts/integrate-template.js --auto",
+    "integrate:template": "node scripts/integrate-template.js --id"
   },
   "dependencies": {
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.3",
+    "lucide-react": "^0.454.0",
+    "node-html-parser": "^7.0.1",
     "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "lucide-react": "^0.454.0"
+    "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@types/react": "^18.3.12",
     "@types/react-dom": "^18.3.1",
     "@vitejs/plugin-react": "^4.3.4",
     "autoprefixer": "^10.4.20",
+    "playwright": "^1.40.0",
     "postcss": "^8.5.1",
     "tailwindcss": "^3.4.17",
     "typescript": "^5.7.3",
