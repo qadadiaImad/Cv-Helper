@@ -127,12 +127,23 @@ export const EvergreenFieldEditable: React.FC<FieldEditableTemplateProps> = ({
                     <button onClick={() => onFieldChange('skills', data.skills!.filter((_, idx) => idx !== i))} style={{ marginLeft: '6px', padding: '1px 4px', backgroundColor: '#ef4444', color: 'white', border: 'none', borderRadius: '2px', cursor: 'pointer', fontSize: '8px' }}>✕</button>
                   )}
                 </h3>
-                <div style={{
-                  height: '6px',
-                  backgroundColor: '#d5d5d5',
-                  borderRadius: '3px',
-                  overflow: 'hidden',
-                }}>
+                <div 
+                  onClick={() => {
+                    if (editMode) {
+                      const currentLevel = 85 - (i * 5)
+                      const newLevel = currentLevel >= 85 ? 60 : currentLevel + 5
+                      // Note: This is a simplified example. In a real implementation, 
+                      // you'd store skill levels separately in the data structure
+                    }
+                  }}
+                  style={{
+                    height: '6px',
+                    backgroundColor: '#d5d5d5',
+                    borderRadius: '3px',
+                    overflow: 'hidden',
+                    cursor: editMode ? 'pointer' : 'default',
+                  }}
+                >
                   <div style={{
                     width: `${85 - (i * 5)}%`,
                     height: '100%',

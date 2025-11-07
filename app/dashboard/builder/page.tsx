@@ -298,25 +298,25 @@ export default function ReactBuilderPage() {
 
   // Check if section is complete
   const isSectionComplete = useCallback((sectionId: SectionId): boolean => {
-    if (!activeCV) return false
+    if (!localCVData) return false
     
     switch (sectionId) {
       case 'personal':
-        return !!(activeCV.data.personal.fullName && activeCV.data.personal.email && activeCV.data.personal.phone)
+        return !!(localCVData.personal.fullName && localCVData.personal.email && localCVData.personal.phone)
       case 'summary':
-        return !!(activeCV.data.summary && activeCV.data.summary.length > 20) // At least 20 chars
+        return !!(localCVData.summary && localCVData.summary.length > 20) // At least 20 chars
       case 'experience':
-        return activeCV.data.experience.length > 0
+        return localCVData.experience.length > 0
       case 'education':
-        return activeCV.data.education.length > 0
+        return localCVData.education.length > 0
       case 'skills':
-        return !!(activeCV.data.skills && activeCV.data.skills.length > 0)
+        return !!(localCVData.skills && localCVData.skills.length > 0)
       case 'projects':
         return true // Optional
       default:
         return false
     }
-  }, [activeCV])
+  }, [localCVData])
 
   // Update completed sections
   useEffect(() => {
@@ -327,7 +327,7 @@ export default function ReactBuilderPage() {
       }
     })
     setCompletedSections(completed)
-  }, [activeCV, isSectionComplete])
+  }, [localCVData, isSectionComplete])
 
   // Calculate progress
   const progress = Math.round((completedSections.size / SECTIONS.length) * 100)
@@ -354,7 +354,8 @@ export default function ReactBuilderPage() {
                 </Button>
               </Link>
               <div className="flex items-center gap-3">
-                <h1 className="text-xl font-bold">Resume Builder</h1>
+                <span className="text-2xl animate-bounce">🔨</span>
+                <h1 className="text-xl font-bold">Builder</h1>
                 {activeCV && (
                   <>
                     <span className="text-slate-300">•</span>
@@ -565,8 +566,8 @@ export default function ReactBuilderPage() {
             <div className="lg:col-span-8">
               <Card className="p-0 shadow-2xl bg-white overflow-hidden sticky top-24">
                 {(() => {
-                  const TemplateComponent = REACT_TEMPLATES[activeCV.templateId]
-                  return <TemplateComponent data={localCVData} />
+                  const TemplateComponent = getFieldEditableTemplate(activeCV.templateId)
+                  return <TemplateComponent data={localCVData} editMode={false} onFieldChange={() => {}} />
                 })()}
               </Card>
             </div>

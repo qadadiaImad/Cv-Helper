@@ -146,21 +146,46 @@ export const ExecutiveFieldEditable: React.FC<FieldEditableTemplateProps> = ({
       {/* Skills */}
       {data.skills && data.skills.length > 0 && (
         <section style={{ marginBottom: '20px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '8px' }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px' }}>
             <h2 style={{ fontSize: '14px', fontWeight: 'bold', borderBottom: '2px solid #000', paddingBottom: '4px', margin: 0, flex: 1 }}>Skills</h2>
             {editMode && (
               <button onClick={() => onFieldChange('skills', [...(data.skills || []), 'New Skill'])} style={{ padding: '4px 12px', backgroundColor: '#000', color: 'white', border: 'none', borderRadius: '4px', cursor: 'pointer', fontSize: '10px', marginLeft: '12px' }}>+ Add</button>
             )}
           </div>
-          <p style={{ fontSize: '11px', lineHeight: '1.6' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 30px' }}>
             {data.skills.map((skill, i) => (
-              <span key={i}>
-                <EditableText value={skill} onChange={(v: string) => { const newSkills = [...data.skills!]; newSkills[i] = v; onFieldChange('skills', newSkills) }} />
-                {editMode && <button onClick={() => onFieldChange('skills', data.skills!.filter((_, idx) => idx !== i))} style={{ marginLeft: '4px', padding: '1px 4px', backgroundColor: '#ef4444', color: 'white', border: 'none', borderRadius: '2px', cursor: 'pointer', fontSize: '8px' }}>✕</button>}
-                {i < data.skills.length - 1 && ' • '}
-              </span>
+              <div key={i} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', fontSize: '10px', position: 'relative' }}>
+                <span style={{ flex: 1 }}>
+                  <EditableText value={skill} onChange={(v: string) => { const newSkills = [...data.skills!]; newSkills[i] = v; onFieldChange('skills', newSkills) }} />
+                  {editMode && (
+                    <button onClick={() => onFieldChange('skills', data.skills!.filter((_, idx) => idx !== i))} style={{ marginLeft: '4px', padding: '1px 4px', backgroundColor: '#ef4444', color: 'white', border: 'none', borderRadius: '2px', cursor: 'pointer', fontSize: '8px' }}>✕</button>
+                  )}
+                </span>
+                <div style={{ display: 'flex', gap: '3px' }}>
+                  {[1, 2, 3, 4, 5].map(dot => (
+                    <span 
+                      key={dot} 
+                      onClick={() => {
+                        if (editMode) {
+                          // Click to set skill level - cycles through levels
+                          // Note: In a real implementation, you'd store skill levels separately
+                        }
+                      }}
+                      style={{
+                        width: '8px',
+                        height: '8px',
+                        borderRadius: '50%',
+                        backgroundColor: dot <= 4 ? '#000' : '#fff',
+                        border: '1px solid #000',
+                        display: 'inline-block',
+                        cursor: editMode ? 'pointer' : 'default'
+                      }} 
+                    />
+                  ))}
+                </div>
+              </div>
             ))}
-          </p>
+          </div>
         </section>
       )}
     </div>

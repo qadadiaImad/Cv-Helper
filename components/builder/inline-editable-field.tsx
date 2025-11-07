@@ -59,13 +59,6 @@ export function InlineEditableField({
     }
   }
 
-  const handleBlur = () => {
-    // Small delay to allow clicking save button
-    setTimeout(() => {
-      handleSave()
-    }, 150)
-  }
-
   if (isEditing) {
     const InputComponent = multiline ? 'textarea' : 'input'
     
@@ -76,7 +69,6 @@ export function InlineEditableField({
           value={tempValue}
           onChange={(e) => setTempValue(e.target.value)}
           onKeyDown={handleKeyDown}
-          onBlur={handleBlur}
           className={cn(
             "w-full px-2 py-1 border-2 border-blue-500 rounded bg-white shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-300",
             multiline && "min-h-[60px] resize-y",

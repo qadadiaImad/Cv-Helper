@@ -80,11 +80,8 @@ export function useCVStore() {
         // Deep merge for nested objects
         const updatedData: UniversalResumeData = {
           ...cv.data,
+          ...updates,
           personal: updates.personal ? { ...cv.data.personal, ...updates.personal } : cv.data.personal,
-          experience: updates.experience !== undefined ? updates.experience : cv.data.experience,
-          education: updates.education !== undefined ? updates.education : cv.data.education,
-          skills: updates.skills !== undefined ? updates.skills : cv.data.skills,
-          projects: updates.projects !== undefined ? updates.projects : cv.data.projects,
         }
         
         return {

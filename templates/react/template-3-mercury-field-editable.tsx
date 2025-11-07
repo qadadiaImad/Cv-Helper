@@ -100,13 +100,13 @@ export const MercuryFieldEditable: React.FC<FieldEditableTemplateProps> = ({
       <section style={{ marginBottom: '30px' }}>
         <h2 style={{ fontSize: '16px', fontWeight: 'bold', textAlign: 'center', padding: '12px', backgroundColor: '#d9d9d9', marginBottom: '0', color: '#4a4a4a' }}>Profile</h2>
         <div style={{ padding: '30px 60px', backgroundColor: '#fff' }}>
-          <p style={{ fontSize: '11px', lineHeight: '1.7', textAlign: 'justify', color: '#5a5a5a' }}>
+          <div style={{ fontSize: '11px', lineHeight: '1.7', textAlign: 'justify', color: '#5a5a5a' }}>
             <EditableText
-              value={data.summary || 'Click to add your professional summary...'}
+              value={data.summary || 'Click to add profile...'}
               onChange={(v: string) => updateField('summary', v)}
               multiline
             />
-          </p>
+          </div>
         </div>
       </section>
 
