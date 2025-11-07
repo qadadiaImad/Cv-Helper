@@ -302,7 +302,7 @@ export default function ReactBuilderPage() {
     
     switch (sectionId) {
       case 'personal':
-        return !!(localCVData.personal.fullName && localCVData.personal.email && localCVData.personal.phone)
+        return !!(localCVData.personal && localCVData.personal.fullName && localCVData.personal.email && localCVData.personal.phone)
       case 'summary':
         return !!(localCVData.summary && localCVData.summary.length > 20) // At least 20 chars
       case 'experience':
