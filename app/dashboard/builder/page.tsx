@@ -6,6 +6,7 @@ import { CVPreview } from "@/components/cv-preview"
 import { InlineCVPreview } from "@/components/inline-cv-preview"
 import { AtlanticBlueEditable } from "@/templates/react/template-1-atlantic-blue-editable"
 import { AtlanticBlueFieldEditable } from "@/templates/react/template-1-atlantic-blue-field-editable"
+import { getFieldEditableTemplate } from "@/lib/field-editable-templates"
 import { updateNestedField } from "@/lib/field-updater"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -352,11 +353,32 @@ export default function ReactBuilderPage() {
                   Back
                 </Button>
               </Link>
-              <div>
+              <div className="flex items-center gap-3">
                 <h1 className="text-xl font-bold">Resume Builder</h1>
-                <p className="text-sm text-muted-foreground">
-                  {progress}% complete • {completedSections.size}/{SECTIONS.length} sections
-                </p>
+                {activeCV && (
+                  <>
+                    <span className="text-slate-300">•</span>
+                    <Select
+                      value={activeCV.templateId}
+                      onValueChange={(templateId: TemplateId) => {
+                        if (activeCVId) {
+                          changeTemplate(activeCVId, templateId)
+                        }
+                      }}
+                    >
+                      <SelectTrigger className="w-[180px] h-8">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {Object.keys(REACT_TEMPLATES).map((id) => (
+                          <SelectItem key={id} value={id}>
+                            {id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </>
+                )}
               </div>
             </div>
             
@@ -396,14 +418,6 @@ export default function ReactBuilderPage() {
                 Export PDF
               </Button>
             </div>
-          </div>
-          
-          {/* Progress bar */}
-          <div className="mt-4 h-2 bg-slate-200 rounded-full overflow-hidden">
-            <div 
-              className="h-full bg-gradient-to-r from-blue-500 to-purple-500 transition-all duration-500"
-              style={{ width: `${progress}%` }}
-            />
           </div>
         </div>
       </header>
