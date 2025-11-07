@@ -439,31 +439,11 @@ export default function ReactBuilderPage() {
                   })()}
                 </Card>
               </div>
-<<<<<<< Updated upstream
-              
-              <Card className="p-0 shadow-2xl bg-white overflow-hidden">
-                <AtlanticBlueFieldEditable
-                  data={localCVData}
-                  editMode={true}
-                  onFieldChange={(path, value) => {
-                    const updatedData = updateNestedField(localCVData, path, value)
-                    handleDataChange(updatedData)
-                  }}
-                />
-              </Card>
-            </div>
-          )}
-        </div>
-
-        {/* OLD SIDEBAR LAYOUT - KEEPING FOR REFERENCE, WILL REMOVE LATER */}
-        <div className="hidden grid-cols-1 lg:grid-cols-12 gap-6">
-=======
             )}
           </div>
         ) : (
           // Normal Mode: Sidebar with forms + read-only template preview
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
->>>>>>> Stashed changes
           {/* Left Sidebar - Collapsible Sections */}
           <div className="lg:col-span-4 space-y-4">
             <Card 
