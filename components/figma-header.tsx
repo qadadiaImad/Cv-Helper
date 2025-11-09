@@ -93,21 +93,114 @@ export function FigmaHeader() {
                     className="absolute inset-0 rounded-2xl opacity-40 blur-lg transition-all duration-300 group-hover:opacity-60 group-hover:blur-xl animate-pulse"
                     style={{ backgroundColor: theme.accent }}
                   />
-                  {/* Logo container */}
+                  {/* Logo container - Exploding Infinity to Resume */}
                   <div 
-                    className="relative w-12 h-12 rounded-2xl flex items-center justify-center transition-all duration-500 group-hover:scale-110 group-hover:rotate-6 shadow-xl overflow-hidden"
+                    className="relative w-12 h-12 rounded-full flex items-center justify-center overflow-visible"
                     style={{ 
-                      background: `linear-gradient(135deg, ${theme.accent} 0%, ${theme.accent}dd 100%)`
+                      background: `linear-gradient(135deg, 
+                        #FF6B6B 0%, 
+                        #FFA500 15%, 
+                        #FFD700 25%, 
+                        #32CD32 35%, 
+                        #00CED1 45%, 
+                        #1E90FF 55%, 
+                        #9370DB 65%, 
+                        #FF1493 75%, 
+                        #FF6B6B 100%)`,
+                      backgroundSize: '400% 400%',
+                      animation: 'gradientShift 4s ease infinite',
+                      boxShadow: `
+                        0 0 20px rgba(168, 85, 247, 0.6),
+                        0 0 40px rgba(236, 72, 153, 0.4),
+                        0 0 60px rgba(59, 130, 246, 0.3),
+                        inset 0 2px 4px rgba(255, 255, 255, 0.3)
+                      `
                     }}
                   >
-                    {/* Shine effect */}
-                    <div className="absolute inset-0 bg-gradient-to-br from-white/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    {/* Explosion particles */}
+                    {[...Array(8)].map((_, i) => {
+                      const angle = (i * 45) * Math.PI / 180
+                      const distance = 30
+                      return (
+                        <div
+                          key={i}
+                          className="absolute w-2 h-2 rounded-full"
+                          style={{
+                            background: `linear-gradient(135deg, ${['#FF6B6B', '#FFA500', '#FFD700', '#32CD32', '#00CED1', '#1E90FF', '#9370DB', '#FF1493'][i]}, ${['#FFA500', '#FFD700', '#32CD32', '#00CED1', '#1E90FF', '#9370DB', '#FF1493', '#FF6B6B'][i]})`,
+                            '--tx': `${Math.cos(angle) * distance}px`,
+                            '--ty': `${Math.sin(angle) * distance}px`,
+                            animation: 'particleSpread 8s ease-in-out infinite'
+                          } as React.CSSProperties}
+                        />
+                      )
+                    })}
                     
-                    {/* RM monogram with sparkle */}
-                    <div className="relative z-10 flex items-center justify-center">
-                      <span className="text-white font-black text-2xl leading-none tracking-tighter">R</span>
-                      <span className="text-white font-black text-lg leading-none tracking-tighter opacity-90">M</span>
-                      <span className="absolute -top-1 -right-1 text-yellow-300 text-xs animate-pulse">✨</span>
+                    {/* Glossy 3D effect overlay */}
+                    <div 
+                      className="absolute inset-0 rounded-full"
+                      style={{
+                        background: `linear-gradient(135deg, 
+                          rgba(255, 255, 255, 0.4) 0%, 
+                          rgba(255, 255, 255, 0.1) 40%, 
+                          rgba(0, 0, 0, 0.1) 60%, 
+                          rgba(0, 0, 0, 0.2) 100%)`,
+                        opacity: 0.8
+                      }}
+                    />
+                    
+                    {/* Morphing Icon Container */}
+                    <div 
+                      className="relative z-10 flex items-center justify-center w-full h-full"
+                      style={{ 
+                        animation: 'explodeToResume 8s ease-in-out infinite'
+                      }}
+                    >
+                      {/* Infinity symbol (visible 0-40% and 80-100%) */}
+                      <div
+                        className="absolute flex items-center justify-center"
+                        style={{
+                          filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))',
+                          animation: 'fadeInfinity 8s ease-in-out infinite'
+                        }}
+                      >
+                        <span 
+                          className="text-white font-black text-3xl leading-none"
+                          style={{
+                            textShadow: `
+                              0 2px 4px rgba(0, 0, 0, 0.4),
+                              0 0 10px rgba(255, 255, 255, 0.6),
+                              0 0 20px rgba(255, 255, 255, 0.4)
+                            `
+                          }}
+                        >
+                          ∞
+                        </span>
+                        <span 
+                          className="absolute text-white font-bold text-[10px] leading-none tracking-tight"
+                          style={{
+                            textShadow: '0 1px 3px rgba(0, 0, 0, 0.5), 0 0 5px rgba(255, 255, 255, 0.5)'
+                          }}
+                        >
+                          CV
+                        </span>
+                      </div>
+                      
+                      {/* Resume icon (visible 40-70%) */}
+                      <svg
+                        className="absolute w-7 h-7 text-white"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                        style={{
+                          filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3))',
+                          animation: 'fadeResume 8s ease-in-out infinite'
+                        }}
+                      >
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
+                        <path d="M14 2v6h6"/>
+                        <path d="M8 13h8"/>
+                        <path d="M8 17h8"/>
+                        <path d="M8 9h2"/>
+                      </svg>
                     </div>
                   </div>
                 </div>
@@ -117,29 +210,49 @@ export function FigmaHeader() {
                   <div className="flex items-baseline gap-0.5">
                     <span 
                       className="text-2xl font-black tracking-tight transition-all duration-300 group-hover:scale-105"
-                      style={{ color: theme.text }}
-                    >
-                      Resu
-                    </span>
-                    <span 
-                      className="text-2xl font-black tracking-tight transition-all duration-300 group-hover:scale-105 italic"
                       style={{ 
-                        backgroundImage: `linear-gradient(135deg, ${theme.accent} 0%, ${theme.accent}aa 100%)`,
+                        backgroundImage: `linear-gradient(90deg, 
+                          #FF6B6B 0%, 
+                          #FFA500 20%, 
+                          #FFD700 40%, 
+                          #32CD32 60%, 
+                          #00CED1 80%, 
+                          #1E90FF 100%)`,
+                        backgroundSize: '200% 100%',
                         WebkitBackgroundClip: 'text',
                         WebkitTextFillColor: 'transparent',
-                        backgroundClip: 'text'
+                        backgroundClip: 'text',
+                        animation: 'gradientShift 3s ease infinite'
                       }}
                     >
-                      Magic
+                      InfCV
                     </span>
-                    <span className="text-xl animate-bounce">✨</span>
                   </div>
-                  <span 
-                    className="text-xs font-semibold tracking-wider uppercase animate-pulse"
-                    style={{ color: theme.textSecondary }}
-                  >
-                    🪄 Create Perfect Resumes
-                  </span>
+                  <div className="text-xs font-semibold tracking-wider uppercase flex items-center gap-1">
+                    <span style={{ color: theme.accent }}>∞</span>
+                    {['I', 'n', 'f', 'i', 'n', 'i', 't', 'e', ' ', 'P', 'o', 's', 's', 'i', 'b', 'i', 'l', 'i', 't', 'i', 'e', 's'].map((letter, index) => {
+                      const colors = [
+                        '#FF6B6B', '#FFA500', '#FFD700', '#32CD32', '#00CED1', 
+                        '#1E90FF', '#9370DB', '#FF1493', '#FF6B6B', '#FFA500',
+                        '#FFD700', '#32CD32', '#00CED1', '#1E90FF', '#9370DB',
+                        '#FF1493', '#FF6B6B', '#FFA500', '#FFD700', '#32CD32', '#00CED1', '#1E90FF'
+                      ]
+                      return (
+                        <span
+                          key={index}
+                          style={{
+                            color: colors[index % colors.length],
+                            animation: `fadeInUp 0.5s ease forwards`,
+                            animationDelay: `${index * 0.05}s`,
+                            opacity: 0,
+                            display: 'inline-block'
+                          }}
+                        >
+                          {letter === ' ' ? '\u00A0' : letter}
+                        </span>
+                      )
+                    })}
+                  </div>
                 </div>
               </Link>
 
@@ -172,7 +285,7 @@ export function FigmaHeader() {
                   <span className="relative z-10">Templates</span>
                 </Link>
                 <Link 
-                  href="/discover" 
+                  href="/pricing" 
                   className="group relative px-3 py-2 rounded-lg transition-all duration-300 hover:scale-105 flex items-center gap-2 text-sm font-semibold"
                   style={{ color: theme.textSecondary }}
                 >
@@ -180,10 +293,10 @@ export function FigmaHeader() {
                     className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-10 transition-opacity duration-300"
                     style={{ backgroundColor: theme.accent }}
                   />
-                  <svg className="w-5 h-5 transition-transform duration-300 group-hover:scale-110 group-hover:rotate-12 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                  <svg className="w-5 h-5 transition-all duration-300 group-hover:scale-110 group-hover:-rotate-12 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                   </svg>
-                  <span className="relative z-10">Discover</span>
+                  <span className="relative z-10">Pricing</span>
                 </Link>
                 <Link 
                   href="/about" 
@@ -235,10 +348,10 @@ export function FigmaHeader() {
                           </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator />
-                        <div className="px-2 py-2">
+                        {/* <div className="px-2 py-2">
                           <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Theme</p>
                           <ThemeSwitcher compact />
-                        </div>
+                        </div> */}
                         <DropdownMenuSeparator />
                         <DropdownMenuItem 
                           onClick={handleLogout}

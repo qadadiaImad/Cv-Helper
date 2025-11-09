@@ -1023,3 +1023,210 @@
     background-position: 0% 50%;
   }
 }
+
+@keyframes vibrate {
+  0%, 100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  10% {
+    transform: translate(-1px, -1px) rotate(-0.5deg);
+  }
+  20% {
+    transform: translate(1px, 1px) rotate(0.5deg);
+  }
+  30% {
+    transform: translate(-1px, 1px) rotate(-0.5deg);
+  }
+  40% {
+    transform: translate(1px, -1px) rotate(0.5deg);
+  }
+  50% {
+    transform: translate(-1px, -1px) rotate(-0.5deg);
+  }
+  60% {
+    transform: translate(1px, 1px) rotate(0.5deg);
+  }
+  70% {
+    transform: translate(-1px, 1px) rotate(-0.5deg);
+  }
+  80% {
+    transform: translate(1px, -1px) rotate(0.5deg);
+  }
+  90% {
+    transform: translate(-1px, -1px) rotate(-0.5deg);
+  }
+}
+
+@keyframes colorShift {
+  0%, 100% {
+    filter: hue-rotate(0deg);
+  }
+  25% {
+    filter: hue-rotate(15deg);
+  }
+  50% {
+    filter: hue-rotate(0deg);
+  }
+  75% {
+    filter: hue-rotate(-15deg);
+  }
+}
+
+@keyframes fadeInUp {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes explodeToResume {
+  /* Phase 1: Accelerating vibration (0-30%) */
+  0% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    filter: blur(0px);
+  }
+  5% {
+    transform: translate(-1px, -1px) rotate(-0.5deg) scale(1);
+  }
+  10% {
+    transform: translate(1px, 1px) rotate(0.5deg) scale(1.02);
+  }
+  15% {
+    transform: translate(-2px, 1px) rotate(-1deg) scale(1.04);
+  }
+  20% {
+    transform: translate(2px, -2px) rotate(1deg) scale(1.06);
+  }
+  25% {
+    transform: translate(-3px, -2px) rotate(-2deg) scale(1.08);
+  }
+  30% {
+    transform: translate(3px, 3px) rotate(2deg) scale(1.1);
+  }
+  
+  /* Phase 2: Explosion (30-40%) */
+  35% {
+    transform: translate(0, 0) rotate(0deg) scale(1.3);
+    filter: blur(3px);
+    opacity: 0.8;
+  }
+  40% {
+    transform: translate(0, 0) rotate(0deg) scale(1.5);
+    filter: blur(5px);
+    opacity: 0.3;
+  }
+  
+  /* Phase 3: Resume icon appears (40-50%) */
+  45% {
+    transform: translate(0, 0) rotate(0deg) scale(0.5);
+    filter: blur(0px);
+    opacity: 1;
+  }
+  50% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    filter: blur(0px);
+    opacity: 1;
+  }
+  
+  /* Phase 4: Resume stays (50-70%) */
+  70% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    filter: blur(0px);
+    opacity: 1;
+  }
+  
+  /* Phase 5: Resume explodes back (70-80%) */
+  75% {
+    transform: translate(0, 0) rotate(0deg) scale(1.5);
+    filter: blur(5px);
+    opacity: 0.3;
+  }
+  80% {
+    transform: translate(0, 0) rotate(0deg) scale(1.3);
+    filter: blur(3px);
+    opacity: 0.8;
+  }
+  
+  /* Phase 6: Infinity reforms (80-100%) */
+  85% {
+    transform: translate(3px, 3px) rotate(2deg) scale(1.1);
+    filter: blur(0px);
+    opacity: 1;
+  }
+  90% {
+    transform: translate(-2px, 2px) rotate(-1deg) scale(1.05);
+  }
+  95% {
+    transform: translate(1px, -1px) rotate(0.5deg) scale(1.02);
+  }
+  100% {
+    transform: translate(0, 0) rotate(0deg) scale(1);
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+@keyframes particleSpread {
+  0%, 40%, 70%, 100% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+  45% {
+    transform: translate(var(--tx), var(--ty)) scale(1);
+    opacity: 1;
+  }
+  65% {
+    transform: translate(var(--tx), var(--ty)) scale(1);
+    opacity: 1;
+  }
+  75% {
+    transform: translate(0, 0) scale(0);
+    opacity: 0;
+  }
+}
+
+@keyframes fadeInfinity {
+  0% {
+    opacity: 1;
+  }
+  35% {
+    opacity: 1;
+  }
+  40% {
+    opacity: 0;
+  }
+  70% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeResume {
+  0% {
+    opacity: 0;
+  }
+  40% {
+    opacity: 0;
+  }
+  45% {
+    opacity: 1;
+  }
+  70% {
+    opacity: 1;
+  }
+  75% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 0;
+  }
+}

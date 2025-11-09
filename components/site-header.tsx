@@ -255,11 +255,6 @@ export function SiteHeader() {
                             </Link>
                           </DropdownMenuItem>
                           <DropdownMenuSeparator />
-                          <div className="px-2 py-2">
-                            <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground mb-2">Theme</p>
-                            <ThemeSwitcher compact />
-                          </div>
-                          <DropdownMenuSeparator />
                           <DropdownMenuItem 
                             onClick={handleLogout}
                             disabled={loading}

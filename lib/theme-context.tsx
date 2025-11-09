@@ -128,7 +128,7 @@ const ThemeContext = createContext<ThemeContextType | undefined>(undefined)
 
 export function ThemeProvider({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false)
-  const [currentTheme, setCurrentTheme] = useState<ThemeKey>('rose')
+  const [currentTheme, setCurrentTheme] = useState<ThemeKey>('lavender')
 
   // Load theme from localStorage on mount
   useEffect(() => {

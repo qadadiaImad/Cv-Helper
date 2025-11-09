@@ -56,6 +56,26 @@ export default function TemplateLibraryPage() {
         <div className="absolute top-1/3 right-24 w-44 h-60 bg-gradient-to-br from-purple-300/35 to-purple-400/35 rounded-3xl rotate-15 shadow-xl" />
         <div className="absolute bottom-1/4 left-24 w-40 h-40 bg-gradient-to-br from-pink-300/40 to-pink-400/40 rounded-full shadow-2xl" />
         <div className="absolute top-1/2 right-1/3 w-36 h-52 bg-gradient-to-br from-blue-300/30 to-cyan-300/30 rounded-2xl -rotate-12 shadow-lg" />
+        
+        {/* Infinity symbols */}
+        <div 
+          className="absolute top-1/4 right-20 text-9xl font-black opacity-8 rotate-12"
+          style={{ color: theme.accent }}
+        >
+          ∞
+        </div>
+        <div 
+          className="absolute bottom-1/4 left-16 text-8xl font-black opacity-8 -rotate-12"
+          style={{ color: theme.accent }}
+        >
+          ∞
+        </div>
+        <div 
+          className="absolute top-1/2 left-1/3 text-7xl font-black opacity-6 rotate-45"
+          style={{ color: theme.accent }}
+        >
+          ∞
+        </div>
       </div>
 
       {/* Main Content - Centered Modal-like Container */}
