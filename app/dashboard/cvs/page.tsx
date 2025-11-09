@@ -107,7 +107,46 @@ export default function CVsPage() {
   }
 
   return (
-    <div className="min-h-screen pt-24" style={{ background: theme.bg }}>
+    <div 
+      className="min-h-screen pt-24 relative overflow-hidden"
+      style={{ 
+        background: `linear-gradient(to bottom right, ${theme.bg}, ${theme.bgSecondary})`
+      }}
+    >
+      {/* MANY Decorative Background Shapes with Theme Colors */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Large gradient blobs */}
+        <div 
+          className="absolute -top-40 -right-40 w-96 h-96 rounded-full blur-3xl"
+          style={{ 
+            background: `linear-gradient(to bottom right, ${theme.accent}40, ${theme.accent}20)`
+          }}
+        />
+        <div 
+          className="absolute top-1/2 -left-32 w-80 h-80 rounded-full blur-3xl"
+          style={{ 
+            background: `linear-gradient(to bottom right, ${theme.accent}30, ${theme.accent}15)`
+          }}
+        />
+        <div 
+          className="absolute bottom-20 right-1/3 w-64 h-64 rounded-full blur-3xl"
+          style={{ 
+            background: `linear-gradient(to bottom right, ${theme.accent}30, ${theme.accent}20)`
+          }}
+        />
+        
+        {/* Diagonal stripes */}
+        <div className="absolute top-10 left-20 w-2 h-48 bg-gradient-to-b from-purple-400 to-purple-500 rounded-full rotate-45 opacity-50" />
+        <div className="absolute top-40 right-32 w-2 h-56 bg-gradient-to-b from-purple-400 to-purple-500 rounded-full rotate-45 opacity-45" />
+        <div className="absolute bottom-40 left-40 w-2 h-40 bg-gradient-to-b from-pink-400 to-pink-500 rounded-full rotate-45 opacity-40" />
+        
+        {/* Geometric shapes */}
+        <div className="absolute top-1/4 right-20 w-40 h-56 bg-gradient-to-br from-purple-300/35 to-purple-400/35 rounded-3xl rotate-12 shadow-xl" />
+        <div className="absolute bottom-1/3 left-20 w-36 h-36 bg-gradient-to-br from-pink-300/40 to-pink-400/40 rounded-full shadow-2xl" />
+        <div className="absolute top-1/2 left-1/4 w-32 h-48 bg-gradient-to-br from-blue-300/30 to-cyan-300/30 rounded-2xl -rotate-6 shadow-lg" />
+        <div className="absolute bottom-1/4 right-1/4 w-28 h-28 bg-gradient-to-br from-yellow-300/35 to-orange-300/35 rounded-full shadow-lg" />
+      </div>
+      
       {/* Page Header Section */}
       <div className="container mx-auto px-4 py-10">
           <div className="flex items-center justify-between">

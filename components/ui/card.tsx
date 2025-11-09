@@ -7,9 +7,11 @@ function Card({ className, ...props }: React.ComponentProps<'div'>) {
     <div
       data-slot="card"
       className={cn(
-        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border border-border py-6 shadow-sm hover:shadow-lg hover:border-primary/20 transition-all duration-300 ease-in-out backdrop-blur-sm',
+        'bg-card text-card-foreground flex flex-col gap-6 rounded-xl border-2 py-6 shadow-sm hover:shadow-lg transition-all duration-300 ease-in-out backdrop-blur-sm',
+        'border-[var(--theme-accent)] border-opacity-40 hover:border-opacity-60',
         className,
       )}
+      style={{ borderColor: 'var(--theme-accent)' }}
       {...props}
     />
   )

@@ -6,6 +6,7 @@ import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import "./globals.css"
 import { FigmaHeader } from "@/components/figma-header"
+import { GlobalBackground } from "@/components/global-background"
 import { Toaster } from "sonner"
 import { ThemeProvider } from "@/lib/theme-context"
 import { ThemeWrapper } from "@/components/theme-wrapper"
@@ -46,8 +47,18 @@ export default function RootLayout({
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
         <ThemeProvider>
           <ThemeWrapper>
-            <FigmaHeader />
-            <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+            {/* Main wrapper with relative positioning for GlobalBackground */}
+            <div className="relative min-h-screen">
+              {/* Global Figma-style background on all pages */}
+              <GlobalBackground />
+              
+              {/* Header and content */}
+              <div className="relative" style={{ zIndex: 10 }}>
+                <FigmaHeader />
+                <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+              </div>
+            </div>
+            
             <Analytics />
             <Toaster richColors closeButton />
           </ThemeWrapper>

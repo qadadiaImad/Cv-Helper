@@ -26,6 +26,18 @@ const TEMPLATES = [
   'mercury',
   'evergreen',
   'youngcurve',
+  // New templates
+  'double-column',
+  'creative-orange',
+  'teal-modern',
+  'beige-sidebar',
+  'dark-blue-orange',
+  'gray-minimal',
+  'dark-professional',
+  'orange-sidebar',
+  'teal-rounded',
+  'navy-professional',
+  'blue-circular',
 ]
 
 // Configuration

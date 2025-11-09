@@ -341,16 +341,55 @@ export default function ReactBuilderPage() {
   }
 
   return (
-    <div className="min-h-screen pt-20" style={{ backgroundColor: theme.bg }} suppressHydrationWarning>
+    <div 
+      className="min-h-screen pt-20 relative overflow-hidden" 
+      style={{ 
+        background: `linear-gradient(to bottom right, ${theme.bg}, ${theme.bgSecondary})`
+      }}
+      suppressHydrationWarning
+    >
+      {/* MANY Decorative Background Shapes with Theme Colors */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Large gradient blobs using theme accent */}
+        <div 
+          className="absolute -top-40 -right-40 w-96 h-96 rounded-full blur-3xl"
+          style={{ 
+            background: `linear-gradient(to bottom right, ${theme.accent}40, ${theme.accent}20)`
+          }}
+        />
+        <div 
+          className="absolute top-1/3 -left-32 w-80 h-80 rounded-full blur-3xl"
+          style={{ 
+            background: `linear-gradient(to bottom right, ${theme.accent}30, ${theme.accent}15)`
+          }}
+        />
+        <div 
+          className="absolute bottom-20 right-1/4 w-64 h-64 rounded-full blur-3xl"
+          style={{ 
+            background: `linear-gradient(to bottom right, ${theme.accent}30, ${theme.accent}20)`
+          }}
+        />
+        
+        {/* Diagonal stripes */}
+        <div className="absolute top-32 left-24 w-2 h-56 bg-gradient-to-b from-purple-400 to-purple-500 rounded-full rotate-45 opacity-50" />
+        <div className="absolute bottom-40 right-48 w-2 h-48 bg-gradient-to-b from-pink-400 to-pink-500 rounded-full rotate-45 opacity-45" />
+        
+        {/* Geometric shapes */}
+        <div className="absolute top-1/4 left-16 w-40 h-56 bg-gradient-to-br from-purple-300/35 to-purple-400/35 rounded-3xl rotate-12 shadow-xl" />
+        <div className="absolute bottom-1/3 right-16 w-36 h-36 bg-gradient-to-br from-pink-300/40 to-pink-400/40 rounded-full shadow-2xl" />
+        <div className="absolute top-1/2 left-1/3 w-32 h-48 bg-gradient-to-br from-blue-300/30 to-cyan-300/30 rounded-2xl -rotate-6 shadow-lg" />
+      </div>
+      
       {/* Animated Background */}
       <AnimatedBackground />
       
-      {/* Builder Controls Panel - Right Side - Stylish with Theme */}
+      {/* Builder Controls Panel - Right Side - Stylish with Theme Border */}
       <div 
-        className="fixed right-0 top-20 bottom-0 w-80 backdrop-blur-xl border-l-2 shadow-[0_0_40px_rgba(0,0,0,0.12)] z-40 overflow-y-auto"
-        style={{ 
-          backgroundColor: theme.bg,
-          borderColor: `${theme.border}80`
+        className="fixed right-0 top-20 bottom-0 w-80 backdrop-blur-xl border-l-4 z-40 overflow-y-auto"
+        style={{
+          backgroundColor: `${theme.bg}f5`,
+          borderColor: `${theme.accent}60`,
+          boxShadow: `-8px 0 40px ${theme.accent}25`
         }}
         suppressHydrationWarning
       >
@@ -464,18 +503,30 @@ export default function ReactBuilderPage() {
             </Button>
           </div>
 
-          {/* Progress Section - Clean */}
-          <div className="space-y-2 p-3 bg-blue-50/50 rounded-lg border border-blue-100">
+          {/* Progress Section - Theme Colors */}
+          <div 
+            className="space-y-2 p-3 rounded-lg border"
+            style={{ 
+              backgroundColor: `${theme.accent}10`,
+              borderColor: `${theme.accent}30`
+            }}
+          >
             <div className="flex items-center justify-between mb-1">
-              <span className="text-lg font-bold text-blue-600">{progress}%</span>
-              <span className="text-xs text-blue-600 font-medium">
+              <span className="text-lg font-bold" style={{ color: theme.accent }}>{progress}%</span>
+              <span className="text-xs font-medium" style={{ color: theme.accent }}>
                 {completedSections.size}/{SECTIONS.length} sections
               </span>
             </div>
-            <div className="w-full bg-blue-200/60 rounded-full h-1.5">
+            <div 
+              className="w-full rounded-full h-1.5"
+              style={{ backgroundColor: `${theme.accent}30` }}
+            >
               <div 
-                className="bg-gradient-to-r from-blue-500 to-blue-600 h-1.5 rounded-full transition-all duration-500 shadow-sm"
-                style={{ width: `${progress}%` }}
+                className="h-1.5 rounded-full transition-all duration-500 shadow-sm"
+                style={{ 
+                  width: `${progress}%`,
+                  background: `linear-gradient(to right, ${theme.accent}, ${theme.accent}dd)`
+                }}
               />
             </div>
           </div>

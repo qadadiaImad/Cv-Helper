@@ -19,48 +19,47 @@ export default function TemplateLibraryPage() {
   }
 
   return (
-    <div className="flex h-screen w-full flex-col lg:flex-row transition-colors duration-300 pt-20" style={{ backgroundColor: theme.bg }} suppressHydrationWarning>
-      {/* Left Sidebar */}
-      <aside className="w-full lg:sticky lg:top-0 lg:h-screen lg:w-[200px] lg:min-w-[200px] xl:w-[240px] xl:min-w-[240px] px-6 py-6 lg:px-8 transition-colors duration-300 flex flex-col" style={{ backgroundColor: theme.sidebar }} suppressHydrationWarning>
-        <Link href="/" className="flex items-center gap-3 mb-8">
-          <div className="w-10 h-10 bg-flowcv-brand-purple rounded-lg flex items-center justify-center">
-            <span className="text-white font-bold text-sm">CV</span>
-          </div>
-          <span className="text-xl font-semibold transition-colors duration-300" style={{ color: theme.text }} suppressHydrationWarning>flowcv</span>
-        </Link>
+    <div 
+      className="min-h-screen w-full transition-colors duration-300 pt-20 relative overflow-hidden" 
+      style={{ 
+        background: `linear-gradient(to bottom right, ${theme.bg}, ${theme.bgSecondary})`
+      }}
+      suppressHydrationWarning
+    >
+      {/* MANY Decorative Background Shapes with Theme Colors */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+        {/* Large gradient blobs */}
+        <div 
+          className="absolute -top-40 -right-40 w-96 h-96 rounded-full blur-3xl"
+          style={{ 
+            background: `linear-gradient(to bottom right, ${theme.accent}40, ${theme.accent}20)`
+          }}
+        />
+        <div 
+          className="absolute top-1/2 -left-32 w-80 h-80 rounded-full blur-3xl"
+          style={{ 
+            background: `linear-gradient(to bottom right, ${theme.accent}30, ${theme.accent}15)`
+          }}
+        />
+        <div 
+          className="absolute bottom-10 right-1/4 w-72 h-72 rounded-full blur-3xl"
+          style={{ 
+            background: `linear-gradient(to bottom right, ${theme.accent}25, ${theme.accent}15)`
+          }}
+        />
         
-        <nav className="space-y-2">
-          <Link href="/dashboard/templates">
-            <button className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium bg-white text-flowcv-ink shadow-sm">
-              Templates
-            </button>
-          </Link>
-          <Link href="/dashboard/builder">
-            <button className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-flowcv-gray-600 hover:bg-white/50 transition-colors">
-              Builder
-            </button>
-          </Link>
-          <Link href="/dashboard/personal">
-            <button className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-flowcv-gray-600 hover:bg-white/50 transition-colors">
-              Profile
-            </button>
-          </Link>
-        </nav>
+        {/* Diagonal stripes */}
+        <div className="absolute top-20 left-32 w-2 h-52 bg-gradient-to-b from-purple-400 to-purple-500 rounded-full rotate-45 opacity-50" />
+        <div className="absolute bottom-32 right-40 w-2 h-48 bg-gradient-to-b from-pink-400 to-pink-500 rounded-full rotate-45 opacity-45" />
+        
+        {/* Geometric shapes */}
+        <div className="absolute top-1/3 right-24 w-44 h-60 bg-gradient-to-br from-purple-300/35 to-purple-400/35 rounded-3xl rotate-15 shadow-xl" />
+        <div className="absolute bottom-1/4 left-24 w-40 h-40 bg-gradient-to-br from-pink-300/40 to-pink-400/40 rounded-full shadow-2xl" />
+        <div className="absolute top-1/2 right-1/3 w-36 h-52 bg-gradient-to-br from-blue-300/30 to-cyan-300/30 rounded-2xl -rotate-12 shadow-lg" />
+      </div>
 
-        <div className="mt-8 pt-8 border-t" style={{ borderColor: theme.border }} suppressHydrationWarning>
-          <button className="w-full text-left px-4 py-3 rounded-lg text-sm font-medium hover:bg-white/30 transition-colors" style={{ color: theme.text }} suppressHydrationWarning>
-            More
-          </button>
-        </div>
-
-        {/* Theme Controls - Pushed to bottom */}
-        <div className="mt-auto pt-8">
-          <ThemeSwitcher />
-        </div>
-      </aside>
-
-      {/* Main Content */}
-      <main className="flex-1 overflow-y-auto px-6 py-8 lg:px-12 xl:px-16">
+      {/* Main Content - Full Width */}
+      <main className="overflow-y-auto px-6 py-8 lg:px-12 xl:px-16">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
