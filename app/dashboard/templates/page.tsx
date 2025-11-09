@@ -58,22 +58,34 @@ export default function TemplateLibraryPage() {
         <div className="absolute top-1/2 right-1/3 w-36 h-52 bg-gradient-to-br from-blue-300/30 to-cyan-300/30 rounded-2xl -rotate-12 shadow-lg" />
       </div>
 
-      {/* Main Content - Full Width */}
-      <main className="overflow-y-auto px-6 py-8 lg:px-12 xl:px-16">
-        <div className="max-w-7xl mx-auto">
-          {/* Header */}
-          <div className="mb-8">
+      {/* Main Content - Centered Modal-like Container */}
+      <main className="overflow-y-auto px-4 py-8">
+        <div className="max-w-[1400px] mx-auto">
+          {/* Header - Modal Style */}
+          <div className="mb-8 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div 
+                className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+                style={{ 
+                  background: `linear-gradient(135deg, ${theme.accent} 0%, ${theme.accent}dd 100%)`
+                }}
+              >
+                <span className="text-2xl">✨</span>
+              </div>
+              <div>
+                <h1 className="text-3xl font-bold transition-colors" style={{ color: theme.text }} suppressHydrationWarning>
+                  Choose a Template
+                </h1>
+                <p className="text-sm transition-colors" style={{ color: theme.textSecondary }} suppressHydrationWarning>
+                  Select a professional template to start building your resume
+                </p>
+              </div>
+            </div>
             <Link href="/dashboard/builder">
-              <Button variant="ghost" className="mb-4 transition-colors" style={{ color: theme.text }} suppressHydrationWarning>
-                <ArrowLeft className="h-4 w-4 mr-2" /> Back to builder
+              <Button variant="ghost" size="icon" className="transition-colors" style={{ color: theme.text }} suppressHydrationWarning>
+                <ArrowLeft className="h-5 w-5" />
               </Button>
             </Link>
-            <h1 className="text-3xl font-bold mb-2 transition-colors" style={{ color: theme.text }} suppressHydrationWarning>
-              Choose a Template
-            </h1>
-            <p className="transition-colors" style={{ color: theme.textSecondary }} suppressHydrationWarning>
-              Browse our collection of professional resume templates. Click any template to start building.
-            </p>
           </div>
 
           {/* Template Gallery */}

@@ -27,6 +27,7 @@ import { AnimatedBackground } from "@/components/animated-background"
 import { WritingAnimationIcon } from "@/components/writing-animation-icon"
 import { getTemplateTheme } from "@/lib/template-themes"
 import { useTheme } from "@/lib/theme-context"
+import { TemplateGallery } from "@/components/template-gallery"
 import type { UniversalResumeData } from "@/lib/schemas"
 
 // Enhanced sample data to showcase template potential
@@ -265,6 +266,7 @@ export default function ReactBuilderPage() {
   const [completedSections, setCompletedSections] = useState<Set<SectionId>>(new Set())
   const [showTemplatePreview, setShowTemplatePreview] = useState(false)
   const [previewTemplateId, setPreviewTemplateId] = useState<TemplateId | null>(null)
+  const [showTemplateGallery, setShowTemplateGallery] = useState(false)
   
   // Inline editing state
   const [editingSection, setEditingSection] = useState<string | null>(null)
@@ -423,25 +425,16 @@ export default function ReactBuilderPage() {
           {activeCV && (
             <div className="space-y-2">
               <Label className="text-sm font-semibold">Template</Label>
-              <Select
-                value={activeCV.templateId}
-                onValueChange={(templateId: TemplateId) => {
-                  if (activeCVId) {
-                    changeTemplate(activeCVId, templateId)
-                  }
-                }}
+              <Button
+                variant="outline"
+                className="w-full justify-between"
+                onClick={() => setShowTemplateGallery(true)}
               >
-                <SelectTrigger className="w-full">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  {Object.keys(REACT_TEMPLATES).map((id) => (
-                    <SelectItem key={id} value={id}>
-                      {id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
+                <span className="truncate">
+                  {activeCV.templateId.replace(/_/g, ' ').replace(/-/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                </span>
+                <ChevronRight className="h-4 w-4 ml-2 flex-shrink-0" />
+              </Button>
             </div>
           )}
 
@@ -757,6 +750,59 @@ export default function ReactBuilderPage() {
                   </Button>
                 )}
               </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Template Gallery Modal */}
+      {showTemplateGallery && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-sm">
+          <div 
+            className="w-full max-w-6xl max-h-[90vh] rounded-2xl shadow-2xl overflow-hidden"
+            style={{ backgroundColor: theme.bg }}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between p-6 border-b" style={{ borderColor: theme.border }}>
+              <div className="flex items-center gap-4">
+                <div 
+                  className="w-12 h-12 rounded-2xl flex items-center justify-center shadow-lg"
+                  style={{ 
+                    background: `linear-gradient(135deg, ${theme.accent} 0%, ${theme.accent}dd 100%)`
+                  }}
+                >
+                  <span className="text-2xl">✨</span>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold" style={{ color: theme.text }}>
+                    Choose a Template
+                  </h2>
+                  <p className="text-sm" style={{ color: theme.textSecondary }}>
+                    Select a professional template for your resume
+                  </p>
+                </div>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => setShowTemplateGallery(false)}
+                style={{ color: theme.text }}
+              >
+                <X className="h-5 w-5" />
+              </Button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="overflow-y-auto max-h-[calc(90vh-120px)] p-6">
+              <TemplateGallery
+                selectedTemplateId={activeCV?.templateId}
+                onTemplateSelect={(templateId) => {
+                  if (activeCVId) {
+                    changeTemplate(activeCVId, templateId as TemplateId)
+                    setShowTemplateGallery(false)
+                  }
+                }}
+              />
             </div>
           </div>
         </div>
