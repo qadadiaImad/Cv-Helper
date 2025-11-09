@@ -91,6 +91,22 @@
   --flowcv-shadow-hero: 0px 34px 68px -16px rgba(0, 0, 0, 0.25);
   --flowcv-shadow-hero-xl: 0px 42px 84px -20px rgba(0, 0, 0, 0.25);
   --flowcv-shadow-comment: 0px 8px 32px rgba(0, 0, 0, 0.12);
+  
+  /* Figma 3D Landing Page Design Tokens */
+  --figma-primary: #1D1C24;
+  --figma-body: #52575C;
+  --figma-accent-purple: #8468F5;
+  --figma-inactive: #A0A4A8;
+  --figma-neutral: #FFFFFF;
+  
+  /* 3D Landing Page Backgrounds */
+  --figma-bg-gradient-pink: linear-gradient(180deg, #FFE5E5 0%, #FFF5F5 50%, #FFFFFF 100%);
+  --figma-bg-gradient-cream: linear-gradient(180deg, #FAF8F4 0%, #FFFFFF 100%);
+  
+  /* Theme Variables for Landing Page */
+  --theme-bg: var(--flowcv-sand-light);
+  --theme-bg-secondary: var(--flowcv-cream);
+  --theme-border: rgba(0, 0, 0, 0.08);
 }
 
 .dark {

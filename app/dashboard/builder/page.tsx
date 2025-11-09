@@ -10,6 +10,7 @@ import { getFieldEditableTemplate } from "@/lib/field-editable-templates"
 import { updateNestedField } from "@/lib/field-updater"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
+import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ArrowLeft, Check, ChevronRight, Eye, EyeOff, Save, Download, AlertCircle, X } from "lucide-react"
 import Link from "next/link"
@@ -25,6 +26,7 @@ import { ProjectsForm } from '@/components/builder/projects-form'
 import { AnimatedBackground } from "@/components/animated-background"
 import { WritingAnimationIcon } from "@/components/writing-animation-icon"
 import { getTemplateTheme } from "@/lib/template-themes"
+import { useTheme } from "@/lib/theme-context"
 import type { UniversalResumeData } from "@/lib/schemas"
 
 // Enhanced sample data to showcase template potential
@@ -255,6 +257,7 @@ const SECTIONS: Section[] = [
 export default function ReactBuilderPage() {
   const searchParams = useSearchParams()
   const { ready, activeCV, activeCVId, updateCVData, changeTemplate } = useCVStore()
+  const { theme } = useTheme()
   
   const [localCVData, setLocalCVData] = useState<UniversalResumeData | null>(null)
   const [previewVisible, setPreviewVisible] = useState(true)
@@ -338,105 +341,162 @@ export default function ReactBuilderPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100">
+    <div className="min-h-screen pt-20" style={{ backgroundColor: theme.bg }} suppressHydrationWarning>
       {/* Animated Background */}
       <AnimatedBackground />
       
-      {/* Header */}
-      <header className="sticky top-0 z-50 border-b bg-white/80 backdrop-blur-sm">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-4">
-              <Link href="/dashboard/templates">
-                <Button variant="ghost" size="sm">
-                  <ArrowLeft className="h-4 w-4 mr-2" />
-                  Back
-                </Button>
-              </Link>
-              <div className="flex items-center gap-3">
-                <span className="text-2xl animate-bounce">🔨</span>
-                <h1 className="text-xl font-bold">Builder</h1>
-                {activeCV && (
-                  <>
-                    <span className="text-slate-300">•</span>
-                    <Select
-                      value={activeCV.templateId}
-                      onValueChange={(templateId: TemplateId) => {
-                        if (activeCVId) {
-                          changeTemplate(activeCVId, templateId)
-                        }
-                      }}
-                    >
-                      <SelectTrigger className="w-[180px] h-8">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {Object.keys(REACT_TEMPLATES).map((id) => (
-                          <SelectItem key={id} value={id}>
-                            {id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                  </>
-                )}
-              </div>
+      {/* Builder Controls Panel - Right Side - Stylish with Theme */}
+      <div 
+        className="fixed right-0 top-20 bottom-0 w-80 backdrop-blur-xl border-l-2 shadow-[0_0_40px_rgba(0,0,0,0.12)] z-40 overflow-y-auto"
+        style={{ 
+          backgroundColor: theme.bg,
+          borderColor: `${theme.border}80`
+        }}
+        suppressHydrationWarning
+      >
+        {/* Decorative gradient overlay with theme accent */}
+        <div 
+          className="absolute inset-0 opacity-10 pointer-events-none"
+          style={{
+            background: `linear-gradient(135deg, ${theme.accent}20 0%, transparent 50%, ${theme.accent}10 100%)`
+          }}
+          suppressHydrationWarning
+        />
+        
+        {/* Subtle inner shadow for depth */}
+        <div className="absolute inset-0 shadow-[inset_0_0_20px_rgba(0,0,0,0.03)] pointer-events-none" />
+        
+        <div className="relative p-6 space-y-6">
+          {/* Header */}
+          <div className="flex items-center justify-between pb-4 border-b border-slate-200">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl animate-bounce">🔨</span>
+              <h2 className="text-xl font-bold">Builder</h2>
             </div>
-            
-            <div className="flex items-center gap-2">
-              {/* Edit Mode Toggle */}
-              <div className="flex items-center gap-2 px-3 py-1 bg-slate-100 rounded-lg border border-slate-200">
-                <span className="text-xs font-medium text-slate-600">Edit Mode:</span>
-                <button
-                  onClick={() => setUseFieldEditable(!useFieldEditable)}
+            <Link href="/dashboard/cvs">
+              <Button variant="ghost" size="sm">
+                <X className="h-4 w-4" />
+              </Button>
+            </Link>
+          </div>
+
+          {/* Template Selection */}
+          {activeCV && (
+            <div className="space-y-2">
+              <Label className="text-sm font-semibold">Template</Label>
+              <Select
+                value={activeCV.templateId}
+                onValueChange={(templateId: TemplateId) => {
+                  if (activeCVId) {
+                    changeTemplate(activeCVId, templateId)
+                  }
+                }}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.keys(REACT_TEMPLATES).map((id) => (
+                    <SelectItem key={id} value={id}>
+                      {id.replace(/_/g, ' ').replace(/\b\w/g, l => l.toUpperCase())}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+
+          {/* Edit Mode Toggle */}
+          <div className="space-y-3 p-4 bg-slate-50 rounded-lg border border-slate-200">
+            <Label className="text-sm font-semibold">Edit Mode</Label>
+            <div className="flex items-center justify-between">
+              <span className="text-sm text-slate-600">
+                {useFieldEditable ? 'In Template' : 'With Forms'}
+              </span>
+              <button
+                onClick={() => setUseFieldEditable(!useFieldEditable)}
+                className={cn(
+                  "relative inline-flex h-7 w-12 items-center rounded-full transition-colors",
+                  useFieldEditable ? "bg-blue-600" : "bg-slate-300"
+                )}
+              >
+                <span
                   className={cn(
-                    "relative inline-flex h-6 w-11 items-center rounded-full transition-colors",
-                    useFieldEditable ? "bg-blue-600" : "bg-slate-300"
+                    "inline-block h-5 w-5 transform rounded-full bg-white transition-transform shadow-md",
+                    useFieldEditable ? "translate-x-6" : "translate-x-1"
                   )}
-                >
-                  <span
-                    className={cn(
-                      "inline-block h-4 w-4 transform rounded-full bg-white transition-transform",
-                      useFieldEditable ? "translate-x-6" : "translate-x-1"
-                    )}
-                  />
-                </button>
-                <span className="text-xs font-medium text-slate-700">
-                  {useFieldEditable ? 'In Template' : 'With Forms'}
-                </span>
-              </div>
-              
-              <Button variant="outline" size="sm" onClick={handleSaveDraft}>
-                <Save className="h-4 w-4 mr-2" />
-                Save Draft
-              </Button>
-              <Button variant="ghost" size="sm" onClick={() => setPreviewVisible(!previewVisible)}>
-                {previewVisible ? <EyeOff className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
-                {previewVisible ? 'Hide' : 'Show'} Preview
-              </Button>
-              <Button size="sm" disabled={completedSections.size < 3}>
-                <Download className="h-4 w-4 mr-2" />
-                Export PDF
-              </Button>
+                />
+              </button>
+            </div>
+            <p className="text-xs text-slate-500">
+              {useFieldEditable 
+                ? 'Click directly on the resume to edit' 
+                : 'Use forms in the sidebar to edit'}
+            </p>
+          </div>
+
+          {/* Action Buttons */}
+          <div className="space-y-2">
+            <Button 
+              variant="outline" 
+              className="w-full justify-start" 
+              onClick={handleSaveDraft}
+            >
+              <Save className="h-4 w-4 mr-2" />
+              Save Draft
+            </Button>
+            
+            <Button 
+              variant="outline" 
+              className="w-full justify-start" 
+              onClick={() => setPreviewVisible(!previewVisible)}
+            >
+              {previewVisible ? <EyeOff className="h-4 w-4 mr-2" /> : <Eye className="h-4 w-4 mr-2" />}
+              {previewVisible ? 'Hide' : 'Show'} Preview
+            </Button>
+            
+            <Button 
+              className="w-full justify-start" 
+              disabled={completedSections.size < 3}
+            >
+              <Download className="h-4 w-4 mr-2" />
+              Export PDF
+            </Button>
+          </div>
+
+          {/* Progress Section - Clean */}
+          <div className="space-y-2 p-3 bg-blue-50/50 rounded-lg border border-blue-100">
+            <div className="flex items-center justify-between mb-1">
+              <span className="text-lg font-bold text-blue-600">{progress}%</span>
+              <span className="text-xs text-blue-600 font-medium">
+                {completedSections.size}/{SECTIONS.length} sections
+              </span>
+            </div>
+            <div className="w-full bg-blue-200/60 rounded-full h-1.5">
+              <div 
+                className="bg-gradient-to-r from-blue-500 to-blue-600 h-1.5 rounded-full transition-all duration-500 shadow-sm"
+                style={{ width: `${progress}%` }}
+              />
             </div>
           </div>
-        </div>
-      </header>
 
-      {/* Main Content */}
-      <main className="container mx-auto px-4 py-8">
+          {/* Back Button */}
+          <Link href="/dashboard/cvs">
+            <Button variant="ghost" className="w-full justify-start">
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Dashboard
+            </Button>
+          </Link>
+        </div>
+      </div>
+
+      {/* Main Content - Adjusted for right panel */}
+      <main className="container mx-auto px-4 py-8 pr-84">
         {useFieldEditable ? (
           // Field-Editable Mode: Full-width template with inline editing
-          <div className="max-w-5xl mx-auto">
+          <div className="max-w-4xl mx-auto">
             {ready && activeCV && localCVData && (
               <div className="relative">
-                {/* Writing Animation Icon */}
-                <div className="fixed bottom-8 right-8 z-40">
-                  <WritingAnimationIcon 
-                    progress={progress} 
-                    isEditing={false}
-                  />
-                </div>
                 
                 <Card className="p-0 shadow-2xl bg-white overflow-hidden">
                   {(() => {
@@ -551,12 +611,6 @@ export default function ReactBuilderPage() {
                     </div>
                   </div>
                 </Card>
-                
-                {/* Writing Animation */}
-                <WritingAnimationIcon 
-                  progress={progress} 
-                  isEditing={!!activeSection}
-                />
               </>
             )}
           </div>

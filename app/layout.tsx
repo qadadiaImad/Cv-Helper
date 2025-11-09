@@ -5,7 +5,7 @@ import { GeistMono } from "geist/font/mono"
 import { Analytics } from "@vercel/analytics/next"
 import { Suspense } from "react"
 import "./globals.css"
-import { SiteHeader } from "@/components/site-header"
+import { FigmaHeader } from "@/components/figma-header"
 import { Toaster } from "sonner"
 import { ThemeProvider } from "@/lib/theme-context"
 import { ThemeWrapper } from "@/components/theme-wrapper"
@@ -46,7 +46,7 @@ export default function RootLayout({
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
         <ThemeProvider>
           <ThemeWrapper>
-            <SiteHeader />
+            <FigmaHeader />
             <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
             <Analytics />
             <Toaster richColors closeButton />

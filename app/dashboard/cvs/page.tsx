@@ -107,24 +107,9 @@ export default function CVsPage() {
   }
 
   return (
-    <div className="min-h-screen" style={{ background: theme.bg }}>
-      {/* Enhanced Header with Theme-Aware Gradient */}
-      <header 
-        className="border-b backdrop-blur-xl shadow-2xl relative overflow-hidden transition-all duration-500"
-        style={{
-          background: `linear-gradient(135deg, ${theme.bg} 0%, ${theme.bgSecondary} 50%, ${theme.bg} 100%)`,
-          borderColor: theme.border
-        }}
-      >
-        {/* Subtle animated overlay */}
-        <div 
-          className="absolute inset-0 opacity-30 animate-pulse"
-          style={{
-            background: `radial-gradient(circle at 20% 50%, ${theme.accent}15 0%, transparent 50%)`
-          }}
-        />
-        
-        <div className="container mx-auto px-4 py-10 relative z-10">
+    <div className="min-h-screen pt-24" style={{ background: theme.bg }}>
+      {/* Page Header Section */}
+      <div className="container mx-auto px-4 py-10">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
               {/* Icon with Glow Effect */}
@@ -187,7 +172,6 @@ export default function CVsPage() {
             </Button>
           </div>
         </div>
-      </header>
 
       {/* Main Content */}
       <main className="container mx-auto px-4 py-8">

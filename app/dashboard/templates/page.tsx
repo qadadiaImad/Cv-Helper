@@ -19,7 +19,7 @@ export default function TemplateLibraryPage() {
   }
 
   return (
-    <div className="flex h-screen w-full flex-col lg:flex-row transition-colors duration-300" style={{ backgroundColor: theme.bg }} suppressHydrationWarning>
+    <div className="flex h-screen w-full flex-col lg:flex-row transition-colors duration-300 pt-20" style={{ backgroundColor: theme.bg }} suppressHydrationWarning>
       {/* Left Sidebar */}
       <aside className="w-full lg:sticky lg:top-0 lg:h-screen lg:w-[200px] lg:min-w-[200px] xl:w-[240px] xl:min-w-[240px] px-6 py-6 lg:px-8 transition-colors duration-300 flex flex-col" style={{ backgroundColor: theme.sidebar }} suppressHydrationWarning>
         <Link href="/" className="flex items-center gap-3 mb-8">
