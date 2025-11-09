@@ -36,14 +36,14 @@ export const JackSparrowEditable: React.FC<EditableTemplateProps> = ({
 
   return (
     <div style={{
-      width: '850px',
-      minHeight: '1200px',
+      width: '100%',
+      minHeight: '100vh',
       backgroundColor: '#ffffff',
       fontFamily: 'Arial, Helvetica, sans-serif',
-      overflow: 'hidden',
-      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
     }}>
-      {/* Header - Personal Info Editable */}
+      {/* Header - Personal Info Editable - Full Width */}
       {editMode ? (
         <InlineSectionWrapper
           sectionId="personal"
@@ -64,6 +64,8 @@ export const JackSparrowEditable: React.FC<EditableTemplateProps> = ({
             display: 'flex',
             flexDirection: 'column',
             justifyContent: 'center',
+            width: '100%',
+            flexShrink: 0,
           }}>
             <h1 style={{ fontSize: '28px', fontWeight: 'bold', margin: '0 0 3px 0', letterSpacing: '1px' }}>
               {displayData.personal?.fullName || 'Your Name'}
@@ -98,13 +100,13 @@ export const JackSparrowEditable: React.FC<EditableTemplateProps> = ({
       )}
 
       {/* Content Wrapper */}
-      <div style={{ display: 'flex', height: 'calc(100% - 65px)' }}>
+      <div style={{ display: 'flex', flex: 1 }}>
         {/* Sidebar */}
         <aside style={{
-          width: '27%',
+          width: '229.5px', // Fixed width (27% of 850px)
           background: '#f0f0f0',
           padding: '15px 12px',
-          overflowY: 'auto',
+          flexShrink: 0,
         }}>
           {/* About Me */}
           {displayData.summary && (
@@ -271,7 +273,7 @@ export const JackSparrowEditable: React.FC<EditableTemplateProps> = ({
         </aside>
 
         {/* Main Content */}
-        <main style={{ width: '73%', padding: '20px 25px', overflowY: 'auto' }}>
+        <main style={{ flex: 1, padding: '20px 25px' }}>
           {/* Experience - Editable */}
           {editMode ? (
             <InlineSectionWrapper

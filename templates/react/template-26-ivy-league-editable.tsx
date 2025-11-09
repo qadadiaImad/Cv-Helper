@@ -36,14 +36,16 @@ export const IvyLeagueEditable: React.FC<EditableTemplateProps> = ({
 
   return (
     <div style={{
-      width: '850px',
+      width: '100%',
       minHeight: '1200px',
       background: '#ffffff',
       fontFamily: "'PT Sans', Arial, Helvetica, sans-serif",
-      overflow: 'hidden',
-      position: 'relative',
-      padding: '50px',
     }}>
+      <div style={{
+        maxWidth: '850px',
+        margin: '0 auto',
+        padding: '50px',
+      }}>
       {/* Header - Personal Info Editable */}
       {editMode ? (
         <InlineSectionWrapper
@@ -607,6 +609,7 @@ export const IvyLeagueEditable: React.FC<EditableTemplateProps> = ({
           ))}
         </section>
       )}
+      </div>
     </div>
   );
 };

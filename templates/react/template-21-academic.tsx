@@ -9,14 +9,16 @@ import type { UniversalTemplateProps } from './universal-schema'
 
 export const AcademicCVTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
-    width: '850px',
+    width: '100%',
     minHeight: '1200px',
     background: '#ffffff',
     fontFamily: "'Times New Roman', Georgia, serif",
-    overflow: 'hidden',
-    position: 'relative',
-    padding: '40px 60px',
   }}>
+    <div style={{
+      maxWidth: '1200px',
+      margin: '0 auto',
+      padding: '40px 60px',
+    }}>
     {/* Header */}
     <header style={{
       textAlign: 'center',
@@ -200,5 +202,6 @@ export const AcademicCVTemplate: React.FC<UniversalTemplateProps> = ({ data }) =
         ))}
       </section>
     )}
+    </div>
   </div>
 )

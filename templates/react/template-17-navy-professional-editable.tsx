@@ -41,18 +41,19 @@ export const NavyProfessionalEditable: React.FC<EditableTemplateProps> = ({
 
   return (
     <div style={{
-      width: '850px',
+      width: '100%',
       minHeight: '1200px',
       background: '#ffffff',
-      display: 'flex',
       fontFamily: "'Arial', 'Helvetica', sans-serif",
+      display: 'flex',
     }}>
       {/* Left Navy Sidebar */}
       <div style={{
-        width: '35%',
+        width: '297.5px', // Fixed width (35% of 850px)
         background: '#1e3a5f',
         padding: '40px 30px',
         color: '#ffffff',
+        flexShrink: 0,
       }}>
         {/* Personal Info Section - Editable */}
         {editMode ? (
@@ -325,7 +326,7 @@ export const NavyProfessionalEditable: React.FC<EditableTemplateProps> = ({
 
       {/* Right Content Area */}
       <div style={{
-        width: '65%',
+        flex: 1,
         padding: '40px 45px',
         background: '#ffffff',
       }}>

@@ -9,14 +9,13 @@ import type { UniversalTemplateProps } from './universal-schema'
 
 export const CreativeOrangeTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
-    width: '850px',
+    width: '100%',
     minHeight: '1200px',
     background: '#ffffff',
-    position: 'relative',
-    overflow: 'hidden',
     fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
+    position: 'relative',
   }}>
-    {/* Orange Wave Header */}
+    {/* Orange Wave Header - Full Width */}
     <svg
       style={{
         position: 'absolute',
@@ -26,7 +25,7 @@ export const CreativeOrangeTemplate: React.FC<UniversalTemplateProps> = ({ data 
         height: '180px',
         zIndex: 0,
       }}
-      viewBox="0 0 850 180"
+      viewBox="0 0 1920 180"
       preserveAspectRatio="none"
     >
       <defs>
@@ -37,29 +36,36 @@ export const CreativeOrangeTemplate: React.FC<UniversalTemplateProps> = ({ data 
         </linearGradient>
       </defs>
       <path
-        d="M0,0 L850,0 L850,120 Q637.5,180 425,120 Q212.5,60 0,120 Z"
+        d="M0,0 L1920,0 L1920,120 Q1440,180 960,120 Q480,60 0,120 Z"
         fill="url(#orangeGradient)"
       />
     </svg>
 
-    {/* Teal Wave Footer */}
+    {/* Teal Wave Footer - Full Width */}
     <svg
       style={{
         position: 'absolute',
         bottom: 0,
         right: 0,
-        width: '400px',
+        width: '50%',
         height: '150px',
         zIndex: 0,
       }}
-      viewBox="0 0 400 150"
+      viewBox="0 0 960 150"
       preserveAspectRatio="none"
     >
       <path
-        d="M400,150 L400,50 Q300,80 200,50 Q100,20 0,50 L0,150 Z"
+        d="M960,150 L960,50 Q720,80 480,50 Q240,20 0,50 L0,150 Z"
         fill="#2DBFB8"
       />
     </svg>
+
+    <div style={{
+      maxWidth: '850px',
+      margin: '0 auto',
+      position: 'relative',
+      zIndex: 1,
+    }}>
 
     <div style={{
       display: 'grid',
@@ -442,6 +448,7 @@ export const CreativeOrangeTemplate: React.FC<UniversalTemplateProps> = ({ data 
           </div>
         )}
       </div>
+    </div>
     </div>
   </div>
 )

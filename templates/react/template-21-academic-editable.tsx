@@ -36,14 +36,16 @@ export const AcademicCVEditable: React.FC<EditableTemplateProps> = ({
 
   return (
     <div style={{
-      width: '850px',
+      width: '100%',
       minHeight: '1200px',
       background: '#ffffff',
       fontFamily: "'Times New Roman', Georgia, serif",
-      overflow: 'hidden',
-      position: 'relative',
-      padding: '40px 60px',
     }}>
+      <div style={{
+        maxWidth: '850px',
+        margin: '0 auto',
+        padding: '40px 60px',
+      }}>
       {/* Header - Personal Info Editable */}
       {editMode ? (
         <InlineSectionWrapper
@@ -391,6 +393,7 @@ export const AcademicCVEditable: React.FC<EditableTemplateProps> = ({
           ))}
         </section>
       )}
+      </div>
     </div>
   );
 };

@@ -41,23 +41,28 @@ export const TealModernEditable: React.FC<EditableTemplateProps> = ({
 
   return (
     <div style={{
-      width: '850px',
+      width: '100%',
       minHeight: '1200px',
       background: '#E8E8E8',
-      position: 'relative',
-      overflow: 'hidden',
       fontFamily: "'Arial', 'Helvetica', sans-serif",
     }}>
-      {/* Teal Header */}
+      {/* Teal Header - Full Width */}
       <div style={{
         background: 'linear-gradient(135deg, #2DBFB8 0%, #1FA39C 100%)',
         height: '180px',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-between',
-        padding: '0 40px',
+        width: '100%',
         position: 'relative',
       }}>
+        <div style={{
+          maxWidth: '850px',
+          margin: '0 auto',
+          height: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          padding: '0 40px',
+          position: 'relative',
+        }}>
         {/* Profile Photo */}
         <div style={{
           width: '160px',
@@ -172,8 +177,13 @@ export const TealModernEditable: React.FC<EditableTemplateProps> = ({
             </div>
           )}
         </div>
+        </div>
       </div>
 
+      <div style={{
+        maxWidth: '850px',
+        margin: '0 auto',
+      }}>
       <div style={{
         display: 'grid',
         gridTemplateColumns: '240px 1fr',
@@ -736,6 +746,7 @@ export const TealModernEditable: React.FC<EditableTemplateProps> = ({
             </>
           )}
         </div>
+      </div>
       </div>
     </div>
   )

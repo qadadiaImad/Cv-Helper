@@ -9,14 +9,14 @@ import type { UniversalTemplateProps } from './universal-schema'
 
 export const JackSparrowTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
-    width: '850px',
-    minHeight: '1200px',
+    width: '100%',
+    minHeight: '100vh',
     backgroundColor: '#ffffff',
     fontFamily: 'Arial, Helvetica, sans-serif',
-    overflow: 'hidden',
-    position: 'relative',
+    display: 'flex',
+    flexDirection: 'column',
   }}>
-    {/* Header */}
+    {/* Header - Full Width */}
     <header style={{
       background: '#4a4a4a',
       color: 'white',
@@ -26,6 +26,8 @@ export const JackSparrowTemplate: React.FC<UniversalTemplateProps> = ({ data }) 
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'center',
+      width: '100%',
+      flexShrink: 0,
     }}>
       <h1 style={{ fontSize: '28px', fontWeight: 'bold', margin: '0 0 3px 0', letterSpacing: '1px' }}>
         {data.personal?.fullName || 'Your Name'}
@@ -38,13 +40,13 @@ export const JackSparrowTemplate: React.FC<UniversalTemplateProps> = ({ data }) 
     </header>
 
     {/* Content Wrapper */}
-    <div style={{ display: 'flex', height: 'calc(100% - 65px)' }}>
+    <div style={{ display: 'flex', flex: 1 }}>
       {/* Sidebar */}
       <aside style={{
-        width: '27%',
+        width: '229.5px', // Fixed width (27% of 850px)
         background: '#f0f0f0',
         padding: '15px 12px',
-        overflowY: 'auto',
+        flexShrink: 0,
       }}>
         {/* About Me */}
         {data.summary && (
@@ -165,7 +167,7 @@ export const JackSparrowTemplate: React.FC<UniversalTemplateProps> = ({ data }) 
       </aside>
 
       {/* Main Content */}
-      <main style={{ width: '73%', padding: '20px 25px', overflowY: 'auto' }}>
+      <main style={{ flex: 1, padding: '20px 25px' }}>
         {/* Experience */}
         {data.experience && data.experience.length > 0 && (
           <section style={{ marginBottom: '15px' }}>

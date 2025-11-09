@@ -9,18 +9,19 @@ import type { UniversalTemplateProps } from './universal-schema'
 
 export const OrangeSidebarTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
-    width: '850px',
+    width: '100%',
     minHeight: '1200px',
     background: '#ffffff',
-    display: 'flex',
     fontFamily: "'Arial', 'Helvetica', sans-serif",
+    display: 'flex',
   }}>
     {/* Left Dark Sidebar */}
     <div style={{
-      width: '30%',
+      width: '255px', // Fixed width for sidebar (30% of 850px)
       background: '#3d3d3d',
       padding: '0',
       position: 'relative',
+      flexShrink: 0,
     }}>
       {/* Profile Photo */}
       <div style={{
@@ -154,7 +155,7 @@ export const OrangeSidebarTemplate: React.FC<UniversalTemplateProps> = ({ data }
 
     {/* Right Content Area - with horizontal sections */}
     <div style={{
-      width: '70%',
+      flex: 1,
       display: 'flex',
       flexDirection: 'column',
     }}>

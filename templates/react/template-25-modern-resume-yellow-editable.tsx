@@ -34,15 +34,8 @@ export const ModernResumeYellowEditable: React.FC<EditableTemplateProps> = ({
 }) => {
   const displayData = editingSection ? tempData : data
 
-  const renderSidebar = () => (
-    <aside style={{
-      width: '23%',
-      background: '#1e2532',
-      color: 'white',
-      display: 'flex',
-      flexDirection: 'column',
-      position: 'relative',
-    }}>
+  const renderSidebarContent = () => (
+    <>
       {/* Yellow section with photo and name */}
       <div style={{
         background: '#FDB913',
@@ -87,7 +80,7 @@ export const ModernResumeYellowEditable: React.FC<EditableTemplateProps> = ({
       </div>
 
       {/* Navy section */}
-      <div style={{ background: '#1e2532', padding: '30px 25px' }}>
+      <div style={{ background: '#1e2532', padding: '30px 25px', flex: 1 }}>
         {/* Contact */}
         <div style={{ marginBottom: '25px' }}>
           <h3 style={{
@@ -207,42 +200,54 @@ export const ModernResumeYellowEditable: React.FC<EditableTemplateProps> = ({
           </div>
         )}
       </div>
-    </aside>
+    </>
   );
 
   return (
     <div style={{
-      width: '850px',
-      minHeight: '1200px',
-      background: '#ffffff',
+      width: '100%',
+      height: '100vh',
       fontFamily: "'Poppins', 'Arial', sans-serif",
       display: 'flex',
+      margin: 0,
+      padding: 0,
       overflow: 'hidden',
     }}>
-      {/* Sidebar - Personal Info Editable */}
-      {editMode ? (
-        <InlineSectionWrapper
-          sectionId="personal"
-          title="Personal Info"
-          isEditing={editingSection === 'personal'}
-          onEdit={() => onEditSection('personal')}
-          onSave={onSaveSection}
-          onCancel={onCancelSection}
-          isEmpty={!displayData.personal?.fullName}
-          formContent={<PersonalForm data={tempData || data} onChange={onDataChange} />}
-        >
-          {renderSidebar()}
-        </InlineSectionWrapper>
-      ) : (
-        renderSidebar()
-      )}
+      {/* Sidebar */}
+      <aside style={{
+        width: '195.5px',
+        background: '#1e2532',
+        color: 'white',
+        display: 'flex',
+        flexDirection: 'column',
+        position: 'relative',
+        flexShrink: 0,
+        height: '100%',
+      }}>
+        {/* Personal Info Editable */}
+        {editMode ? (
+          <InlineSectionWrapper
+            sectionId="personal"
+            title="Personal Info"
+            isEditing={editingSection === 'personal'}
+            onEdit={() => onEditSection('personal')}
+            onSave={onSaveSection}
+            onCancel={onCancelSection}
+            isEmpty={!displayData.personal?.fullName}
+            formContent={<PersonalForm data={tempData || data} onChange={onDataChange} />}
+          >
+            {renderSidebarContent()}
+          </InlineSectionWrapper>
+        ) : (
+          renderSidebarContent()
+        )}
+      </aside>
 
       {/* Main Content */}
       <main style={{
-        width: '77%',
+        flex: 1,
         background: '#f8f8f8',
         padding: '40px 40px',
-        overflowY: 'auto',
       }}>
         {/* Profile/Summary */}
         {displayData.summary && (

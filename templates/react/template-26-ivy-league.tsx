@@ -9,14 +9,16 @@ import type { UniversalTemplateProps } from './universal-schema'
 
 export const IvyLeagueTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
-    width: '850px',
+    width: '100%',
     minHeight: '1200px',
     background: '#ffffff',
     fontFamily: "'PT Sans', Arial, Helvetica, sans-serif",
-    overflow: 'hidden',
-    position: 'relative',
-    padding: '50px',
   }}>
+    <div style={{
+      maxWidth: '850px',
+      margin: '0 auto',
+      padding: '50px',
+    }}>
     {/* Header */}
     <header style={{
       textAlign: 'center',
@@ -320,5 +322,6 @@ export const IvyLeagueTemplate: React.FC<UniversalTemplateProps> = ({ data }) =>
         ))}
       </section>
     )}
+    </div>
   </div>
 )

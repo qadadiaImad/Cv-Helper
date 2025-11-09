@@ -8,13 +8,12 @@ import type { UniversalTemplateProps } from './universal-schema'
 
 export const RedTopBarTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
-    width: '850px',
-    minHeight: '1200px',
+    width: '100%',
+    minHeight: '100vh',
     background: '#ffffff',
     fontFamily: 'Arial, sans-serif',
     display: 'flex',
     flexDirection: 'column',
-    overflow: 'hidden',
   }}>
     {/* Red top bar */}
     <div style={{
@@ -24,13 +23,12 @@ export const RedTopBarTemplate: React.FC<UniversalTemplateProps> = ({ data }) =>
     }} />
 
     {/* Content wrapper */}
-    <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+    <div style={{ display: 'flex', flex: 1 }}>
       {/* Left Column - White */}
       <main style={{
-        width: '60%',
+        flex: 1,
         background: 'white',
         padding: '30px 35px',
-        overflowY: 'auto',
       }}>
         <h1 style={{
           fontSize: '32px',
@@ -160,10 +158,9 @@ export const RedTopBarTemplate: React.FC<UniversalTemplateProps> = ({ data }) =>
 
       {/* Right Column - Gray */}
       <aside style={{
-        width: '40%',
+        flex: '0 0 40%',
         background: '#f0f0f0',
         padding: '30px 25px',
-        overflowY: 'auto',
       }}>
         {/* Photo */}
         <div style={{ textAlign: 'center', marginBottom: '25px' }}>

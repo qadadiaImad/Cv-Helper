@@ -9,18 +9,19 @@ import type { UniversalTemplateProps } from './universal-schema'
 
 export const BlueCircularTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
-    width: '850px',
+    width: '100%',
     minHeight: '1200px',
     background: '#ffffff',
-    display: 'flex',
     fontFamily: "'Arial', 'Helvetica', sans-serif",
+    display: 'flex',
   }}>
     {/* Left Dark Blue Sidebar */}
     <div style={{
-      width: '28%',
+      width: '238px', // Fixed width (28% of 850px)
       background: '#1e3d5c',
       padding: '0',
       position: 'relative',
+      flexShrink: 0,
     }}>
       {/* Circular Profile Photo with Curved Background */}
       <div style={{
@@ -227,7 +228,7 @@ export const BlueCircularTemplate: React.FC<UniversalTemplateProps> = ({ data })
 
     {/* Right Content Area */}
     <div style={{
-      width: '72%',
+      flex: 1,
       padding: '40px 40px',
       background: '#d0d4d8',
     }}>

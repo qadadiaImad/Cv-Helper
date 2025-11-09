@@ -9,13 +9,11 @@ import type { UniversalTemplateProps } from './universal-schema'
 
 export const DarkProfessionalTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
-    width: '850px',
+    width: '100%',
     minHeight: '1200px',
     background: 'linear-gradient(135deg, #0a2e2e 0%, #1a3a3a 50%, #0f2626 100%)',
-    display: 'flex',
     fontFamily: "'Segoe UI', 'Arial', sans-serif",
     position: 'relative',
-    overflow: 'hidden',
   }}>
     {/* Geometric Background Pattern */}
     <div style={{
@@ -34,6 +32,15 @@ export const DarkProfessionalTemplate: React.FC<UniversalTemplateProps> = ({ dat
       )`,
       pointerEvents: 'none',
     }} />
+
+    {/* Main Layout Container */}
+    <div style={{
+      display: 'flex',
+      position: 'relative',
+      minHeight: '1200px',
+      maxWidth: '1400px',
+      margin: '0 auto',
+    }}>
 
     {/* Left Content Area */}
     <div style={{
@@ -373,6 +380,7 @@ export const DarkProfessionalTemplate: React.FC<UniversalTemplateProps> = ({ dat
           </div>
         )}
       </div>
+    </div>
     </div>
   </div>
 )

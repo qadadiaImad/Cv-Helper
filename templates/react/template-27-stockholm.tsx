@@ -9,13 +9,16 @@ import type { UniversalTemplateProps } from './universal-schema'
 
 export const StockholmTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
-    width: '850px',
+    width: '100%',
     minHeight: '1200px',
     background: '#ffffff',
     fontFamily: "'Georgia', 'Times New Roman', serif",
-    padding: '60px 80px',
-    overflow: 'hidden',
   }}>
+    <div style={{
+      maxWidth: '850px',
+      margin: '0 auto',
+      padding: '60px 80px',
+    }}>
     {/* Header */}
     <header style={{
       marginBottom: '30px',
@@ -305,5 +308,6 @@ export const StockholmTemplate: React.FC<UniversalTemplateProps> = ({ data }) =>
         ))}
       </section>
     )}
+    </div>
   </div>
 )

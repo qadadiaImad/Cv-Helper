@@ -36,21 +36,21 @@ export const OrangeAccentEditable: React.FC<EditableTemplateProps> = ({
 
   return (
     <div style={{
-      width: '850px',
-      minHeight: '1200px',
+      width: '100%',
+      minHeight: '100vh',
       background: '#ffffff',
       fontFamily: 'Arial, sans-serif',
       display: 'flex',
-      overflow: 'hidden',
     }}>
       {/* Left Sidebar - Orange */}
       <aside style={{
-        width: '30%',
+        width: '255px', // Fixed width (30% of 850px)
         background: '#f39c12',
         color: 'white',
         padding: 0,
         display: 'flex',
         flexDirection: 'column',
+        flexShrink: 0,
       }}>
         {/* Photo section */}
         <div style={{
@@ -72,7 +72,7 @@ export const OrangeAccentEditable: React.FC<EditableTemplateProps> = ({
         </div>
 
         {/* Sidebar content */}
-        <div style={{ padding: '25px 20px', flex: 1, overflowY: 'auto' }}>
+        <div style={{ padding: '25px 20px', flex: 1 }}>
           {/* Contact */}
           <div style={{ marginBottom: '25px' }}>
             <div style={{ display: 'flex', alignItems: 'center', marginBottom: '10px', fontSize: '10px', gap: '8px' }}>
@@ -161,10 +161,9 @@ export const OrangeAccentEditable: React.FC<EditableTemplateProps> = ({
 
       {/* Main Content - White */}
       <main style={{
-        width: '70%',
+        flex: 1,
         background: 'white',
         padding: '35px 30px',
-        overflowY: 'auto',
       }}>
         {/* Name - Personal Info Editable */}
         {editMode ? (

@@ -9,21 +9,24 @@ import type { UniversalTemplateProps } from './universal-schema'
 
 export const BeigeSidebarTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
-    width: '90%',
-    maxWidth: '1200px',
-    margin: '80px auto',
+    width: '100%',
     backgroundColor: 'white',
-    boxShadow: '6px 10px 28px 0px rgba(0,0,0,0.4)',
-    position: 'relative',
     fontFamily: "'Open Sans', sans-serif",
   }}>
-    {/* Top Bar */}
+    {/* Top Bar - Full Width */}
     <div style={{
       height: '220px',
       backgroundColor: '#848484',
       color: 'white',
+      width: '100%',
       position: 'relative',
     }}>
+      <div style={{
+        maxWidth: '1200px',
+        margin: '0 auto',
+        height: '100%',
+        position: 'relative',
+      }}>
       <div style={{
         position: 'absolute',
         top: '50%',
@@ -49,8 +52,17 @@ export const BeigeSidebarTemplate: React.FC<UniversalTemplateProps> = ({ data })
           {data.personal.fullName}
         </div>
       </div>
+      </div>
     </div>
 
+    {/* Content Container */}
+    <div style={{
+      maxWidth: '1200px',
+      margin: '0 auto',
+      position: 'relative',
+      minHeight: '800px',
+      backgroundColor: 'white',
+    }}>
     {/* Sidebar */}
     <div style={{
       position: 'absolute',
@@ -319,6 +331,7 @@ export const BeigeSidebarTemplate: React.FC<UniversalTemplateProps> = ({ data })
           )}
         </div>
       ))}
+    </div>
     </div>
   </div>
 )

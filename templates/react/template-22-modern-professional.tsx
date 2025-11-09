@@ -12,22 +12,22 @@ export const ModernProfessionalTemplate: React.FC<UniversalTemplateProps> = ({ d
   
   return (
     <div style={{
-      width: '850px',
-      minHeight: '1200px',
+      width: '100%',
+      minHeight: '100vh',
       background: '#ffffff',
       fontFamily: "'Lato', Arial, sans-serif",
-      overflow: 'hidden',
-      position: 'relative',
       display: 'flex',
       flexDirection: 'column',
     }}>
-      {/* Top section with icon and name */}
+      {/* Top section with icon and name - Full Width */}
       <div style={{
         display: 'flex',
         padding: '35px 30px 20px',
         background: '#e8ebe8',
         alignItems: 'center',
         gap: '20px',
+        width: '100%',
+        flexShrink: 0,
       }}>
         <div style={{
           width: '85px',
@@ -108,13 +108,12 @@ export const ModernProfessionalTemplate: React.FC<UniversalTemplateProps> = ({ d
       </div>
 
       {/* Main content - two columns */}
-      <div style={{ display: 'flex', flex: 1, overflow: 'hidden' }}>
+      <div style={{ display: 'flex', flex: 1 }}>
         {/* Left column - gray with white sections */}
         <aside style={{
-          width: '25%',
+          flex: '0 0 25%',
           background: '#e8ebe8',
           padding: '20px 15px',
-          overflowY: 'auto',
         }}>
           {/* Professional Summary */}
           {data.summary && (
@@ -188,10 +187,9 @@ export const ModernProfessionalTemplate: React.FC<UniversalTemplateProps> = ({ d
 
         {/* Right column - white */}
         <main style={{
-          width: '75%',
+          flex: 1,
           background: '#ffffff',
           padding: '25px 30px',
-          overflowY: 'auto',
         }}>
           {/* Experience */}
           {data.experience && data.experience.length > 0 && (
