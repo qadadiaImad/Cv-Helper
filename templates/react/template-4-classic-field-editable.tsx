@@ -99,9 +99,50 @@ export const ClassicFieldEditable: React.FC<FieldEditableTemplateProps> = ({
                 {exp.achievements.map((ach, j) => (
                   <li key={j} style={{ marginBottom: '3px' }}>
                     <EditableText value={ach} onChange={(v: string) => { const newAch = [...exp.achievements!]; newAch[j] = v; updateArrayField('experience', i, 'achievements', newAch) }} multiline />
+                    {editMode && (
+                      <button
+                        onClick={() => {
+                          const newAch = exp.achievements!.filter((_, idx) => idx !== j)
+                          updateArrayField('experience', i, 'achievements', newAch)
+                        }}
+                        style={{
+                          marginLeft: '8px',
+                          padding: '2px 6px',
+                          backgroundColor: '#ef4444',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '3px',
+                          cursor: 'pointer',
+                          fontSize: '9px'
+                        }}
+                      >
+                        ✕
+                      </button>
+                    )}
                   </li>
                 ))}
               </ul>
+            )}
+            {editMode && (
+              <button
+                onClick={() => {
+                  const newAch = [...(exp.achievements || []), 'New achievement']
+                  updateArrayField('experience', i, 'achievements', newAch)
+                }}
+                style={{
+                  padding: '4px 8px',
+                  backgroundColor: '#000',
+                  color: 'white',
+                  border: 'none',
+                  borderRadius: '4px',
+                  cursor: 'pointer',
+                  fontSize: '10px',
+                  marginTop: '8px',
+                  marginLeft: '20px'
+                }}
+              >
+                + Add Achievement
+              </button>
             )}
           </div>
         ))}

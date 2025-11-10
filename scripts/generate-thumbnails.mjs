@@ -26,7 +26,6 @@ const TEMPLATES = [
   'mercury',
   'evergreen',
   'youngcurve',
-  // New templates
   'double-column',
   'creative-orange',
   'teal-modern',
@@ -38,6 +37,16 @@ const TEMPLATES = [
   'teal-rounded',
   'navy-professional',
   'blue-circular',
+  // Templates 19-27
+  'jack-sparrow',
+  'creative-cv',
+  'academic',
+  'modern-professional',
+  'orange-accent',
+  'red-topbar',
+  'modern-resume-yellow',
+  'ivy-league',
+  'stockholm',
 ]
 
 // Configuration
