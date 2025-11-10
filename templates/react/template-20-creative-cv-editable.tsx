@@ -36,14 +36,14 @@ export const CreativeCVEditable: React.FC<EditableTemplateProps> = ({
 
   return (
     <div style={{
-      width: '850px',
-      minHeight: '1200px',
+      width: '100%',
+      minHeight: '100vh',
       backgroundColor: '#ffffff',
       fontFamily: "'Helvetica Neue', Arial, sans-serif",
-      overflow: 'hidden',
-      position: 'relative',
+      display: 'flex',
+      flexDirection: 'column',
     }}>
-      {/* Header - Personal Info Editable */}
+      {/* Header - Personal Info Editable - Full Width */}
       {editMode ? (
         <InlineSectionWrapper
           sectionId="personal"
@@ -62,6 +62,8 @@ export const CreativeCVEditable: React.FC<EditableTemplateProps> = ({
             justifyContent: 'space-between',
             alignItems: 'center',
             borderBottom: '1px solid #e0e0e0',
+            width: '100%',
+            flexShrink: 0,
             height: '100px',
           }}>
             <div>
@@ -120,9 +122,9 @@ export const CreativeCVEditable: React.FC<EditableTemplateProps> = ({
       )}
 
       {/* Content Wrapper */}
-      <div style={{ display: 'flex', height: 'calc(100% - 100px)' }}>
+      <div style={{ display: 'flex', flex: 1 }}>
         {/* Left Sidebar */}
-        <aside style={{ width: '40%', padding: '25px 20px', background: '#ffffff', overflowY: 'auto' }}>
+        <aside style={{ flex: '0 0 40%', padding: '25px 20px', background: '#ffffff' }}>
           {/* Experience - Editable */}
           {editMode ? (
             <InlineSectionWrapper
@@ -239,7 +241,7 @@ export const CreativeCVEditable: React.FC<EditableTemplateProps> = ({
         </aside>
 
         {/* Main Content */}
-        <main style={{ width: '60%', padding: '25px 30px', background: '#fafafa', overflowY: 'auto' }}>
+        <main style={{ flex: 1, padding: '25px 30px', background: '#fafafa' }}>
           {/* Professional Summary */}
           {displayData.summary && (
             <section style={{ marginBottom: '15px' }}>

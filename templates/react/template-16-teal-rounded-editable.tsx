@@ -41,13 +41,18 @@ export const TealRoundedEditable: React.FC<EditableTemplateProps> = ({
 
   return (
     <div style={{
-      width: '850px',
+      width: '100%',
       minHeight: '1200px',
       background: 'linear-gradient(135deg, #0a4d4d 0%, #0d5858 50%, #0a4040 100%)',
-      padding: '40px',
       fontFamily: "'Arial', 'Helvetica', sans-serif",
-      position: 'relative',
     }}>
+      {/* Content Container */}
+      <div style={{
+        maxWidth: '850px',
+        margin: '0 auto',
+        padding: '40px',
+        position: 'relative',
+      }}>
       {/* Header Section with Photo and Name - Personal Info Editable */}
       {editMode ? (
         <InlineSectionWrapper
@@ -702,6 +707,7 @@ export const TealRoundedEditable: React.FC<EditableTemplateProps> = ({
             </>
           )}
         </div>
+      </div>
       </div>
     </div>
   )

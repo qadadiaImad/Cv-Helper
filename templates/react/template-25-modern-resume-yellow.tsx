@@ -8,21 +8,24 @@ import type { UniversalTemplateProps } from './universal-schema'
 
 export const ModernResumeYellowTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
-    width: '850px',
-    minHeight: '1200px',
-    background: '#ffffff',
+    width: '100%',
+    height: '100vh',
     fontFamily: "'Poppins', 'Arial', sans-serif",
     display: 'flex',
+    margin: 0,
+    padding: 0,
     overflow: 'hidden',
   }}>
     {/* Left Sidebar - Yellow + Navy */}
     <aside style={{
-      width: '23%',
+      width: '195.5px', // Fixed width (23% of 850px)
       background: '#1e2532',
       color: 'white',
       display: 'flex',
       flexDirection: 'column',
       position: 'relative',
+      flexShrink: 0,
+      height: '100%',
     }}>
       {/* Yellow section */}
       <div style={{
@@ -69,7 +72,7 @@ export const ModernResumeYellowTemplate: React.FC<UniversalTemplateProps> = ({ d
       </div>
 
       {/* Navy section */}
-      <div style={{ background: '#1e2532', padding: '30px 25px' }}>
+      <div style={{ background: '#1e2532', padding: '30px 25px', flex: 1 }}>
         {/* Contact */}
         <div style={{ marginBottom: '25px' }}>
           <h3 style={{
@@ -193,10 +196,9 @@ export const ModernResumeYellowTemplate: React.FC<UniversalTemplateProps> = ({ d
 
     {/* Main Content - White */}
     <main style={{
-      width: '77%',
+      flex: 1,
       background: '#f8f8f8',
       padding: '40px 40px',
-      overflowY: 'auto',
     }}>
       {/* Profile */}
       {data.summary && (

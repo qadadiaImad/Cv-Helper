@@ -37,13 +37,19 @@ export const DoubleColumnEditable: React.FC<EditableTemplateProps> = ({
 
   return (
     <div style={{
-      width: '850px',
+      width: '100%',
       minHeight: '1200px',
       background: 'linear-gradient(135deg, #E8F4F8 0%, #B8D4E8 100%)',
-      padding: '60px',
       display: 'flex',
-      gap: '30px',
+      justifyContent: 'center',
+      padding: '60px 20px',
     }}>
+      <div style={{
+        maxWidth: '850px',
+        width: '100%',
+        display: 'flex',
+        gap: '30px',
+      }}>
       {/* Left Column */}
       <div style={{ 
         flex: '60%',
@@ -373,6 +379,7 @@ export const DoubleColumnEditable: React.FC<EditableTemplateProps> = ({
             </div>
           </section>
         )}
+      </div>
       </div>
     </div>
   )

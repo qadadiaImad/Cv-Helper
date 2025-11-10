@@ -1230,3 +1230,169 @@
     opacity: 0;
   }
 }
+
+/* Infinity Ring Logo Styles */
+.logo-infinite {
+  position: relative;
+  width: calc(var(--logo-size) * 2);
+  height: var(--logo-size);
+  pointer-events: none;
+  background: transparent;
+}
+
+/* Left ring - has opening/break that animates */
+.logo-infinite::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: var(--logo-size);
+  height: var(--logo-size);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #4A4868 0%, #6B6A8E 50%, #5B5A7E 100%);
+  -webkit-mask: radial-gradient(closest-side, transparent calc(50% - var(--logo-thickness)), #000 0);
+  mask: radial-gradient(closest-side, transparent calc(50% - var(--logo-thickness)), #000 0);
+  filter: drop-shadow(0 0 var(--logo-glow) var(--logo-violet));
+  will-change: clip-path;
+  animation: leftRingBreak 4s ease-in-out infinite;
+}
+
+/* Right ring - moves and opens */
+.logo-infinite::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: var(--logo-size);
+  height: var(--logo-size);
+  border-radius: 50%;
+  background: linear-gradient(135deg, #7C5CF6 0%, #A78BFA 50%, #8B5CF6 100%);
+  -webkit-mask: radial-gradient(closest-side, transparent calc(50% - var(--logo-thickness)), #000 0);
+  mask: radial-gradient(closest-side, transparent calc(50% - var(--logo-thickness)), #000 0);
+  filter: drop-shadow(0 0 var(--logo-glow) var(--logo-violet));
+  will-change: transform;
+  animation: ringOpen 4s ease-in-out infinite;
+}
+
+@keyframes leftRingBreak {
+  0% {
+    clip-path: polygon(
+      50% 0%, 100% 0%, 100% 100%, 50% 100%,
+      50% 90%, 10% 90%, 10% 10%, 50% 10%
+    );
+  }
+  25% {
+    clip-path: polygon(
+      50% 0%, 85% 0%, 85% 100%, 50% 100%,
+      50% 85%, 10% 85%, 10% 15%, 50% 15%
+    );
+  }
+  50% {
+    clip-path: polygon(
+      50% 0%, 85% 0%, 85% 100%, 50% 100%,
+      50% 85%, 10% 85%, 10% 15%, 50% 15%
+    );
+  }
+  75% {
+    clip-path: polygon(
+      50% 0%, 100% 0%, 100% 100%, 50% 100%,
+      50% 90%, 10% 90%, 10% 10%, 50% 10%
+    );
+  }
+  100% {
+    clip-path: polygon(
+      50% 0%, 100% 0%, 100% 100%, 50% 100%,
+      50% 90%, 10% 90%, 10% 10%, 50% 10%
+    );
+  }
+}
+
+@keyframes ringOpen {
+  0% {
+    transform: translateX(calc(-1 * var(--logo-size) * 0.35));
+  }
+  25% {
+    transform: translateX(0);
+  }
+  50% {
+    transform: translateX(0);
+  }
+  75% {
+    transform: translateX(calc(-1 * var(--logo-size) * 0.35));
+  }
+  100% {
+    transform: translateX(calc(-1 * var(--logo-size) * 0.35));
+  }
+}
+
+@keyframes cvAppear {
+  0% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  25% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  37.5% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  62.5% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  75% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+}
+
+/* SVG-based logo animation (precise match to image) */
+.logo-svg { overflow: visible; }
+.logo-svg .ring-left {
+  stroke-linecap: round;
+  stroke-dasharray: 98 2; /* tiny gap at 3 o'clock */
+  stroke-dashoffset: 0;
+  animation: leftGapAnim 4s ease-in-out infinite;
+}
+.logo-svg .ring-right {
+  transform: translateX(0px);
+  animation: rightRingSlide 4s ease-in-out infinite;
+}
+
+@keyframes leftGapAnim {
+  0%   { stroke-dasharray: 98 2; }
+  25%  { stroke-dasharray: 92 8; }
+  50%  { stroke-dasharray: 92 8; }
+  75%  { stroke-dasharray: 98 2; }
+  100% { stroke-dasharray: 98 2; }
+}
+
+@keyframes rightRingSlide {
+  0%   { transform: translateX(0px); }
+  25%  { transform: translateX(8px); }
+  50%  { transform: translateX(8px); }
+  75%  { transform: translateX(0px); }
+  100% { transform: translateX(0px); }
+}
+
+/* Show C and V only when rings collide (closing phase) */
+.logo-svg .letter-c,
+.logo-svg .letter-v {
+  opacity: 0;
+  transform: scale(0.9);
+  animation: lettersAtOverlap 4s ease-in-out infinite;
+}
+
+@keyframes lettersAtOverlap {
+  0%   { opacity: 0; transform: scale(0.9); }
+  70%  { opacity: 0; transform: scale(0.9); }
+  75%  { opacity: 1; transform: scale(1); }
+  90%  { opacity: 1; transform: scale(1); }
+  100% { opacity: 0; transform: scale(0.9); }
+}

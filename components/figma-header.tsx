@@ -93,115 +93,95 @@ export function FigmaHeader() {
                     className="absolute inset-0 rounded-2xl opacity-40 blur-lg transition-all duration-300 group-hover:opacity-60 group-hover:blur-xl animate-pulse"
                     style={{ backgroundColor: theme.accent }}
                   />
-                  {/* Logo container - Exploding Infinity to Resume */}
-                  <div 
-                    className="relative w-12 h-12 rounded-full flex items-center justify-center overflow-visible"
-                    style={{ 
-                      background: `linear-gradient(135deg, 
-                        #FF6B6B 0%, 
-                        #FFA500 15%, 
-                        #FFD700 25%, 
-                        #32CD32 35%, 
-                        #00CED1 45%, 
-                        #1E90FF 55%, 
-                        #9370DB 65%, 
-                        #FF1493 75%, 
-                        #FF6B6B 100%)`,
-                      backgroundSize: '400% 400%',
-                      animation: 'gradientShift 4s ease infinite',
-                      boxShadow: `
-                        0 0 20px rgba(168, 85, 247, 0.6),
-                        0 0 40px rgba(236, 72, 153, 0.4),
-                        0 0 60px rgba(59, 130, 246, 0.3),
-                        inset 0 2px 4px rgba(255, 255, 255, 0.3)
-                      `
-                    }}
-                  >
-                    {/* Explosion particles */}
-                    {[...Array(8)].map((_, i) => {
-                      const angle = (i * 45) * Math.PI / 180
-                      const distance = 30
-                      return (
-                        <div
-                          key={i}
-                          className="absolute w-2 h-2 rounded-full"
-                          style={{
-                            background: `linear-gradient(135deg, ${['#FF6B6B', '#FFA500', '#FFD700', '#32CD32', '#00CED1', '#1E90FF', '#9370DB', '#FF1493'][i]}, ${['#FFA500', '#FFD700', '#32CD32', '#00CED1', '#1E90FF', '#9370DB', '#FF1493', '#FF6B6B'][i]})`,
-                            '--tx': `${Math.cos(angle) * distance}px`,
-                            '--ty': `${Math.sin(angle) * distance}px`,
-                            animation: 'particleSpread 8s ease-in-out infinite'
-                          } as React.CSSProperties}
-                        />
-                      )
-                    })}
-                    
-                    {/* Glossy 3D effect overlay */}
-                    <div 
-                      className="absolute inset-0 rounded-full"
-                      style={{
-                        background: `linear-gradient(135deg, 
-                          rgba(255, 255, 255, 0.4) 0%, 
-                          rgba(255, 255, 255, 0.1) 40%, 
-                          rgba(0, 0, 0, 0.1) 60%, 
-                          rgba(0, 0, 0, 0.2) 100%)`,
-                        opacity: 0.8
-                      }}
-                    />
-                    
-                    {/* Morphing Icon Container */}
-                    <div 
-                      className="relative z-10 flex items-center justify-center w-full h-full"
-                      style={{ 
-                        animation: 'explodeToResume 8s ease-in-out infinite'
-                      }}
+                  {/* Precise SVG Logo matching public/images/logo.jpg */}
+                  <div className="relative">
+                    <svg
+                      width={84}
+                      height={42}
+                      viewBox="0 0 84 42"
+                      className="logo-svg block"
+                      style={{ '--overlap': '15px' } as React.CSSProperties}
                     >
-                      {/* Infinity symbol (visible 0-40% and 80-100%) */}
-                      <div
-                        className="absolute flex items-center justify-center"
-                        style={{
-                          filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3)) drop-shadow(0 0 10px rgba(255, 255, 255, 0.5))',
-                          animation: 'fadeInfinity 8s ease-in-out infinite'
-                        }}
-                      >
-                        <span 
-                          className="text-white font-black text-3xl leading-none"
-                          style={{
-                            textShadow: `
-                              0 2px 4px rgba(0, 0, 0, 0.4),
-                              0 0 10px rgba(255, 255, 255, 0.6),
-                              0 0 20px rgba(255, 255, 255, 0.4)
-                            `
-                          }}
+                      <defs>
+                        {/* Left ring gradient (dark gray-purple) */}
+                        <linearGradient id="gradLeft" x1="0" y1="0" x2="42" y2="42" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stopColor="#4A4868" />
+                          <stop offset="60%" stopColor="#6B6A8E" />
+                          <stop offset="100%" stopColor="#5B5A7E" />
+                        </linearGradient>
+                        {/* Right ring gradient (vivid purple) */}
+                        <linearGradient id="gradRight" x1="42" y1="0" x2="84" y2="42" gradientUnits="userSpaceOnUse">
+                          <stop offset="0%" stopColor="#7C5CF6" />
+                          <stop offset="55%" stopColor="#A78BFA" />
+                          <stop offset="100%" stopColor="#8B5CF6" />
+                        </linearGradient>
+                        {/* Mask to create a small break on the right side of the left ring */}
+                        <mask id="maskLeft">
+                          <rect width="84" height="42" fill="white" />
+                          {/* Vertical slit that animates open/close */}
+                          <rect
+                            className="left-gap-rect"
+                            x={21 + (21 - 3)}
+                            y={0}
+                            width={8}
+                            height={42}
+                            fill="black"
+                          />
+                        </mask>
+                      </defs>
+
+                      {/* Left ring with small animated gap using stroke-dasharray */}
+                      <circle
+                        className="ring-left"
+                        cx={21}
+                        cy={21}
+                        r={21 - 3}
+                        fill="none"
+                        stroke="url(#gradLeft)"
+                        strokeWidth={6}
+                        pathLength={100}
+                      />
+
+                      {/* Right ring slides out and back */}
+                      <g className="ring-right">
+                        <circle
+                          cx={63}
+                          cy={21}
+                          r={21 - 3}
+                          fill="none"
+                          stroke="url(#gradRight)"
+                          strokeWidth={6}
+                        />
+                        {/* V inside right ring */}
+                        <text
+                          x={63}
+                          y={21}
+                          className="letter-v"
+                          fill="#8B5CF6"
+                          fontSize="16"
+                          fontWeight={800}
+                          textAnchor="middle"
+                          dominantBaseline="middle"
                         >
-                          ∞
-                        </span>
-                        <span 
-                          className="absolute text-white font-bold text-[10px] leading-none tracking-tight"
-                          style={{
-                            textShadow: '0 1px 3px rgba(0, 0, 0, 0.5), 0 0 5px rgba(255, 255, 255, 0.5)'
-                          }}
-                        >
-                          CV
-                        </span>
-                      </div>
-                      
-                      {/* Resume icon (visible 40-70%) */}
-                      <svg
-                        className="absolute w-7 h-7 text-white"
-                        fill="currentColor"
-                        viewBox="0 0 24 24"
-                        style={{
-                          filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3))',
-                          animation: 'fadeResume 8s ease-in-out infinite'
-                        }}
+                          V
+                        </text>
+                      </g>
+
+                      {/* C inside left ring */}
+                      <text
+                        x={21}
+                        y={21}
+                        className="letter-c"
+                        fill="#5B5A7E"
+                        fontSize="16"
+                        fontWeight={800}
+                        textAnchor="middle"
+                        dominantBaseline="middle"
                       >
-                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6z"/>
-                        <path d="M14 2v6h6"/>
-                        <path d="M8 13h8"/>
-                        <path d="M8 17h8"/>
-                        <path d="M8 9h2"/>
-                      </svg>
-                    </div>
+                        C
+                      </text>
+                    </svg>
+                    
                   </div>
                 </div>
                 

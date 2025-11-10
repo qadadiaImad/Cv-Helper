@@ -9,16 +9,21 @@ import type { UniversalTemplateProps } from './universal-schema'
 
 export const DarkBlueOrangeTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
-    width: '960px',
+    width: '100%',
+    minHeight: '1200px',
     background: '#1a237e',
-    color: '#ffffff',
-    margin: '20px auto',
-    boxShadow: '10px 10px #0e1442',
-    position: 'relative',
-    display: 'flex',
     fontFamily: "'Montserrat', sans-serif",
-    fontSize: '16px',
   }}>
+    {/* Content Container */}
+    <div style={{
+      maxWidth: '960px',
+      margin: '20px auto',
+      position: 'relative',
+      display: 'flex',
+      color: '#ffffff',
+      fontSize: '16px',
+      background: '#1a237e',
+    }}>
     {/* Left Sidebar (Base) */}
     <div style={{
       width: '30%',
@@ -475,6 +480,7 @@ export const DarkBlueOrangeTemplate: React.FC<UniversalTemplateProps> = ({ data 
           })}
         </div>
       </div>
+    </div>
     </div>
   </div>
 )
