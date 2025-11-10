@@ -188,12 +188,13 @@ export const COMPLETE_SAMPLE_DATA: UniversalResumeData = {
       title: 'Product Manager of the Year',
       issuer: 'Tech Corp',
       date: '2022',
-      description: 'Recognized for exceptional product leadership',
+      description: 'Recognized for exceptional product leadership and driving 300% revenue growth',
     },
     {
       title: 'Innovation Award',
       issuer: 'Startup Inc',
       date: '2019',
+      description: 'Awarded for pioneering AI-driven product features that transformed user experience',
     },
   ],
 
