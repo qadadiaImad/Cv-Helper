@@ -12,9 +12,108 @@ datasource db {
 }
 
 model User {
+  id                String         @id @default(uuid())
+  name              String
+  email             String         @unique
+  passwordHash      String
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
+  
+  // Stripe customer ID for this user
+  stripeCustomerId  String?        @unique
+  
+  // Current subscription status
+  subscriptionStatus SubscriptionStatus @default(FREE)
+  
+  // Relations
+  subscription      Subscription?
+  payments          Payment[]
+  usageRecords      UsageRecord[]
+}
+
+enum SubscriptionStatus {
+  FREE
+  ONE_TIME
+  PRO
+  CANCELLED
+  EXPIRED
+}
+
+model Subscription {
+  id                    String   @id @default(uuid())
+  userId                String   @unique
+  user                  User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Stripe subscription details
+  stripeSubscriptionId  String   @unique
+  stripePriceId         String
+  stripeProductId       String?
+  
+  // Subscription info
+  status                String   // active, canceled, past_due, etc.
+  planType              String   // "one-time" or "pro"
+  
+  // Billing period
+  currentPeriodStart    DateTime
+  currentPeriodEnd      DateTime
+  cancelAtPeriodEnd     Boolean  @default(false)
+  canceledAt            DateTime?
+  
+  // Credits (for one-time plan)
+  aiCreditsRemaining    Int      @default(0)
+  aiCreditsTotal        Int      @default(0)
+  
+  createdAt             DateTime @default(now())
+  updatedAt             DateTime @updatedAt
+}
+
+model Payment {
+  id                      String   @id @default(uuid())
+  userId                  String
+  user                    User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // Stripe payment details
+  stripePaymentIntentId   String   @unique
+  stripeInvoiceId         String?
+  
+  // Payment info
+  amount                  Int      // Amount in cents
+  currency                String   @default("eur")
+  status                  PaymentStatus
+  
+  // What was purchased
+  planType                String   // "one-time" or "pro"
+  description             String?
+  
+  // Timestamps
+  paidAt                  DateTime?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+  
+  @@index([userId])
+  @@index([status])
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCEEDED
+  FAILED
+  REFUNDED
+}
+
+model UsageRecord {
   id          String   @id @default(uuid())
-  name        String
-  email       String   @unique
-  passwordHash String
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  // What feature was used
+  featureType String   // "ai_polish", "template_access", "pdf_export", etc.
+  
+  // Usage details
+  metadata    String?  // JSON string for additional data
+  
   createdAt   DateTime @default(now())
+  
+  @@index([userId])
+  @@index([featureType])
 }

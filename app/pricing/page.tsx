@@ -7,6 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { useTheme } from "@/lib/theme-context"
+import { createCheckoutSession } from "@/lib/stripe"
+import { toast } from "sonner"
 
 const PRICING_PLANS = [
   {
@@ -44,6 +46,7 @@ const PRICING_PLANS = [
     period: "one-time payment",
     description: "Perfect for a quick resume polish before that important application",
     badge: "Best Value",
+    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_ONE_TIME || "price_one_time",
     features: [
       "Everything in Free",
       "3 AI Polish Credits",
@@ -69,6 +72,7 @@ const PRICING_PLANS = [
     period: "per month",
     description: "For professionals who want unlimited AI-powered resume optimization",
     badge: "Most Popular",
+    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO || "price_pro",
     features: [
       "Everything in One-Time",
       "Unlimited AI Polish",
@@ -91,6 +95,27 @@ const PRICING_PLANS = [
 
 export default function PricingPage() {
   const { theme } = useTheme()
+  const [loading, setLoading] = React.useState<string | null>(null)
+
+  const handleCheckout = async (plan: typeof PRICING_PLANS[number]) => {
+    if (plan.id === 'free') {
+      return // Free plan doesn't need checkout
+    }
+
+    try {
+      setLoading(plan.id)
+      
+      // Get user ID from session/auth if available
+      // For now, we'll pass undefined and handle guest checkout
+      const userId = undefined // TODO: Get from auth context
+      
+      await createCheckoutSession(plan.id, plan.priceId!, userId)
+    } catch (error: any) {
+      console.error('Checkout error:', error)
+      toast.error(error.message || 'Failed to start checkout. Please try again.')
+      setLoading(null)
+    }
+  }
 
   return (
     <div 
@@ -260,12 +285,11 @@ export default function PricingPage() {
                         }
                       : undefined
                   }
-                  asChild
+                  onClick={() => plan.id === "free" ? window.location.href = "/dashboard/cvs" : handleCheckout(plan)}
+                  disabled={loading === plan.id}
                 >
-                  <Link href={plan.id === "free" ? "/dashboard/cvs" : "/checkout"}>
-                    {plan.cta}
-                    <ArrowRight className="ml-2 h-4 w-4" />
-                  </Link>
+                  {loading === plan.id ? "Processing..." : plan.cta}
+                  {loading !== plan.id && <ArrowRight className="ml-2 h-4 w-4" />}
                 </Button>
 
                 {/* Features List */}
