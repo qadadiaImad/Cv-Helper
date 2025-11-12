@@ -35,6 +35,9 @@ import {
   ModernResumeYellowTemplate,
   IvyLeagueTemplate,
   StockholmTemplate,
+  GeometricCoralTemplate,
+  ModernBlueBlackTemplate,
+  AcademicBurgundyTemplate,
 } from "@/templates/react";
 
 // Legacy ResumeData type removed - now using UniversalResumeData from @/lib/schemas
@@ -49,13 +52,14 @@ import {
  * - color_blocks, european_standard, responsive_professional
  * - simple_elegant, rwd_modern
  * 
- * NEW UNIVERSAL TEMPLATES (27 total):
+ * NEW UNIVERSAL TEMPLATES (29 total):
  * - atlantic_blue, executive, mercury, classic, harvard, evergreen, youngcurve
  * - double-column, creative-orange, teal-modern, beige-sidebar
  * - dark-blue-orange, gray-minimal, dark-professional, orange-sidebar
  * - teal-rounded, navy-professional, blue-circular
  * - jack-sparrow, creative-cv, academic, modern-professional
  * - orange-accent, red-topbar, modern-resume-yellow, ivy-league, stockholm
+ * - geometric-coral, modern-blue-black, academic-burgundy
  */
 export const REACT_TEMPLATES = {
   // Original universal templates from @/templates/react
@@ -87,6 +91,9 @@ export const REACT_TEMPLATES = {
   'modern-resume-yellow': ModernResumeYellowTemplate as any,
   'ivy-league': IvyLeagueTemplate as any,
   'stockholm': StockholmTemplate as any,
+  'geometric-coral': GeometricCoralTemplate as any,
+  'modern-blue-black': ModernBlueBlackTemplate as any,
+  'academic-burgundy': AcademicBurgundyTemplate as any,
 };
 
 export type TemplateId = keyof typeof REACT_TEMPLATES;

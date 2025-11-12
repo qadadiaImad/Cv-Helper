@@ -30,6 +30,9 @@ export { RedTopBarTemplate } from './template-24-red-topbar'
 export { ModernResumeYellowTemplate } from './template-25-modern-resume-yellow'
 export { IvyLeagueTemplate } from './template-26-ivy-league'
 export { StockholmTemplate } from './template-27-stockholm'
+export { GeometricCoralTemplate } from './template-28-geometric-coral'
+export { ModernBlueBlackTemplate } from './template-29-modern-blue-black'
+export { AcademicBurgundyTemplate } from './template-30-academic-burgundy'
 
 // Editable versions
 export { AtlanticBlueEditable } from './template-1-atlantic-blue-editable'
@@ -73,6 +76,9 @@ export { RedTopBarFieldEditable } from './template-24-red-topbar-field-editable'
 export { ModernResumeYellowFieldEditable } from './template-25-modern-resume-yellow-field-editable'
 export { IvyLeagueFieldEditable } from './template-26-ivy-league-field-editable'
 export { StockholmFieldEditable } from './template-27-stockholm-field-editable'
+export { GeometricCoralFieldEditable } from './template-28-geometric-coral-field-editable'
+export { ModernBlueBlackFieldEditable } from './template-29-modern-blue-black-field-editable'
+export { AcademicBurgundyFieldEditable } from './template-30-academic-burgundy-field-editable'
 
 // Export types
 export type { UniversalTemplateProps, UniversalResumeData } from './universal-schema'

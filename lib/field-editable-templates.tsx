@@ -50,6 +50,9 @@ import { IvyLeagueEditable } from '@/templates/react/template-26-ivy-league-edit
 import { IvyLeagueFieldEditable } from '@/templates/react/template-26-ivy-league-field-editable'
 import { StockholmEditable } from '@/templates/react/template-27-stockholm-editable'
 import { StockholmFieldEditable } from '@/templates/react/template-27-stockholm-field-editable'
+import { GeometricCoralFieldEditable } from '@/templates/react/template-28-geometric-coral-field-editable'
+import { ModernBlueBlackFieldEditable } from '@/templates/react/template-29-modern-blue-black-field-editable'
+import { AcademicBurgundyFieldEditable } from '@/templates/react/template-30-academic-burgundy-field-editable'
 import type { TemplateId } from '@/lib/react-templates'
 import type { UniversalResumeData } from '@/lib/schemas'
 
@@ -88,6 +91,9 @@ export const FIELD_EDITABLE_TEMPLATES: Record<TemplateId, React.FC<FieldEditable
   'modern-resume-yellow': ModernResumeYellowFieldEditable as any,
   'ivy-league': IvyLeagueFieldEditable as any,
   'stockholm': StockholmFieldEditable as any,
+  'geometric-coral': GeometricCoralFieldEditable as any,
+  'modern-blue-black': ModernBlueBlackFieldEditable as any,
+  'academic-burgundy': AcademicBurgundyFieldEditable as any,
 }
 
 /**
