@@ -29,4 +29,7 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-prisma/dev.db
+#prisma/dev.db
+
+# test accounts (contains passwords)
+#TEST_ACCOUNTS.md

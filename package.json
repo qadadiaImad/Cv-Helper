@@ -11,9 +11,11 @@
     "db:migrate": "prisma migrate dev",
     "db:studio": "prisma studio",
     "generate-thumbnails": "node scripts/generate-thumbnails.mjs",
-    "test": "vitest",
+    "test": "vitest run",
     "test:watch": "vitest --watch",
-    "test:coverage": "vitest --coverage"
+    "test:coverage": "vitest --coverage",
+    "test:e2e": "vitest run tests/e2e",
+    "test:unit": "vitest run tests/auth tests/services"
   },
   "dependencies": {
     "@ai-sdk/openai": "latest",
@@ -91,10 +93,11 @@
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.9",
-    "@types/node": "^22",
+    "@types/node": "^22.19.1",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "@vitest/coverage-v8": "^2.1.9",
+    "@vitest/ui": "^4.0.8",
     "playwright": "^1.56.1",
     "postcss": "^8.5",
     "puppeteer": "^24.25.0",
