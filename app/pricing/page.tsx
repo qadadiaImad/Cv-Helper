@@ -2,6 +2,7 @@
 
 import * as React from "react"
 import Link from "next/link"
+import { useSearchParams } from "next/navigation"
 import { Check, Sparkles, Zap, Crown, ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
@@ -9,11 +10,22 @@ import { Badge } from "@/components/ui/badge"
 import { useTheme } from "@/lib/theme-context"
 import { createCheckoutSession } from "@/lib/stripe"
 import { toast } from "sonner"
+import { 
+  getPlanAction, 
+  getStatusLabel, 
+  getStatusColor,
+  type SubscriptionStatus,
+  type PlanId 
+} from "@/lib/subscription-rules"
 
 interface User {
   id: string
   email: string
   name: string
+  subscriptionStatus: SubscriptionStatus
+  stripeSubscriptionId?: string
+  currentPeriodEnd?: string
+  cancelAtPeriodEnd?: boolean
 }
 
 const PRICING_PLANS = [
@@ -45,9 +57,9 @@ const PRICING_PLANS = [
   },
   {
     id: "one-time",
-    name: "One-Time Boost",
+    name: "Quick Boost",
     icon: Zap,
-    price: "1",
+    price: "2.99",
     currency: "€",
     period: "one-time payment",
     description: "Perfect for a quick resume polish before that important application",
@@ -65,35 +77,61 @@ const PRICING_PLANS = [
       "30-Day Access"
     ],
     limitations: [],
-    cta: "Buy Now - €1",
+    cta: "Buy Now - €2.99",
     ctaVariant: "default" as const,
     popular: true
+  },
+  {
+    id: "basic",
+    name: "Basic Monthly",
+    icon: Crown,
+    price: "8.99",
+    currency: "€",
+    period: "per month",
+    description: "For active job seekers who need consistent AI support",
+    badge: null,
+    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_BASIC || "price_basic",
+    features: [
+      "Everything in Quick Boost",
+      "Unlimited AI Polish",
+      "Up to 5 Resumes",
+      "AI Cover Letter Generator",
+      "Real-time ATS Score",
+      "All Premium Templates",
+      "Version History",
+      "Priority Support",
+      "Cancel Anytime"
+    ],
+    limitations: [],
+    cta: "Start Basic Plan",
+    ctaVariant: "default" as const,
+    popular: false
   },
   {
     id: "pro",
     name: "Pro Unlimited",
     icon: Crown,
-    price: "6",
+    price: "15.99",
     currency: "€",
     period: "per month",
-    description: "For professionals who want unlimited AI-powered resume optimization",
+    description: "For professionals who want unlimited everything and premium features",
     badge: "Most Popular",
     priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_PRO || "price_pro",
     features: [
-      "Everything in One-Time",
-      "Unlimited AI Polish",
+      "Everything in Basic",
       "Unlimited Resumes",
       "AI Job Matching",
-      "AI Cover Letter Generator",
-      "Real-time ATS Score",
+      "LinkedIn Profile Optimization",
+      "Interview Preparation AI",
       "Industry-Specific Templates",
       "Custom Branding",
-      "Version History",
-      "Priority Support",
+      "Team Collaboration",
+      "API Access",
+      "Dedicated Support",
       "Early Access to New Features"
     ],
     limitations: [],
-    cta: "Start Pro Trial",
+    cta: "Start Pro Plan",
     ctaVariant: "default" as const,
     popular: false
   }
@@ -101,8 +139,29 @@ const PRICING_PLANS = [
 
 export default function PricingPage() {
   const { theme } = useTheme()
+  const searchParams = useSearchParams()
   const [loading, setLoading] = React.useState<string | null>(null)
   const [user, setUser] = React.useState<User | null>(null)
+
+  // Handle success/cancel messages from Stripe redirect
+  React.useEffect(() => {
+    const success = searchParams.get('success')
+    const canceled = searchParams.get('canceled')
+    
+    if (success === 'true') {
+      toast.success('Payment successful!', {
+        description: 'Your subscription has been activated. Thank you for your purchase!'
+      })
+      // Clean up URL
+      window.history.replaceState({}, '', '/pricing')
+    } else if (canceled === 'true') {
+      toast.error('Payment cancelled', {
+        description: 'Your payment was cancelled. No charges were made.'
+      })
+      // Clean up URL
+      window.history.replaceState({}, '', '/pricing')
+    }
+  }, [searchParams])
 
   // Fetch current user on mount
   React.useEffect(() => {
@@ -139,7 +198,39 @@ export default function PricingPage() {
         return
       }
       
-      await createCheckoutSession(plan.id, plan.priceId!, userId)
+      // Check if this is an upgrade (user has BASIC and wants PRO)
+      const isUpgrade = user?.subscriptionStatus === 'BASIC' && plan.id === 'pro'
+      
+      if (isUpgrade) {
+        // Handle upgrade with proration
+        const response = await fetch('/api/subscription/upgrade', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ targetPlan: 'pro' })
+        })
+        
+        const data = await response.json()
+        
+        if (!response.ok) {
+          throw new Error(data.error || 'Upgrade failed')
+        }
+        
+        toast.success('Upgraded to Pro!', {
+          description: `You paid €${data.proratedAmount.toFixed(2)} today. Next billing: €${data.nextBillingAmount}/month`
+        })
+        
+        // Refresh user data
+        const userResponse = await fetch('/api/auth/me')
+        if (userResponse.ok) {
+          const userData = await userResponse.json()
+          setUser(userData.user)
+        }
+        
+        setLoading(null)
+      } else {
+        // Regular checkout for new subscriptions
+        await createCheckoutSession(plan.id, plan.priceId!, userId)
+      }
     } catch (error: any) {
       console.error('Checkout error:', error)
       toast.error(error.message || 'Failed to start checkout. Please try again.')
@@ -228,8 +319,66 @@ export default function PricingPage() {
           </p>
         </div>
 
+        {/* Current Subscription Status Banner */}
+        {user && user.subscriptionStatus && user.subscriptionStatus !== 'FREE' && (
+          <div className="max-w-4xl mx-auto mb-8">
+            <Card 
+              className="p-6 border-2 shadow-lg"
+              style={{ 
+                borderColor: theme.accent,
+                backgroundColor: `${theme.accent}05`
+              }}
+            >
+              <div className="flex items-center justify-between flex-wrap gap-4">
+                <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm font-medium" style={{ color: theme.text }}>
+                      Current Plan:
+                    </span>
+                    <Badge 
+                      className="px-3 py-1 text-sm font-semibold"
+                      style={{
+                        backgroundColor: theme.accent,
+                        color: 'white'
+                      }}
+                    >
+                      {user.subscriptionStatus === 'ONE_TIME' ? 'Quick Boost' : 
+                       user.subscriptionStatus === 'BASIC' ? 'Basic Monthly' :
+                       user.subscriptionStatus === 'PRO' ? 'Pro Unlimited' : 
+                       user.subscriptionStatus}
+                    </Badge>
+                  </div>
+                  {user.cancelAtPeriodEnd && (
+                    <span className="text-sm text-orange-600 font-medium">
+                      ⚠️ Cancels on {user.currentPeriodEnd ? new Date(user.currentPeriodEnd).toLocaleDateString() : 'end of period'}
+                    </span>
+                  )}
+                  {!user.cancelAtPeriodEnd && user.currentPeriodEnd && (user.subscriptionStatus === 'BASIC' || user.subscriptionStatus === 'PRO') && (
+                    <span className="text-sm" style={{ color: theme.textSecondary }}>
+                      🔄 Renews on {new Date(user.currentPeriodEnd).toLocaleDateString()}
+                    </span>
+                  )}
+                </div>
+                <Link href="/dashboard/settings">
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className="font-semibold"
+                    style={{
+                      borderColor: theme.accent,
+                      color: theme.accent
+                    }}
+                  >
+                    Manage Subscription
+                  </Button>
+                </Link>
+              </div>
+            </Card>
+          </div>
+        )}
+
         {/* Pricing Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-7xl mx-auto mb-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto mb-16">
           {PRICING_PLANS.map((plan) => {
             const Icon = plan.icon
             
@@ -304,23 +453,57 @@ export default function PricingPage() {
                 </div>
 
                 {/* CTA Button */}
-                <Button
-                  variant={plan.ctaVariant}
-                  className="w-full mb-6 h-12 text-base font-semibold"
-                  style={
-                    plan.ctaVariant === "default"
-                      ? {
-                          backgroundColor: theme.accent,
-                          color: "white"
+                {(() => {
+                  const userStatus = user?.subscriptionStatus || 'FREE'
+                  const planAction = getPlanAction(
+                    userStatus,
+                    plan.id as PlanId,
+                    user?.cancelAtPeriodEnd || false
+                  )
+                  
+                  return (
+                    <div className="mb-6">
+                      <Button
+                        variant={planAction.buttonVariant}
+                        className="w-full h-12 text-base font-semibold"
+                        style={
+                          planAction.buttonVariant === "default"
+                            ? {
+                                backgroundColor: theme.accent,
+                                color: "white"
+                              }
+                            : undefined
                         }
-                      : undefined
-                  }
-                  onClick={() => plan.id === "free" ? window.location.href = "/dashboard/cvs" : handleCheckout(plan)}
-                  disabled={loading === plan.id}
-                >
-                  {loading === plan.id ? "Processing..." : plan.cta}
-                  {loading !== plan.id && <ArrowRight className="ml-2 h-4 w-4" />}
-                </Button>
+                        onClick={() => {
+                          if (plan.id === "free") {
+                            window.location.href = "/dashboard/cvs"
+                          } else if (planAction.allowed) {
+                            handleCheckout(plan)
+                          }
+                        }}
+                        disabled={planAction.disabled || loading === plan.id}
+                        title={planAction.tooltip}
+                      >
+                        {loading === plan.id ? "Processing..." : planAction.buttonText}
+                        {loading !== plan.id && !planAction.disabled && <ArrowRight className="ml-2 h-4 w-4" />}
+                      </Button>
+                      
+                      {/* Show proration info for upgrades */}
+                      {planAction.requiresProration && user?.currentPeriodEnd && (
+                        <p className="text-xs text-center mt-2 text-muted-foreground">
+                          Pay only the prorated difference today
+                        </p>
+                      )}
+                      
+                      {/* Show tooltip as text for disabled buttons */}
+                      {planAction.disabled && planAction.tooltip && (
+                        <p className="text-xs text-center mt-2 text-muted-foreground">
+                          {planAction.tooltip}
+                        </p>
+                      )}
+                    </div>
+                  )
+                })()}
 
                 {/* Features List */}
                 <div className="space-y-3">

@@ -97,19 +97,38 @@ async function handleCheckoutSessionCompleted(session: Stripe.Checkout.Session) 
     if (session.subscription) {
       const subscription = await stripe.subscriptions.retrieve(session.subscription as string);
       
+      // Determine plan type and credits
+      let planType = 'one-time';
+      let subscriptionStatus: 'ONE_TIME' | 'BASIC' | 'PRO' = 'ONE_TIME';
+      let aiCreditsTotal = 0;
+      
+      if (planId === 'pro') {
+        planType = 'pro';
+        subscriptionStatus = 'PRO';
+        aiCreditsTotal = 0; // Unlimited
+      } else if (planId === 'basic') {
+        planType = 'basic';
+        subscriptionStatus = 'BASIC';
+        aiCreditsTotal = 0; // Unlimited for basic too
+      } else if (planId === 'one-time') {
+        planType = 'one-time';
+        subscriptionStatus = 'ONE_TIME';
+        aiCreditsTotal = 3; // 3 credits for one-time
+      }
+      
       await upsertSubscription({
         userId,
         stripeSubscriptionId: subscription.id,
         stripePriceId: subscription.items.data[0].price.id,
         stripeProductId: subscription.items.data[0].price.product as string,
         status: subscription.status,
-        planType: planId === 'pro' ? 'pro' : 'one-time',
-        currentPeriodStart: new Date(subscription.current_period_start * 1000),
-        currentPeriodEnd: new Date(subscription.current_period_end * 1000),
-        aiCreditsTotal: planId === 'one-time' ? 3 : 0
+        planType,
+        currentPeriodStart: new Date((subscription as any).current_period_start * 1000),
+        currentPeriodEnd: new Date((subscription as any).current_period_end * 1000),
+        aiCreditsTotal
       });
 
-      await updateUserSubscriptionStatus(userId, planId === 'pro' ? 'PRO' : 'ONE_TIME');
+      await updateUserSubscriptionStatus(userId, subscriptionStatus);
     }
 
     // Create payment record

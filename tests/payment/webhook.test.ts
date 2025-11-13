@@ -25,7 +25,9 @@ describe('Payment - Webhook Processing', () => {
     const passwordHash = await bcrypt.hash('TestPass123!', 10)
     testUser = await prisma.user.upsert({
       where: { email: 'webhook-test@test.com' },
-      update: {},
+      update: {
+        subscriptionStatus: 'FREE' // Reset to FREE for each test
+      },
       create: {
         name: 'Webhook Test User',
         email: 'webhook-test@test.com',
@@ -34,8 +36,11 @@ describe('Payment - Webhook Processing', () => {
       }
     })
     
-    // Clean up any existing subscriptions for this user (userId is unique)
+    // Clean up any existing subscriptions and payments for this user
     await prisma.subscription.deleteMany({
+      where: { userId: testUser.id }
+    })
+    await prisma.payment.deleteMany({
       where: { userId: testUser.id }
     })
   })
@@ -233,7 +238,7 @@ describe('Payment - Webhook Processing', () => {
       const payment = await prisma.payment.create({
         data: {
           userId: testUser.id,
-          stripePaymentIntentId: 'pi_test_pending_123',
+          stripePaymentIntentId: `pi_test_pending_${Date.now()}`,
           amount: 600, // €6.00
           currency: 'eur',
           planType: 'pro',
@@ -257,7 +262,7 @@ describe('Payment - Webhook Processing', () => {
       const payment = await prisma.payment.create({
         data: {
           userId: testUser.id,
-          stripePaymentIntentId: 'pi_test_fail_123',
+          stripePaymentIntentId: `pi_test_fail_${Date.now()}`,
           amount: 600,
           currency: 'eur',
           planType: 'pro',
@@ -284,7 +289,7 @@ describe('Payment - Webhook Processing', () => {
       await prisma.payment.create({
         data: {
           userId: testUser.id,
-          stripePaymentIntentId: 'pi_test_fail_456',
+          stripePaymentIntentId: `pi_test_fail_nochange_${Date.now()}`,
           amount: 100,
           currency: 'eur',
           planType: 'one-time',
@@ -483,12 +488,13 @@ describe('Payment - Webhook Processing', () => {
 
   describe('Payment History', () => {
     it('should retrieve all payments for a user', async () => {
-      // Arrange - Create multiple payments
+      // Arrange - Create test payments with unique IDs
+      const timestamp = Date.now()
       await prisma.payment.createMany({
         data: [
           {
             userId: testUser.id,
-            stripePaymentIntentId: 'pi_test_history_1',
+            stripePaymentIntentId: `pi_test_history_1_${timestamp}`,
             amount: 100,
             currency: 'eur',
             planType: 'one-time',
@@ -497,7 +503,7 @@ describe('Payment - Webhook Processing', () => {
           },
           {
             userId: testUser.id,
-            stripePaymentIntentId: 'pi_test_history_2',
+            stripePaymentIntentId: `pi_test_history_2_${timestamp}`,
             amount: 600,
             currency: 'eur',
             planType: 'pro',
@@ -519,12 +525,13 @@ describe('Payment - Webhook Processing', () => {
     })
 
     it('should calculate total amount paid by user', async () => {
-      // Arrange - Create payments
+      // Arrange - Create payments with unique IDs
+      const timestamp = Date.now()
       await prisma.payment.createMany({
         data: [
           {
             userId: testUser.id,
-            stripePaymentIntentId: 'pi_test_total_1',
+            stripePaymentIntentId: `pi_test_total_1_${timestamp}`,
             amount: 100,
             currency: 'eur',
             planType: 'one-time',
@@ -533,7 +540,7 @@ describe('Payment - Webhook Processing', () => {
           },
           {
             userId: testUser.id,
-            stripePaymentIntentId: 'pi_test_total_2',
+            stripePaymentIntentId: `pi_test_total_2_${timestamp}`,
             amount: 600,
             currency: 'eur',
             planType: 'pro',

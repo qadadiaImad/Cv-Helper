@@ -29,17 +29,23 @@ This guide will help you set up Stripe payments for CV-Helper.
 ### 2. Create Stripe Products and Prices
 
 1. Go to https://dashboard.stripe.com/products
-2. Create two products:
+2. Create three products:
 
-   **One-Time Boost** (€1)
-   - Name: One-Time Boost
-   - Price: €1.00
+   **Quick Boost** (€2.99)
+   - Name: Quick Boost
+   - Price: €2.99
    - Type: One-time payment
    - Copy the Price ID (starts with `price_`)
 
-   **Pro Unlimited** (€6/month)
+   **Basic Monthly** (€8.99/month) 🆕
+   - Name: Basic Monthly
+   - Price: €8.99/month
+   - Type: Recurring (monthly)
+   - Copy the Price ID (starts with `price_`)
+
+   **Pro Unlimited** (€15.99/month)
    - Name: Pro Unlimited
-   - Price: €6.00/month
+   - Price: €15.99/month
    - Type: Recurring (monthly)
    - Copy the Price ID (starts with `price_`)
 
@@ -67,8 +73,9 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_your_publishable_key"
 STRIPE_WEBHOOK_SECRET="whsec_your_webhook_secret"
 
 # Stripe Price IDs
-NEXT_PUBLIC_STRIPE_PRICE_ONE_TIME="price_your_one_time_price_id"
-NEXT_PUBLIC_STRIPE_PRICE_PRO="price_your_pro_price_id"
+NEXT_PUBLIC_STRIPE_PRICE_ONE_TIME="price_your_one_time_price_id"      # Quick Boost: €2.99
+NEXT_PUBLIC_STRIPE_PRICE_BASIC="price_your_basic_price_id"            # Basic Monthly: €8.99/month
+NEXT_PUBLIC_STRIPE_PRICE_PRO="price_your_pro_price_id"                # Pro Unlimited: €15.99/month
 
 # App URL
 NEXT_PUBLIC_APP_URL="http://localhost:3000"
@@ -113,11 +120,12 @@ Use any future expiry date, any 3-digit CVC, and any postal code.
 
 ### Pricing Page
 
-The pricing page (`/pricing`) now has integrated Stripe checkout:
+The pricing page (`/pricing`) now has integrated Stripe checkout with 4 tiers:
 
-- **Free Plan**: Redirects to dashboard
-- **One-Time Boost**: Opens Stripe Checkout for one-time payment
-- **Pro Unlimited**: Opens Stripe Checkout for subscription
+- **Free Plan**: Redirects to dashboard (no payment)
+- **Quick Boost** (€2.99): Opens Stripe Checkout for one-time payment
+- **Basic Monthly** (€8.99/month): Opens Stripe Checkout for monthly subscription
+- **Pro Unlimited** (€15.99/month): Opens Stripe Checkout for monthly subscription
 
 ### API Routes
 

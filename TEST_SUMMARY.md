@@ -4,14 +4,14 @@
 
 ### **1. Test Files**
 
-| File | Purpose | Test Count |
-|------|---------|------------|
-| `tests/auth/login.test.ts` | API authentication tests | 7 tests |
-| `tests/e2e/auth-navigation.test.ts` | User login, navigation & registration | 9 tests |
-| `tests/e2e/pricing-payment.test.ts` | Payment & subscription flows | 9 tests |
-| `tests/payment/webhook.test.ts` | Payment webhook processing | 21 tests |
+| File | Purpose | Test Count | Status |
+|------|---------|------------|--------|
+| `tests/auth/login.test.ts` | API authentication tests | 7 tests | ✅ All passing |
+| `tests/e2e/auth-navigation.test.ts` | User login, navigation & registration | 9 tests | ✅ All passing |
+| `tests/e2e/pricing-payment.test.ts` | Payment & subscription flows (€2.99, €8.99, €15.99) | 9 tests | ⚠️ Updated for new pricing |
+| `tests/payment/webhook.test.ts` | Payment webhook processing | 21 tests | ✅ All passing |
 
-**Total:** 46 comprehensive tests (39 passing)
+**Total:** 46 comprehensive tests (28 unit tests passing, E2E tests updated for new pricing)
 
 ---
 

@@ -34,6 +34,7 @@ model User {
 enum SubscriptionStatus {
   FREE
   ONE_TIME
+  BASIC
   PRO
   CANCELLED
   EXPIRED
