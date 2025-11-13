@@ -10,6 +10,12 @@ import { useTheme } from "@/lib/theme-context"
 import { createCheckoutSession } from "@/lib/stripe"
 import { toast } from "sonner"
 
+interface User {
+  id: string
+  email: string
+  name: string
+}
+
 const PRICING_PLANS = [
   {
     id: "free",
@@ -96,6 +102,23 @@ const PRICING_PLANS = [
 export default function PricingPage() {
   const { theme } = useTheme()
   const [loading, setLoading] = React.useState<string | null>(null)
+  const [user, setUser] = React.useState<User | null>(null)
+
+  // Fetch current user on mount
+  React.useEffect(() => {
+    const fetchUser = async () => {
+      try {
+        const response = await fetch('/api/auth/me')
+        if (response.ok) {
+          const data = await response.json()
+          setUser(data.user)
+        }
+      } catch (error) {
+        console.log('User not authenticated')
+      }
+    }
+    fetchUser()
+  }, [])
 
   const handleCheckout = async (plan: typeof PRICING_PLANS[number]) => {
     if (plan.id === 'free') {
@@ -105,9 +128,16 @@ export default function PricingPage() {
     try {
       setLoading(plan.id)
       
-      // Get user ID from session/auth if available
-      // For now, we'll pass undefined and handle guest checkout
-      const userId = undefined // TODO: Get from auth context
+      // Get user ID from session
+      const userId = user?.id
+      
+      console.log('🔍 Checkout Debug:', { user, userId, planId: plan.id })
+      
+      if (!userId) {
+        toast.error('Please log in to purchase a plan')
+        setLoading(null)
+        return
+      }
       
       await createCheckoutSession(plan.id, plan.priceId!, userId)
     } catch (error: any) {

@@ -9,9 +9,18 @@ export async function POST(request: NextRequest) {
   try {
     const { priceId, planId, userId } = await request.json();
 
+    console.log('🔍 Create Checkout Session:', { priceId, planId, userId });
+
     if (!priceId || !planId) {
       return NextResponse.json(
         { error: 'Missing required fields' },
+        { status: 400 }
+      );
+    }
+
+    if (!userId) {
+      return NextResponse.json(
+        { error: 'User ID is required. Please log in.' },
         { status: 400 }
       );
     }
@@ -30,10 +39,12 @@ export async function POST(request: NextRequest) {
       cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/pricing?canceled=true`,
       metadata: {
         planId,
-        userId: userId || 'guest',
+        userId,
       },
       client_reference_id: userId,
     });
+
+    console.log('✅ Checkout session created:', session.id, 'for user:', userId);
 
     return NextResponse.json({ sessionId: session.id, url: session.url });
   } catch (error: any) {
