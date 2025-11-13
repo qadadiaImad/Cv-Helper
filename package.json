@@ -14,8 +14,8 @@
     "test": "vitest run",
     "test:watch": "vitest --watch",
     "test:coverage": "vitest --coverage",
-    "test:e2e": "vitest run tests/e2e",
-    "test:unit": "vitest run tests/auth tests/services"
+    "test:e2e": "vitest run --config vitest.e2e.config.ts",
+    "test:unit": "vitest run tests/auth tests/services tests/payment"
   },
   "dependencies": {
     "@ai-sdk/openai": "latest",

@@ -152,7 +152,7 @@ describe('E2E - Authentication and Navigation', () => {
   })
 
   describe('Registration Flow', () => {
-    it('should register new user and redirect to home', async () => {
+    it('should register new user and redirect to home page', async () => {
       // Arrange
       page = await browser.newPage()
       const uniqueEmail = `newuser-${Date.now()}@test.com`
@@ -161,19 +161,63 @@ describe('E2E - Authentication and Navigation', () => {
       await page.goto(`${BASE_URL}/register`)
       
       // Act - Fill registration form
-      await page.fill('input[name="name"]', 'New Test User')
-      await page.fill('input[name="email"]', uniqueEmail)
-      await page.fill('input[name="password"]', 'TestPass123!')
+      await page.fill('input#name', 'New Test User')
+      await page.fill('input#email', uniqueEmail)
+      await page.fill('input#password', 'TestPass123!')
+      await page.fill('input#confirm', 'TestPass123!')
       await page.click('button[type="submit"]')
       
-      // Assert - Redirected to home/dashboard
-      await page.waitForURL(/.*dashboard|.*home|.*cvs/, { timeout: 5000 })
+      // Assert - Redirected to home page (not dashboard)
+      await page.waitForURL(`${BASE_URL}/`, { timeout: 5000 })
+      expect(page.url()).toBe(`${BASE_URL}/`)
       
-      // Assert - User is authenticated
-      const isAuthenticated = await page.locator('[data-testid="user-menu"]').isVisible()
-        .catch(() => page.locator('text=Logout').isVisible())
+      // Assert - User is authenticated (check for logout button or user menu)
+      const isAuthenticated = await page.locator('text=Logout').isVisible()
+        .catch(() => false)
       
       expect(isAuthenticated).toBe(true)
+      
+      await page.close()
+    })
+
+    it('should show error when passwords do not match', async () => {
+      // Arrange
+      page = await browser.newPage()
+      await page.goto(`${BASE_URL}/register`)
+      
+      // Act - Fill form with mismatched passwords
+      await page.fill('input#name', 'Test User')
+      await page.fill('input#email', `test-${Date.now()}@test.com`)
+      await page.fill('input#password', 'TestPass123!')
+      await page.fill('input#confirm', 'DifferentPass123!')
+      await page.click('button[type="submit"]')
+      
+      // Assert - Error message shown
+      await page.waitForSelector('text=Passwords do not match', { timeout: 3000 })
+      
+      // Assert - Still on register page
+      expect(page.url()).toContain('/register')
+      
+      await page.close()
+    })
+
+    it('should show error when email already exists', async () => {
+      // Arrange - Use existing test user email
+      page = await browser.newPage()
+      await page.goto(`${BASE_URL}/register`)
+      
+      // Act - Try to register with existing email
+      await page.fill('input#name', 'Duplicate User')
+      await page.fill('input#email', 'john.dev@test.com') // Existing user
+      await page.fill('input#password', 'TestPass123!')
+      await page.fill('input#confirm', 'TestPass123!')
+      await page.click('button[type="submit"]')
+      
+      // Assert - Error message shown
+      await page.waitForSelector('text=Email already registered', { timeout: 3000 })
+      
+      // Assert - Still on register page
+      expect(page.url()).toContain('/register')
       
       await page.close()
     })

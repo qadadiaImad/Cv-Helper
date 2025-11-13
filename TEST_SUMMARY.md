@@ -7,10 +7,11 @@
 | File | Purpose | Test Count |
 |------|---------|------------|
 | `tests/auth/login.test.ts` | API authentication tests | 7 tests |
-| `tests/e2e/auth-navigation.test.ts` | User login & navigation flows | 6 tests |
+| `tests/e2e/auth-navigation.test.ts` | User login, navigation & registration | 9 tests |
 | `tests/e2e/pricing-payment.test.ts` | Payment & subscription flows | 9 tests |
+| `tests/payment/webhook.test.ts` | Payment webhook processing | 21 tests |
 
-**Total:** 22 comprehensive tests
+**Total:** 46 comprehensive tests (39 passing)
 
 ---
 

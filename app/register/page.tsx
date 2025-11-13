@@ -41,7 +41,7 @@ export default function RegisterPage() {
       // Notify header to refresh user state
       window.dispatchEvent(new Event('auth-changed'))
       
-      router.push("/dashboard/builder")
+      router.push("/")
     } catch (err: any) {
       toast.error("Registration failed", { description: err?.message || "Unexpected error" })
     } finally {
