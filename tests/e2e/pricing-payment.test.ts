@@ -273,4 +273,293 @@ describe('E2E - Pricing and Payment Flow', () => {
       await page.close()
     })
   })
+
+  describe('Subscription Status Banner', () => {
+    it('should NOT show subscription banner for FREE users', async () => {
+      // Arrange - Login as FREE user
+      page = await browser.newPage()
+      await page.goto(`${BASE_URL}/login`)
+      await page.fill('input#email', 'sarah.design@test.com')
+      await page.fill('input#password', 'TestPass123!')
+      await page.click('button[type="submit"]')
+      await page.waitForURL(/.*dashboard|.*home|.*cvs/, { timeout: 5000 })
+      
+      // Act - Navigate to pricing page
+      try {
+        await page.goto(`${BASE_URL}/pricing`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+      } catch (e) {
+        await page.goto(`${BASE_URL}/pricing`, { waitUntil: 'networkidle', timeout: 15000 })
+      }
+      await page.waitForTimeout(2000)
+      
+      // Assert - No subscription banner should be visible
+      const bannerVisible = await page.locator('text=/Current Plan:/i').isVisible({ timeout: 2000 })
+        .catch(() => false)
+      
+      expect(bannerVisible).toBe(false)
+      
+      await page.close()
+    })
+
+    it('should show subscription banner for BASIC users with renewal date', async () => {
+      // Arrange - Create BASIC user with subscription
+      const passwordHash = await bcrypt.hash('TestPass123!', 10)
+      const renewalDate = new Date('2025-12-13')
+      
+      const basicUser = await prisma.user.upsert({
+        where: { email: 'basic.user@test.com' },
+        update: {
+          subscriptionStatus: 'BASIC'
+        },
+        create: {
+          name: 'Basic User',
+          email: 'basic.user@test.com',
+          passwordHash,
+          subscriptionStatus: 'BASIC',
+          stripeCustomerId: 'cus_test_basic_123'
+        }
+      })
+
+      // Create subscription record
+      await prisma.subscription.upsert({
+        where: { userId: basicUser.id },
+        update: {
+          currentPeriodEnd: renewalDate,
+          cancelAtPeriodEnd: false
+        },
+        create: {
+          userId: basicUser.id,
+          stripeSubscriptionId: 'sub_test_basic_123',
+          stripePriceId: 'price_basic_test',
+          planType: 'basic',
+          status: 'active',
+          currentPeriodStart: new Date(),
+          currentPeriodEnd: renewalDate,
+          cancelAtPeriodEnd: false,
+          aiCreditsRemaining: 0,
+          aiCreditsTotal: 0
+        }
+      })
+      
+      // Act - Login as BASIC user
+      page = await browser.newPage()
+      await page.goto(`${BASE_URL}/login`)
+      await page.fill('input#email', 'basic.user@test.com')
+      await page.fill('input#password', 'TestPass123!')
+      await page.click('button[type="submit"]')
+      await page.waitForURL(/.*dashboard|.*home|.*cvs/, { timeout: 5000 })
+      
+      // Navigate to pricing page
+      try {
+        await page.goto(`${BASE_URL}/pricing`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+      } catch (e) {
+        await page.goto(`${BASE_URL}/pricing`, { waitUntil: 'networkidle', timeout: 15000 })
+      }
+      await page.waitForTimeout(2000)
+      
+      // Assert - Subscription banner should be visible
+      const bannerVisible = await page.locator('text=/Current Plan:/i').isVisible({ timeout: 5000 })
+      expect(bannerVisible).toBe(true)
+      
+      // Assert - Shows "Basic Monthly"
+      const basicPlanVisible = await page.locator('text=/Basic Monthly/i').first().isVisible({ timeout: 2000 })
+      expect(basicPlanVisible).toBe(true)
+      
+      // Assert - Shows renewal date
+      const renewalVisible = await page.locator('text=/Renews on|13\\/12\\/2025/i').isVisible({ timeout: 2000 })
+        .catch(() => false)
+      expect(renewalVisible).toBe(true)
+      
+      // Assert - Shows "Manage Subscription" button
+      const manageButton = await page.locator('button:has-text("Manage Subscription")').isVisible({ timeout: 2000 })
+      expect(manageButton).toBe(true)
+      
+      await page.close()
+    })
+
+    it('should show subscription banner for PRO users with renewal date', async () => {
+      // Arrange - Create PRO user with subscription
+      const passwordHash = await bcrypt.hash('TestPass123!', 10)
+      const renewalDate = new Date('2025-12-13')
+      
+      const proUser = await prisma.user.upsert({
+        where: { email: 'pro.user@test.com' },
+        update: {
+          subscriptionStatus: 'PRO'
+        },
+        create: {
+          name: 'Pro User',
+          email: 'pro.user@test.com',
+          passwordHash,
+          subscriptionStatus: 'PRO',
+          stripeCustomerId: 'cus_test_pro_123'
+        }
+      })
+
+      // Create subscription record
+      await prisma.subscription.upsert({
+        where: { userId: proUser.id },
+        update: {
+          currentPeriodEnd: renewalDate,
+          cancelAtPeriodEnd: false
+        },
+        create: {
+          userId: proUser.id,
+          stripeSubscriptionId: 'sub_test_pro_123',
+          stripePriceId: 'price_pro_test',
+          planType: 'pro',
+          status: 'active',
+          currentPeriodStart: new Date(),
+          currentPeriodEnd: renewalDate,
+          cancelAtPeriodEnd: false,
+          aiCreditsRemaining: 0,
+          aiCreditsTotal: 0
+        }
+      })
+      
+      // Act - Login as PRO user
+      page = await browser.newPage()
+      await page.goto(`${BASE_URL}/login`)
+      await page.fill('input#email', 'pro.user@test.com')
+      await page.fill('input#password', 'TestPass123!')
+      await page.click('button[type="submit"]')
+      await page.waitForURL(/.*dashboard|.*home|.*cvs/, { timeout: 10000 })
+      
+      // Navigate to pricing page
+      try {
+        await page.goto(`${BASE_URL}/pricing`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+      } catch (e) {
+        await page.goto(`${BASE_URL}/pricing`, { waitUntil: 'networkidle', timeout: 15000 })
+      }
+      await page.waitForTimeout(2000)
+      
+      // Assert - Subscription banner should be visible
+      const bannerVisible = await page.locator('text=/Current Plan:/i').isVisible({ timeout: 5000 })
+      expect(bannerVisible).toBe(true)
+      
+      // Assert - Shows "Pro Unlimited"
+      const proPlanVisible = await page.locator('text=/Pro Unlimited/i').first().isVisible({ timeout: 2000 })
+      expect(proPlanVisible).toBe(true)
+      
+      // Assert - Shows renewal date
+      const renewalVisible = await page.locator('text=/Renews on|13\\/12\\/2025/i').isVisible({ timeout: 2000 })
+        .catch(() => false)
+      expect(renewalVisible).toBe(true)
+      
+      await page.close()
+    })
+
+    it('should show cancellation warning for cancelled subscriptions', async () => {
+      // Arrange - Create user with cancelled subscription
+      const passwordHash = await bcrypt.hash('TestPass123!', 10)
+      const cancelDate = new Date('2025-12-13')
+      
+      const cancelledUser = await prisma.user.upsert({
+        where: { email: 'cancelled.user@test.com' },
+        update: {
+          subscriptionStatus: 'BASIC'
+        },
+        create: {
+          name: 'Cancelled User',
+          email: 'cancelled.user@test.com',
+          passwordHash,
+          subscriptionStatus: 'BASIC',
+          stripeCustomerId: 'cus_test_cancelled_123'
+        }
+      })
+
+      // Create subscription record with cancellation
+      await prisma.subscription.upsert({
+        where: { userId: cancelledUser.id },
+        update: {
+          currentPeriodEnd: cancelDate,
+          cancelAtPeriodEnd: true
+        },
+        create: {
+          userId: cancelledUser.id,
+          stripeSubscriptionId: 'sub_test_cancelled_123',
+          stripePriceId: 'price_basic_test',
+          planType: 'basic',
+          status: 'active',
+          currentPeriodStart: new Date(),
+          currentPeriodEnd: cancelDate,
+          cancelAtPeriodEnd: true,
+          aiCreditsRemaining: 0,
+          aiCreditsTotal: 0
+        }
+      })
+      
+      // Act - Login as cancelled user
+      page = await browser.newPage()
+      await page.goto(`${BASE_URL}/login`)
+      await page.fill('input#email', 'cancelled.user@test.com')
+      await page.fill('input#password', 'TestPass123!')
+      await page.click('button[type="submit"]')
+      await page.waitForURL(/.*dashboard|.*home|.*cvs/, { timeout: 5000 })
+      
+      // Navigate to pricing page
+      try {
+        await page.goto(`${BASE_URL}/pricing`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+      } catch (e) {
+        await page.goto(`${BASE_URL}/pricing`, { waitUntil: 'networkidle', timeout: 15000 })
+      }
+      await page.waitForTimeout(2000)
+      
+      // Assert - Subscription banner should be visible
+      const bannerVisible = await page.locator('text=/Current Plan:/i').isVisible({ timeout: 5000 })
+      expect(bannerVisible).toBe(true)
+      
+      // Assert - Shows cancellation warning
+      const cancelWarning = await page.locator('text=/Cancels on|⚠️/i').isVisible({ timeout: 2000 })
+        .catch(() => false)
+      expect(cancelWarning).toBe(true)
+      
+      await page.close()
+    })
+
+    it('should show subscription banner for ONE_TIME users', async () => {
+      // Arrange - Create ONE_TIME user
+      const passwordHash = await bcrypt.hash('TestPass123!', 10)
+      
+      await prisma.user.upsert({
+        where: { email: 'onetime.user@test.com' },
+        update: {
+          subscriptionStatus: 'ONE_TIME'
+        },
+        create: {
+          name: 'OneTime User',
+          email: 'onetime.user@test.com',
+          passwordHash,
+          subscriptionStatus: 'ONE_TIME',
+          stripeCustomerId: 'cus_test_onetime_123'
+        }
+      })
+      
+      // Act - Login as ONE_TIME user
+      page = await browser.newPage()
+      await page.goto(`${BASE_URL}/login`)
+      await page.fill('input#email', 'onetime.user@test.com')
+      await page.fill('input#password', 'TestPass123!')
+      await page.click('button[type="submit"]')
+      await page.waitForURL(/.*dashboard|.*home|.*cvs/, { timeout: 5000 })
+      
+      // Navigate to pricing page
+      try {
+        await page.goto(`${BASE_URL}/pricing`, { waitUntil: 'domcontentloaded', timeout: 15000 })
+      } catch (e) {
+        await page.goto(`${BASE_URL}/pricing`, { waitUntil: 'networkidle', timeout: 15000 })
+      }
+      await page.waitForTimeout(2000)
+      
+      // Assert - Subscription banner should be visible
+      const bannerVisible = await page.locator('text=/Current Plan:/i').isVisible({ timeout: 5000 })
+      expect(bannerVisible).toBe(true)
+      
+      // Assert - Shows "Quick Boost"
+      const quickBoostVisible = await page.locator('text=/Quick Boost/i').first().isVisible({ timeout: 2000 })
+      expect(quickBoostVisible).toBe(true)
+      
+      await page.close()
+    })
+  })
 })
