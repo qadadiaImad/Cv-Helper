@@ -29,6 +29,9 @@ import { getTemplateTheme } from "@/lib/template-themes"
 import { useTheme } from "@/lib/theme-context"
 import { TemplateGallery } from "@/components/template-gallery"
 import type { UniversalResumeData } from "@/lib/schemas"
+import { ImportCVDialog } from "@/components/ai/import-cv-dialog"
+import { AdaptToJobDialog } from "@/components/ai/adapt-to-job-dialog"
+import { PolishCVDialog } from "@/components/ai/polish-cv-dialog"
 
 // Enhanced sample data to showcase template potential
 const SAMPLE_CV_DATA: UniversalResumeData = {
@@ -435,6 +438,46 @@ export default function ReactBuilderPage() {
                 </span>
                 <ChevronRight className="h-4 w-4 ml-2 flex-shrink-0" />
               </Button>
+            </div>
+          )}
+
+          {/* AI Tools Section */}
+          {activeCV && (
+            <div className="space-y-2 p-4 bg-gradient-to-br from-purple-50 to-blue-50 rounded-lg border border-purple-200">
+              <div className="flex items-center gap-2 mb-3">
+                <span className="text-lg">✨</span>
+                <Label className="text-sm font-semibold text-purple-900">AI Tools</Label>
+              </div>
+              <div className="space-y-2">
+                <ImportCVDialog 
+                  onImportSuccess={(cv) => {
+                    if (cv && cv.data) {
+                      updateCVData(activeCV.id, cv.data)
+                    }
+                  }}
+                />
+                <AdaptToJobDialog
+                  cvId={activeCV.id}
+                  cvData={activeCV.data}
+                  onAdaptSuccess={(cv) => {
+                    if (cv && cv.data) {
+                      updateCVData(activeCV.id, cv.data)
+                    }
+                  }}
+                />
+                <PolishCVDialog
+                  cvId={activeCV.id}
+                  cvData={activeCV.data}
+                  onPolishSuccess={(cv) => {
+                    if (cv && cv.data) {
+                      updateCVData(activeCV.id, cv.data)
+                    }
+                  }}
+                />
+              </div>
+              <p className="text-xs text-purple-700 mt-2">
+                Powered by AI • Requires paid plan
+              </p>
             </div>
           )}
 
