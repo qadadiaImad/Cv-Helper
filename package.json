@@ -5,8 +5,6 @@
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "dev:stripe": "powershell -ExecutionPolicy Bypass -File ./start-dev-with-stripe.ps1",
-    "stripe:listen": "stripe listen --forward-to localhost:3000/api/stripe/webhook",
     "lint": "next lint",
     "start": "next start",
     "db:generate": "prisma generate",
@@ -74,7 +72,6 @@
     "mammoth": "latest",
     "next": "15.2.4",
     "next-themes": "latest",
-    "openai": "^6.9.0",
     "os": "latest",
     "path": "latest",
     "pdf-parse": "latest",

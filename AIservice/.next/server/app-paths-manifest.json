@@ -1,5 +1,0 @@
-{
-  "/page": "app/page.js",
-  "/api/adapt/route": "app/api/adapt/route.js",
-  "/api/models/openrouter/route": "app/api/models/openrouter/route.js"
-}

@@ -24,16 +24,10 @@ export async function getOrCreateStripeCustomer(userId: string, email: string, n
  * Save Stripe customer ID to user
  */
 export async function saveStripeCustomerId(userId: string, stripeCustomerId: string) {
-  try {
-    await prisma.user.update({
-      where: { id: userId },
-      data: { stripeCustomerId }
-    })
-  } catch (error) {
-    console.error(`Failed to save Stripe customer ID for user ${userId}:`, error)
-    // User might not exist in database - this can happen in test mode
-    // or if the user was deleted after creating the checkout session
-  }
+  await prisma.user.update({
+    where: { id: userId },
+    data: { stripeCustomerId }
+  })
 }
 
 /**
@@ -263,7 +257,7 @@ export async function getUserUsageStats(userId: string, featureType?: string) {
 
   return {
     total: records.length,
-    byFeature: records.reduce((acc: Record<string, number>, record) => {
+    byFeature: records.reduce((acc, record) => {
       acc[record.featureType] = (acc[record.featureType] || 0) + 1
       return acc
     }, {} as Record<string, number>)
