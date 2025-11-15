@@ -28,6 +28,9 @@ import { WritingAnimationIcon } from "@/components/writing-animation-icon"
 import { getTemplateTheme } from "@/lib/template-themes"
 import { useTheme } from "@/lib/theme-context"
 import { TemplateGallery } from "@/components/template-gallery"
+import { useUpgradeModal } from "@/hooks/use-upgrade-modal"
+import { UpgradeModal } from "@/components/upgrade-modal"
+import { useSubscription } from "@/hooks/use-subscription"
 import type { UniversalResumeData } from "@/lib/schemas"
 
 // Enhanced sample data to showcase template potential
@@ -250,7 +253,7 @@ const SECTIONS: Section[] = [
   {
     id: 'projects',
     title: 'Projects',
-    description: 'Your notable projects (optional)',
+    description: 'Your portfolio and side projects',
     requiredFields: [],
   },
 ]
@@ -259,7 +262,9 @@ export default function ReactBuilderPage() {
   const searchParams = useSearchParams()
   const { ready, activeCV, activeCVId, updateCVData, changeTemplate } = useCVStore()
   const { theme } = useTheme()
-  
+  const { limits, canUseAI } = useSubscription()
+  const { isOpen, feature, showUpgradeModal, closeUpgradeModal } = useUpgradeModal()
+
   const [localCVData, setLocalCVData] = useState<UniversalResumeData | null>(null)
   const [previewVisible, setPreviewVisible] = useState(true)
   const [activeSection, setActiveSection] = useState<SectionId | null>(null)
@@ -569,7 +574,14 @@ export default function ReactBuilderPage() {
             <Button 
               variant="outline" 
               className="w-full justify-start border-2 border-blue-500 text-blue-600 hover:bg-blue-50"
-              onClick={() => setShowImportDialog(true)}
+              onClick={() => {
+                // Check if user can use AI features
+                if (!canUseAI()) {
+                  showUpgradeModal('ai_import')
+                  return
+                }
+                setShowImportDialog(true)
+              }}
               disabled={importing}
             >
               <Upload className="h-4 w-4 mr-2" />
@@ -588,7 +600,14 @@ export default function ReactBuilderPage() {
             <Button 
               variant="default" 
               className="w-full justify-start bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
-              onClick={() => alert('AI Polish feature coming soon! This will optimize your CV for job descriptions using AI.')}
+              onClick={() => {
+                // Check if user can use AI features
+                if (!canUseAI()) {
+                  showUpgradeModal('ai_polish')
+                  return
+                }
+                alert('AI Polish feature coming soon! This will optimize your CV for job descriptions using AI.')
+              }}
               disabled={aiPolishing}
             >
               <Sparkles className="h-4 w-4 mr-2" />
@@ -1032,6 +1051,13 @@ export default function ReactBuilderPage() {
         </div>
       )}
 
+      {/* Upgrade Modal */}
+      <UpgradeModal
+        isOpen={isOpen}
+        onClose={closeUpgradeModal}
+        feature={feature}
+        currentPlan={limits?.planType as any}
+      />
     </div>
   )
 }

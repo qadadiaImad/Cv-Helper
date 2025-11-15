@@ -3,19 +3,24 @@
 import { useState } from "react"
 import Image from "next/image"
 import { useCVStore } from "@/hooks/use-cv-store"
+import { useSubscription } from "@/hooks/use-subscription"
+import { useUpgradeModal } from "@/hooks/use-upgrade-modal"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Plus, FileText, Trash2, Edit2, Copy, Sparkles, Clock, CheckCircle2, X } from "lucide-react"
+import { Plus, FileText, Trash2, Edit2, Copy, Sparkles, Clock, CheckCircle2, X, Crown } from "lucide-react"
 import Link from "next/link"
 import { REACT_TEMPLATES, type TemplateId } from "@/lib/react-templates"
 import { TemplateGallery } from "@/components/template-gallery"
 import { getTemplateTheme } from "@/lib/template-themes"
 import { useTheme } from "@/lib/theme-context"
+import { UpgradeModal } from "@/components/upgrade-modal"
 
 export default function CVsPage() {
   const { ready, cvs, createCV, deleteCV, duplicateCV, setActiveCV } = useCVStore()
+  const { limits, canCreateResume, canAccessTemplate, getUpgradeMessage } = useSubscription()
+  const { isOpen, feature, showUpgradeModal, closeUpgradeModal } = useUpgradeModal()
   const { theme } = useTheme()
   const [showCreateDialog, setShowCreateDialog] = useState(false)
   const [newCVName, setNewCVName] = useState("")
@@ -23,6 +28,12 @@ export default function CVsPage() {
 
   const handleCreateCV = () => {
     if (newCVName.trim()) {
+      // Check if user can create more resumes
+      if (!canCreateResume(cvs.length)) {
+        showUpgradeModal('resume')
+        return
+      }
+      
       const cvId = createCV(newCVName.trim(), selectedTemplate)
       setNewCVName("")
       setShowCreateDialog(false)
@@ -183,10 +194,15 @@ export default function CVsPage() {
                   >
                     <Sparkles className="h-4 w-4" style={{ color: theme.accent }} />
                     <span 
-                      className="text-sm font-semibold"
+                      className="text-sm font-medium"
                       style={{ color: theme.textSecondary }}
                     >
                       {cvs.length} {cvs.length === 1 ? 'resume' : 'resumes'} ready
+                      {limits && limits.maxResumes !== -1 && (
+                        <span className="ml-2 text-xs">
+                          (max {limits.maxResumes})
+                        </span>
+                      )}
                     </span>
                   </div>
                 </div>
@@ -195,7 +211,14 @@ export default function CVsPage() {
             
             {/* Enhanced Button */}
             <Button 
-              onClick={() => setShowCreateDialog(true)} 
+              onClick={() => {
+                // Check if user can create more resumes BEFORE showing dialog
+                if (!canCreateResume(cvs.length)) {
+                  showUpgradeModal('resume')
+                  return
+                }
+                setShowCreateDialog(true)
+              }} 
               size="lg"
               className="shadow-2xl hover:shadow-3xl transition-all duration-300 hover:scale-110 hover:-translate-y-1 font-semibold text-base px-8 py-6 relative group overflow-hidden"
               style={{ 
@@ -451,6 +474,14 @@ export default function CVsPage() {
           </div>
         )}
       </main>
+
+      {/* Upgrade Modal */}
+      <UpgradeModal
+        isOpen={isOpen}
+        onClose={closeUpgradeModal}
+        feature={feature}
+        currentPlan={limits?.planType as any}
+      />
     </div>
   )
 }

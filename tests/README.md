@@ -13,8 +13,18 @@ tests/
 ├── e2e/                     # End-to-end tests
 │   ├── auth-navigation.test.ts    # User flows and navigation
 │   └── pricing-payment.test.ts    # Payment and subscription flows
+├── payment/                 # Payment webhook tests
+│   └── webhook.test.ts     # Stripe webhook processing
 ├── services/                # Service layer tests
 │   └── subscription.service.test.ts
+├── subscription/            # Subscription feature tests ⭐ NEW
+│   ├── limits.test.ts      # Plan limits and restrictions
+│   ├── ai-credits.test.ts  # AI credit management
+│   ├── feature-access.test.ts  # Feature access control
+│   └── README.md           # Subscription tests documentation
+├── utils/                   # Utility tests
+│   └── cv-data-mapper.test.ts
+├── setup-test-users.ts      # Create test users for all plans
 └── setup.ts                 # Test configuration
 ```
 
@@ -119,6 +129,32 @@ npm run test:e2e
 
 ---
 
+### **Subscription Tests** (`tests/subscription/`) ⭐ NEW
+
+| Test File | Test Cases | Description |
+|-----------|------------|-------------|
+| **limits.test.ts** | 30+ | Plan limits, resume restrictions, template access |
+| **ai-credits.test.ts** | 20+ | Credit consumption, tracking, validation |
+| **feature-access.test.ts** | 25+ | Feature gating, access control matrix |
+
+**Total:** 75+ automated test cases covering all subscription features
+
+**Quick Start:**
+```bash
+# Create test users
+npx tsx tests/setup-test-users.ts
+
+# Run all subscription tests
+npm test tests/subscription
+
+# Run specific test file
+npm test tests/subscription/limits.test.ts
+```
+
+**See:** [tests/subscription/README.md](./subscription/README.md) for detailed documentation
+
+---
+
 ## 🎯 **TDD Workflow**
 
 ### **Red-Green-Refactor Cycle**
@@ -176,6 +212,7 @@ npm run test:e2e
 
 ## 👥 **Test Users**
 
+### **Authentication Test Users**
 All test users have password: `TestPass123!`
 
 | Name | Email | Role | Use Case |
@@ -185,6 +222,21 @@ All test users have password: `TestPass123!`
 | Mike Manager | mike.manager@test.com | Pro | Subscription tests |
 | Emma Engineer | emma.eng@test.com | Free | Upgrade flow tests |
 | Alex Admin | alex.admin@test.com | Admin | Admin feature tests |
+
+### **Subscription Test Users**
+All subscription test users have password: `Test123!`
+
+| Email | Plan | AI Credits | Use Case |
+|-------|------|------------|----------|
+| free@test.com | FREE | 0 | Test free tier limitations |
+| quickboost@test.com | ONE_TIME | 3 | Test credit consumption |
+| basic@test.com | BASIC | Unlimited | Test basic features |
+| pro@test.com | PRO | Unlimited | Test all premium features |
+
+**To create/recreate subscription test users:**
+```bash
+npx tsx tests/setup-test-users.ts
+```
 
 ---
 
@@ -290,6 +342,7 @@ jobs:
 - [ ] PDF export tests
 - [ ] ATS score tests
 - [ ] Cover letter tests
+- [ ] **Subscription feature testing** - See [SUBSCRIPTION_TESTING_PLAN.md](./SUBSCRIPTION_TESTING_PLAN.md)
 
 ### **Priority 3: Edge Cases**
 - [ ] Error handling tests
