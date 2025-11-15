@@ -509,7 +509,7 @@ export const ModernBlueBlackFieldEditable: React.FC<FieldEditableTemplateProps> 
                     />
                   </div>
                   {exp.description && (
-                    <p style={{
+                    <div style={{
                       fontSize: '10px',
                       color: '#666',
                       lineHeight: '1.7',
@@ -521,7 +521,7 @@ export const ModernBlueBlackFieldEditable: React.FC<FieldEditableTemplateProps> 
                         multiline
                         style={{ color: '#666' }}
                       />
-                    </p>
+                    </div>
                   )}
                 </div>
               ))}

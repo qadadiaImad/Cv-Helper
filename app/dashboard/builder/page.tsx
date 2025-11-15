@@ -296,6 +296,17 @@ export default function ReactBuilderPage() {
     }
   }, [activeCV])
   
+  // Debug: Log when localCVData changes
+  useEffect(() => {
+    if (localCVData) {
+      console.log('[Builder] LocalCVData updated:', {
+        personal: localCVData.personal?.fullName,
+        experienceCount: localCVData.experience?.length,
+        firstExpAchievements: localCVData.experience?.[0]?.achievements?.length
+      })
+    }
+  }, [localCVData])
+  
   // Auto-save wrapper - updates local state AND store immediately
   const handleDataChange = (data: any) => {
     setLocalCVData(data)
@@ -357,8 +368,23 @@ export default function ReactBuilderPage() {
     try {
       setImporting(true)
       
-      // Read file as text
-      const text = await file.text()
+      // Extract text from file (handles PDF, TXT, etc.)
+      let text: string
+      if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+        console.log('[Import] Extracting text from PDF...')
+        // Import PDF extractor dynamically
+        const { extractTextFromPDF } = await import('@/lib/utils/pdf-extractor')
+        text = await extractTextFromPDF(file)
+        console.log('[Import] PDF text extracted, length:', text.length)
+      } else {
+        // For text files, read directly
+        text = await file.text()
+        console.log('[Import] Text file read, length:', text.length)
+      }
+      
+      if (!text || text.length < 50) {
+        throw new Error('Could not extract enough text from the file. Please ensure the file contains readable text.')
+      }
       
       // Call AI parse endpoint
       const response = await fetch('/api/ai/parse', {
@@ -373,14 +399,40 @@ export default function ReactBuilderPage() {
       }
       
       const data = await response.json()
+      console.log('[Import] API Response:', data)
+      console.log('[Import] clean_cv exists:', !!data.clean_cv)
+      console.log('[Import] clean_cv content:', data.clean_cv)
       
       // Update CV with parsed data
       if (data.clean_cv && activeCVId) {
-        handleDataChange(data.clean_cv)
+        console.log('[Import] Raw parsed data:', data.clean_cv)
+        
+        // Map the parsed data to our schema (handles all field name variations)
+        const { mapParsedCVToSchema } = await import('@/lib/utils/cv-data-mapper')
+        const mappedData = mapParsedCVToSchema(data.clean_cv)
+        
+        console.log('[Import] Mapped data:', mappedData)
+        console.log('[Import] Experience sample:', JSON.stringify(mappedData.experience?.[0], null, 2))
+        console.log('[Import] Education sample:', JSON.stringify(mappedData.education?.[0], null, 2))
+        console.log('[Import] Achievements check:', mappedData.experience?.[0]?.achievements)
+        
+        // Debug: Check if achievements exist
+        const hasAchievements = mappedData.experience?.[0]?.achievements?.length > 0
+        console.log('[Import] First job has achievements:', hasAchievements)
+        
+        handleDataChange(mappedData)
+        console.log('[Import] Data change completed')
+        console.log('[Import] LocalCVData after change:', localCVData)
+        
+        setShowImportDialog(false)
+        setSelectedFile(null)
         alert(`CV imported successfully! ${data.creditsRemaining === -1 ? 'Unlimited credits' : `${data.creditsRemaining} credits remaining`}`)
+      } else {
+        console.error('[Import] Missing data - clean_cv:', !!data.clean_cv, 'activeCVId:', activeCVId)
+        alert('Failed to import CV: No data received from AI service')
       }
     } catch (error: any) {
-      console.error('Import error:', error)
+      console.error('[Import] Error:', error)
       alert(error.message || 'Failed to import CV. Please try again.')
     } finally {
       setImporting(false)

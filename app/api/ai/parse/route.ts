@@ -115,6 +115,9 @@ export async function POST(request: NextRequest) {
       : subscription?.aiCreditsRemaining || 0
 
     // 7. Return AIservice response + credit info
+    console.log('[AI Parse] Returning clean_cv:', JSON.stringify(result.clean).substring(0, 200))
+    console.log('[AI Parse] clean_cv keys:', Object.keys(result.clean || {}))
+    console.log('[AI Parse] First experience:', JSON.stringify(result.clean?.experience?.[0], null, 2))
     return NextResponse.json({
       success: true,
       clean_cv: result.clean,

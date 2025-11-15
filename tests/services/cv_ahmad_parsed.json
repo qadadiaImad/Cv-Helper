@@ -1,0 +1,108 @@
+{
+  "metadata": {
+    "language": "en",
+    "sourceOrderPreserved": true
+  },
+  "header": {
+    "fullName": "Ahmad HADDOU",
+    "email": "ahmadhaddou95@gmail.com",
+    "phone": "(+33) 7 69 41 57 43"
+  },
+  "experience": [
+    {
+      "company": "Credit Agricole",
+      "title": "Quantitative Developer",
+      "location": "Paris",
+      "endDate": "Present",
+      "bullets": [
+        "Topic: Fixed income Quant developer in Front Office (cross asset team)",
+        "Integration of new financial products in the quantitative library (C++, C#)",
+        "Maintaining the quantitative library (models, products, market data, technical, ...)",
+        "working on pre-trading tools like compacting the products on a user-friendly format depending on the payoff",
+        "developping tools based on the quantitative library that can help traders (backTesting, backPricing, ...)"
+      ]
+    },
+    {
+      "company": "HSBC",
+      "title": "Quantitative Developer",
+      "location": "Paris",
+      "bullets": [
+        "Topic: Calculation of regulatory reserves in Middle Office",
+        "Calculation of fair value adjustement for Equity products: Spot bid-offer, vol bid-offer, correl bid-offer, forward bid-offer (C++, C#, VBA)",
+        "Calculation of Totem IPV for Equity: Vanilas, Forward, CVCs, PVPs, SFSs, div swap, Total return swap, Cliquets, ...(Python)",
+        "Calculation of model uncertainty for Rates: SABR model calibration and IPV calculation, ATM vol Calibration and IPV calculation"
+      ]
+    },
+    {
+      "company": "BNP Paribas",
+      "title": "Quantitative Developer",
+      "location": "Paris",
+      "bullets": [
+        "Topic: Providing technical and functionnal solutions to traders in Front Office",
+        "Maintenance and support of the booking application (Java, Python, JavaScript)",
+        "Daily check of the integrity of the desk's risk reports",
+        "Providing trading indicators in continuous time (price, greeks, ...)"
+      ]
+    },
+    {
+      "company": "Ostrum AM",
+      "title": "Quantitative Analyst Intern",
+      "location": "Paris",
+      "bullets": [
+        "Topic: Generation of a quantitative signal on the index EuroStoxx50",
+        "Implementation of the Hawkes model (C++,VBA)",
+        "Calibration of the model with the maximum likelihood method",
+        "Implementation of the signal ."
+      ]
+    }
+  ],
+  "education": [
+    {
+      "school": "Ensimag-Grenoble INP",
+      "degree": "Option Financial engineering",
+      "location": "Grenoble, France",
+      "dates": "2015–2019"
+    },
+    {
+      "school": "IAE Grenoble",
+      "degree": "Master of quantitative finance in double degree with the Ensimag",
+      "location": "Grenoble, France",
+      "dates": "2018–2019"
+    },
+    {
+      "school": "Lyc´ ee Moulay Youssef",
+      "degree": "Preparatory classes , MPSI,MP",
+      "location": "Rabat, Morocco",
+      "dates": "2013–2015"
+    }
+  ],
+  "skills": {
+    "languages": [
+      "C++",
+      "Java",
+      "Python",
+      "C#",
+      "VBA",
+      "C",
+      "VB.Net",
+      "Ada",
+      "Mysql",
+      "Caml"
+    ],
+    "other": [
+      "Mathematics Stochastic calculus, Probabilities, Monte-carlo, Statistics, Machine learning.",
+      "Finance Financial Markets, Derivatives pricing and hedging, portfolio management .",
+      "Diverse Latex, R, Shell, Vhdl, Scilab, UML,Gantt"
+    ]
+  },
+  "languages": [
+    "French (Bilingual)",
+    "English (Fluent)",
+    "Arabic (Native speaker)"
+  ],
+  "interests": [
+    "Biliardo",
+    "Traveling",
+    "Kick-boxing"
+  ]
+}

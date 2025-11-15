@@ -48,13 +48,19 @@ export async function aiParseCvWithService(opts: AiClientOptions & {
   const { baseUrl, timeoutMs, signal, cv_text, images } = opts
   const effectiveBaseUrl = (baseUrl ?? DEFAULT_AISERVICE_BASE_URL).replace(/\/$/, "")
 
-  return aiParseCV({
+  const result = await aiParseCV({
     baseUrl: effectiveBaseUrl,
     timeoutMs,
     signal,
     cv_text,
     images,
   })
+  
+  console.log('[aiParseCvWithService] Raw result keys:', Object.keys(result || {}))
+  console.log('[aiParseCvWithService] clean_cv exists:', !!result.clean_cv)
+  console.log('[aiParseCvWithService] Returning:', { clean: result.clean_cv, usage: result.usage })
+  
+  return { clean: result.clean_cv, usage: result.usage }
 }
 
 /**
