@@ -1,0 +1,62 @@
+Ahmad Developer
+Phone: 57126596
+Email: ahmad.dev@example.com
+LinkedIn: linkedin.com/in/ahmad-developer
+Portfolio: ahmad-portfolio.com
+
+PROFESSIONAL SUMMARY
+Experienced Full Stack Developer with 5+ years of expertise in building scalable web applications. Proficient in React, Node.js, and cloud technologies. Passionate about creating efficient, user-friendly solutions.
+
+WORK EXPERIENCE
+
+Senior Full Stack Developer
+Tech Solutions Inc. | Tunis, Tunisia
+January 2021 - Present
+• Led development of enterprise web applications serving 100K+ users
+• Implemented microservices architecture reducing system latency by 40%
+• Mentored team of 5 junior developers
+• Technologies: React, Node.js, PostgreSQL, AWS, Docker
+
+Full Stack Developer
+Digital Innovations | Tunis, Tunisia  
+June 2019 - December 2020
+• Developed and maintained 10+ client web applications
+• Integrated third-party APIs and payment gateways
+• Improved application performance by 35% through code optimization
+• Technologies: Vue.js, Express.js, MongoDB, Azure
+
+Junior Developer
+StartUp Labs | Tunis, Tunisia
+March 2018 - May 2019
+• Built responsive web interfaces using modern frameworks
+• Collaborated with designers to implement pixel-perfect UIs
+• Participated in agile development processes
+• Technologies: HTML, CSS, JavaScript, React, Git
+
+EDUCATION
+
+Bachelor of Computer Science
+University of Tunis | Tunis, Tunisia
+2014 - 2018
+• GPA: 3.8/4.0
+• Relevant coursework: Data Structures, Algorithms, Web Development, Database Systems
+
+SKILLS
+
+Programming Languages: JavaScript, TypeScript, Python, Java
+Frontend: React, Next.js, Vue.js, HTML5, CSS3, Tailwind CSS
+Backend: Node.js, Express.js, NestJS, Django
+Databases: PostgreSQL, MongoDB, MySQL, Redis
+Cloud & DevOps: AWS, Azure, Docker, Kubernetes, CI/CD
+Tools: Git, VS Code, Jira, Figma
+
+CERTIFICATIONS
+
+AWS Certified Solutions Architect - Associate | 2022
+MongoDB Certified Developer | 2021
+
+LANGUAGES
+
+Arabic: Native
+French: Fluent
+English: Professional Working Proficiency

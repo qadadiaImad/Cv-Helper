@@ -393,3 +393,5 @@ const subscription = await stripe.subscriptions.update(
 6. Add confirmation modals
 7. Test all scenarios
 8. Update documentation
+
+taskkill /f /im "node.exe"
