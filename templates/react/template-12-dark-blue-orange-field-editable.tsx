@@ -314,7 +314,7 @@ export const DarkBlueOrangeFieldEditable: React.FC<FieldEditableTemplateProps> =
               )}
             </div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {data.experience && data.experience.map((exp, i) => (
+              {data.experience && Array.isArray(data.experience) && data.experience.map((exp, i) => (
                 <li key={i} style={{
                   position: 'relative',
                   marginLeft: '15px',
@@ -514,7 +514,7 @@ export const DarkBlueOrangeFieldEditable: React.FC<FieldEditableTemplateProps> =
               )}
             </div>
             <ul style={{ listStyle: 'none', padding: 0, margin: 0 }}>
-              {data.education && data.education.map((edu, i) => (
+              {data.education && Array.isArray(data.education) && data.education.map((edu, i) => (
                 <li key={i} style={{
                   position: 'relative',
                   marginLeft: '15px',
@@ -648,7 +648,7 @@ export const DarkBlueOrangeFieldEditable: React.FC<FieldEditableTemplateProps> =
               )}
             </div>
             <ul style={{ listStyle: 'none', padding: 0, margin: '0 0 0 15px' }}>
-              {data.skills && data.skills.slice(0, 7).map((skill, i) => {
+              {data.skills && Array.isArray(data.skills) && data.skills.slice(0, 7).map((skill, i) => {
                 const percent = [95, 90, 60, 50, 40, 55, 40][i] || 70;
                 return (
                   <li key={i} style={{
@@ -776,7 +776,7 @@ export const DarkBlueOrangeFieldEditable: React.FC<FieldEditableTemplateProps> =
               flexWrap: 'wrap',
               gap: '10px',
             }}>
-              {data.interests && data.interests.slice(0, 5).map((interest, i) => {
+              {data.interests && Array.isArray(data.interests) && data.interests.slice(0, 5).map((interest, i) => {
                 const icons = ['🎨', '📚', '🎬', '🎧', '🎮'];
                 const interestName = typeof interest === 'string' ? interest : interest.name;
                 return (
