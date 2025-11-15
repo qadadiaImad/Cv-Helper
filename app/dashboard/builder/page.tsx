@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { ArrowLeft, Check, ChevronRight, Eye, EyeOff, Save, Download, AlertCircle, X } from "lucide-react"
+import { ArrowLeft, Check, ChevronRight, Eye, EyeOff, Save, Download, AlertCircle, X, Sparkles, Upload } from "lucide-react"
 import Link from "next/link"
 import { useCVStore } from "@/hooks/use-cv-store"
 import { cn } from "@/lib/utils"
@@ -275,6 +275,16 @@ export default function ReactBuilderPage() {
   // Edit mode toggle: true = field-editable, false = normal template with forms
   const [useFieldEditable, setUseFieldEditable] = useState(true)
   
+  // AI Polish state
+  const [aiPolishing, setAiPolishing] = useState(false)
+  const [showAiDialog, setShowAiDialog] = useState(false)
+  
+  // Import CV state
+  const [importing, setImporting] = useState(false)
+  const [showImportDialog, setShowImportDialog] = useState(false)
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const fileInputRef = React.useRef<HTMLInputElement>(null)
+  
   // Sync local state when activeCV changes
   useEffect(() => {
     if (activeCV) {
@@ -340,6 +350,41 @@ export default function ReactBuilderPage() {
   // Save draft
   const handleSaveDraft = () => {
     alert('Draft saved successfully!')
+  }
+  
+  // Import CV handler
+  const handleImportCV = async (file: File) => {
+    try {
+      setImporting(true)
+      
+      // Read file as text
+      const text = await file.text()
+      
+      // Call AI parse endpoint
+      const response = await fetch('/api/ai/parse', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ cv_text: text }),
+      })
+      
+      if (!response.ok) {
+        const error = await response.json()
+        throw new Error(error.message || 'Failed to parse CV')
+      }
+      
+      const data = await response.json()
+      
+      // Update CV with parsed data
+      if (data.clean_cv && activeCVId) {
+        handleDataChange(data.clean_cv)
+        alert(`CV imported successfully! ${data.creditsRemaining === -1 ? 'Unlimited credits' : `${data.creditsRemaining} credits remaining`}`)
+      }
+    } catch (error: any) {
+      console.error('Import error:', error)
+      alert(error.message || 'Failed to import CV. Please try again.')
+    } finally {
+      setImporting(false)
+    }
   }
 
   return (
@@ -471,11 +516,31 @@ export default function ReactBuilderPage() {
           <div className="space-y-2">
             <Button 
               variant="outline" 
+              className="w-full justify-start border-2 border-blue-500 text-blue-600 hover:bg-blue-50"
+              onClick={() => setShowImportDialog(true)}
+              disabled={importing}
+            >
+              <Upload className="h-4 w-4 mr-2" />
+              Import Existing CV
+            </Button>
+            
+            <Button 
+              variant="outline" 
               className="w-full justify-start" 
               onClick={handleSaveDraft}
             >
               <Save className="h-4 w-4 mr-2" />
               Save Draft
+            </Button>
+            
+            <Button 
+              variant="default" 
+              className="w-full justify-start bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 text-white"
+              onClick={() => alert('AI Polish feature coming soon! This will optimize your CV for job descriptions using AI.')}
+              disabled={aiPolishing}
+            >
+              <Sparkles className="h-4 w-4 mr-2" />
+              {aiPolishing ? 'Polishing...' : 'AI Polish (Pro)'}
             </Button>
             
             <Button 
@@ -803,6 +868,113 @@ export default function ReactBuilderPage() {
                   }
                 }}
               />
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Import CV Dialog */}
+      {showImportDialog && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl shadow-2xl w-full max-w-md animate-in fade-in zoom-in-95 duration-300">
+            {/* Header */}
+            <div className="flex items-center justify-between px-6 py-4 border-b bg-gradient-to-r from-blue-50 to-indigo-50">
+              <div className="flex items-center gap-3">
+                <Upload className="h-6 w-6 text-blue-600" />
+                <h3 className="text-xl font-bold">Import Existing CV</h3>
+              </div>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={() => {
+                  setShowImportDialog(false)
+                  setSelectedFile(null)
+                }}
+              >
+                <X className="h-4 w-4" />
+              </Button>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-4">
+              <p className="text-sm text-slate-600">
+                Upload your existing CV and let AI extract all the information to fill your template automatically.
+              </p>
+
+              {/* File Upload Area */}
+              <div
+                className={cn(
+                  "border-2 border-dashed rounded-lg p-8 text-center transition-all cursor-pointer",
+                  selectedFile
+                    ? "border-green-500 bg-green-50"
+                    : "border-slate-300 hover:border-blue-500 hover:bg-blue-50"
+                )}
+                onClick={() => {
+                  const input = document.createElement('input')
+                  input.type = 'file'
+                  input.accept = '.pdf,.doc,.docx,.txt'
+                  input.onchange = (e: any) => {
+                    const file = e.target?.files?.[0]
+                    if (file) setSelectedFile(file)
+                  }
+                  input.click()
+                }}
+              >
+                {selectedFile ? (
+                  <div className="space-y-2">
+                    <Check className="h-12 w-12 text-green-600 mx-auto" />
+                    <p className="font-semibold text-green-900">{selectedFile.name}</p>
+                    <p className="text-xs text-green-700">
+                      {(selectedFile.size / 1024).toFixed(1)} KB
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-2">
+                    <Upload className="h-12 w-12 text-slate-400 mx-auto" />
+                    <p className="font-semibold text-slate-700">Click to upload your CV</p>
+                    <p className="text-xs text-slate-500">
+                      PDF, DOC, DOCX, or TXT (max 5MB)
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              {/* Action Buttons */}
+              <div className="flex gap-3">
+                <Button
+                  variant="outline"
+                  className="flex-1"
+                  onClick={() => {
+                    setShowImportDialog(false)
+                    setSelectedFile(null)
+                  }}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  className="flex-1 bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700"
+                  disabled={!selectedFile || importing}
+                  onClick={async () => {
+                    if (selectedFile) {
+                      await handleImportCV(selectedFile)
+                      setShowImportDialog(false)
+                      setSelectedFile(null)
+                    }
+                  }}
+                >
+                  {importing ? (
+                    <>
+                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2" />
+                      Processing...
+                    </>
+                  ) : (
+                    <>
+                      <Sparkles className="h-4 w-4 mr-2" />
+                      Fill Template with AI
+                    </>
+                  )}
+                </Button>
+              </div>
             </div>
           </div>
         </div>

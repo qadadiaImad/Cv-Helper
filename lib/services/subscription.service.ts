@@ -195,11 +195,11 @@ export class SubscriptionService {
 
     // Feature access matrix
     const featureAccess: Record<string, SubscriptionStatus[]> = {
-      'ai_polish': [SubscriptionStatus.ONE_TIME, SubscriptionStatus.PRO],
+      'ai_polish': [SubscriptionStatus.ONE_TIME, SubscriptionStatus.BASIC, SubscriptionStatus.PRO],
       'unlimited_resumes': [SubscriptionStatus.PRO],
-      'all_templates': [SubscriptionStatus.ONE_TIME, SubscriptionStatus.PRO],
-      'ai_cover_letter': [SubscriptionStatus.PRO],
-      'ats_score': [SubscriptionStatus.PRO],
+      'all_templates': [SubscriptionStatus.ONE_TIME, SubscriptionStatus.BASIC, SubscriptionStatus.PRO],
+      'ai_cover_letter': [SubscriptionStatus.BASIC, SubscriptionStatus.PRO],
+      'ats_score': [SubscriptionStatus.BASIC, SubscriptionStatus.PRO],
     }
 
     const allowedStatuses = featureAccess[feature] || []
