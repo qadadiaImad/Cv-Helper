@@ -2,10 +2,10 @@
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
 import { Card } from "@/components/ui/card"
+import { RichTextEditor } from "@/components/rich-text-editor"
 import type { Experience, UniversalResumeData } from "@/lib/schemas"
 
 interface ExperienceFormProps {
@@ -125,21 +125,28 @@ export function ExperienceForm({ data, onChange }: ExperienceFormProps) {
           <div className="space-y-2">
             <Label>Key Achievements</Label>
             {exp.achievements?.map((achievement, achIndex) => (
-              <div key={achIndex} className="flex gap-2">
-                <Textarea
-                  placeholder="Describe your achievement..."
-                  value={achievement}
-                  onChange={(e) => updateAchievement(index, achIndex, e.target.value)}
-                  rows={2}
-                />
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={() => removeAchievement(index, achIndex)}
-                  className="text-red-600"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+              <div key={achIndex} className="space-y-2">
+                <div className="flex items-start gap-2">
+                  <div className="flex-1">
+                    <RichTextEditor
+                      content={achievement}
+                      onChange={(html) => updateAchievement(index, achIndex, html)}
+                      placeholder="Describe your achievement..."
+                      minHeight="100px"
+                      enableAI={true}
+                      resumeContext={data}
+                      section="experience.achievements"
+                    />
+                  </div>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    onClick={() => removeAchievement(index, achIndex)}
+                    className="text-red-600 mt-2"
+                  >
+                    <Trash2 className="h-4 w-4" />
+                  </Button>
+                </div>
               </div>
             ))}
             <Button

@@ -5,6 +5,7 @@
 
 import React from 'react'
 import type { UniversalTemplateProps } from './universal-schema'
+import { HtmlRenderer } from '@/components/builder/html-renderer'
 
 export const Harvard: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
@@ -100,7 +101,7 @@ export const Harvard: React.FC<UniversalTemplateProps> = ({ data }) => (
             <span style={{ fontSize: '11px', color: '#666', whiteSpace: 'nowrap', marginLeft: '15px' }}>{exp.startDate} – {exp.endDate}</span>
           </div>
           <p style={{ fontSize: '11px', fontStyle: 'italic', marginBottom: '6px', color: '#333' }}>{exp.position}</p>
-          {exp.description && <p style={{ fontSize: '10px', color: '#666', marginBottom: '6px' }}>{exp.description}</p>}
+          {exp.description && <HtmlRenderer html={exp.description} as="div" style={{ fontSize: '10px', color: '#666', marginBottom: '6px' }} />}
           <ul style={{ fontSize: '11px', lineHeight: '1.6', paddingLeft: '18px', color: '#333' }}>
             {exp.achievements.map((ach, j) => <li key={j} style={{ marginBottom: '3px' }}>{ach}</li>)}
           </ul>
@@ -126,7 +127,7 @@ export const Harvard: React.FC<UniversalTemplateProps> = ({ data }) => (
               )}
             </div>
             {proj.role && <p style={{ fontSize: '10px', fontStyle: 'italic', color: '#666', marginBottom: '4px' }}>{proj.role}</p>}
-            <p style={{ fontSize: '11px', color: '#333', marginBottom: '4px', lineHeight: '1.5' }}>{proj.description}</p>
+            <HtmlRenderer html={proj.description} as="div" style={{ fontSize: '11px', color: '#333', marginBottom: '4px', lineHeight: '1.5' }} />
             {proj.highlights && proj.highlights.length > 0 && (
               <ul style={{ fontSize: '10px', lineHeight: '1.5', paddingLeft: '18px', color: '#555' }}>
                 {proj.highlights.map((hl, j) => <li key={j}>{hl}</li>)}

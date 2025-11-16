@@ -6,6 +6,7 @@
 import React from 'react'
 import type { UniversalTemplateProps } from './universal-schema'
 import { InlineEditableField } from '@/components/builder/inline-editable-field'
+import { HtmlRenderer } from '@/components/builder/html-renderer'
 
 interface FieldEditableTemplateProps extends UniversalTemplateProps {
   editMode?: boolean
@@ -23,7 +24,7 @@ export const HarvardFieldEditable: React.FC<FieldEditableTemplateProps> = ({
   }
 
   const EditableText = editMode ? InlineEditableField : ({ value, className, style }: any) => (
-    <span className={className} style={style}>{value}</span>
+    <HtmlRenderer html={value} as="span" className={className} style={style} />
   )
 
   return (
@@ -141,7 +142,7 @@ export const HarvardFieldEditable: React.FC<FieldEditableTemplateProps> = ({
               <span key={i}>
                 <EditableText value={skill} onChange={(v: string) => { const newSkills = [...data.skills!]; newSkills[i] = v; onFieldChange('skills', newSkills) }} />
                 {editMode && <button onClick={() => onFieldChange('skills', data.skills!.filter((_, idx) => idx !== i))} style={{ marginLeft: '4px', padding: '1px 4px', backgroundColor: '#ef4444', color: 'white', border: 'none', borderRadius: '2px', cursor: 'pointer', fontSize: '8px' }}>✕</button>}
-                {i < data.skills.length - 1 && ' • '}
+                {i < (data.skills?.length || 0) - 1 && ' • '}
               </span>
             ))}
           </p>

@@ -5,6 +5,7 @@
 
 import React from 'react'
 import type { UniversalTemplateProps } from './universal-schema'
+import { HtmlRenderer } from '@/components/builder/html-renderer'
 
 export const Mercury: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
@@ -28,7 +29,7 @@ export const Mercury: React.FC<UniversalTemplateProps> = ({ data }) => (
           flexShrink: 0,
           backgroundColor: '#fff',
         }}>
-          <img src={data.personal.photo} alt={data.personal.fullName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+          <img src={data.personal.photo.url} alt={data.personal.fullName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         </div>
       )}
       <div style={{ flex: 1 }}>
@@ -71,7 +72,7 @@ export const Mercury: React.FC<UniversalTemplateProps> = ({ data }) => (
       <section style={{ marginBottom: '30px' }}>
         <h2 style={{ fontSize: '16px', fontWeight: 'bold', textAlign: 'center', padding: '12px', backgroundColor: '#d9d9d9', marginBottom: '0', color: '#4a4a4a' }}>Profile</h2>
         <div style={{ padding: '30px 60px', backgroundColor: '#fff' }}>
-          <p style={{ fontSize: '11px', lineHeight: '1.7', textAlign: 'justify', color: '#5a5a5a' }}>{data.summary.text}</p>
+          <HtmlRenderer html={data.summary} as="div" style={{ fontSize: '11px', lineHeight: '1.7', textAlign: 'justify', color: '#5a5a5a' }} />
         </div>
       </section>
     )}

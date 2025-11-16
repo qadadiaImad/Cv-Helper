@@ -2,10 +2,10 @@
 
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
 import { Card } from "@/components/ui/card"
+import { RichTextEditor } from "@/components/rich-text-editor"
 import type { Project, UniversalResumeData } from "@/lib/schemas"
 
 interface ProjectsFormProps {
@@ -80,12 +80,14 @@ export function ProjectsForm({ data, onChange }: ProjectsFormProps) {
 
           <div className="space-y-2">
             <Label htmlFor={`projectDesc-${index}`}>Description</Label>
-            <Textarea
-              id={`projectDesc-${index}`}
-              placeholder="Describe your project..."
-              value={proj.description || ""}
-              onChange={(e) => updateProject(index, 'description', e.target.value)}
-              rows={3}
+            <RichTextEditor
+              content={proj.description || ""}
+              onChange={(html) => updateProject(index, 'description', html)}
+              placeholder="Describe your project, its goals, and key features..."
+              minHeight="120px"
+              enableAI={true}
+              resumeContext={data}
+              section="projects.description"
             />
           </div>
 

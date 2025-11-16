@@ -5,6 +5,7 @@
 
 import React from 'react'
 import type { UniversalTemplateProps } from './universal-schema'
+import { HtmlRenderer } from '@/components/builder/html-renderer'
 
 export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => {
   console.log('🎨 AtlanticBlue template rendering with:', data.personal?.fullName)
@@ -141,7 +142,11 @@ export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => {
       {data.summary && (
         <section style={{ marginBottom: '35px' }}>
           <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', marginBottom: '12px', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px' }}>PROFESSIONAL SUMMARY</h2>
-          <p style={{ fontSize: '13px', lineHeight: '1.7', color: '#333', textAlign: 'justify' }}>{data.summary.text}</p>
+          <HtmlRenderer
+            html={data.summary}
+            as="div"
+            style={{ fontSize: '13px', lineHeight: '1.7', color: '#333', textAlign: 'justify' }}
+          />
         </section>
       )}
 
@@ -157,7 +162,13 @@ export const AtlanticBlue: React.FC<UniversalTemplateProps> = ({ data }) => {
             <p style={{ fontSize: '13px', fontWeight: '600', color: '#4a90e2', marginBottom: '10px' }}>
               {exp.company}{exp.location && ` • ${exp.location}`}
             </p>
-            {exp.description && <p style={{ fontSize: '12px', color: '#555', marginBottom: '8px', fontStyle: 'italic' }}>{exp.description}</p>}
+            {exp.description && (
+              <HtmlRenderer
+                html={exp.description}
+                as="div"
+                style={{ fontSize: '12px', color: '#555', marginBottom: '8px', fontStyle: 'italic' }}
+              />
+            )}
             {exp.achievements && exp.achievements.length > 0 && (
               <ul style={{ fontSize: '12px', lineHeight: '1.7', paddingLeft: '20px', color: '#444' }}>
                 {exp.achievements.map((ach, j) => <li key={j} style={{ marginBottom: '4px' }}>{ach}</li>)}

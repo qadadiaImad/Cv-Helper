@@ -11,6 +11,7 @@ interface InlineEditableFieldProps {
   placeholder?: string
   multiline?: boolean
   disabled?: boolean
+  isDate?: boolean
 }
 
 export function InlineEditableField({
@@ -20,7 +21,8 @@ export function InlineEditableField({
   style,
   placeholder = 'Click to edit...',
   multiline = false,
-  disabled = false
+  disabled = false,
+  isDate = false
 }: InlineEditableFieldProps) {
   const [isEditing, setIsEditing] = useState(false)
   const [tempValue, setTempValue] = useState(value)
@@ -63,9 +65,10 @@ export function InlineEditableField({
     const InputComponent = multiline ? 'textarea' : 'input'
     
     return (
-      <div className="relative inline-block w-full">
+      <span className="relative inline-block w-full">
         <InputComponent
           ref={inputRef as any}
+          type={isDate ? 'month' : 'text'}
           value={tempValue}
           onChange={(e) => setTempValue(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -78,7 +81,7 @@ export function InlineEditableField({
           placeholder={placeholder}
           rows={multiline ? 3 : undefined}
         />
-        <div className="absolute -bottom-8 left-0 flex gap-2 text-xs">
+        <span className="absolute -bottom-8 left-0 flex gap-2 text-xs whitespace-nowrap">
           <button
             onClick={handleSave}
             className="px-2 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
@@ -91,8 +94,8 @@ export function InlineEditableField({
           >
             ✕ Cancel
           </button>
-        </div>
-      </div>
+        </span>
+      </span>
     )
   }
 

@@ -6,6 +6,7 @@
 import React from 'react'
 import type { UniversalTemplateProps } from './universal-schema'
 import { InlineEditableField } from '@/components/builder/inline-editable-field'
+import { HtmlRenderer } from '@/components/builder/html-renderer'
 
 interface FieldEditableTemplateProps extends UniversalTemplateProps {
   editMode?: boolean
@@ -22,7 +23,7 @@ export const DarkProfessionalFieldEditable: React.FC<FieldEditableTemplateProps>
   }
 
   const EditableText = editMode ? InlineEditableField : ({ value, className, style }: any) => (
-    <span className={className} style={style}>{value}</span>
+    <HtmlRenderer html={value} as="span" className={className} style={style} />
   )
 
   return (

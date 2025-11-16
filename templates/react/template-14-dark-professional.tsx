@@ -6,6 +6,7 @@
 
 import React from 'react'
 import type { UniversalTemplateProps } from './universal-schema'
+import { HtmlRenderer } from '@/components/builder/html-renderer'
 
 export const DarkProfessionalTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
@@ -70,15 +71,17 @@ export const DarkProfessionalTemplate: React.FC<UniversalTemplateProps> = ({ dat
         }}>
           {data.personal.title || 'Software Engineer'}
         </h2>
-        <p style={{
-          fontSize: '13px',
-          lineHeight: '1.8',
-          color: '#c0c0c0',
-          margin: 0,
-          maxWidth: '90%',
-        }}>
-          {data.summary || 'Professional summary goes here...'}
-        </p>
+        <HtmlRenderer
+          html={data.summary || '<p>Professional summary goes here...</p>'}
+          as="div"
+          style={{
+            fontSize: '13px',
+            lineHeight: '1.8',
+            color: '#c0c0c0',
+            margin: 0,
+            maxWidth: '90%',
+          }}
+        />
       </div>
 
       {/* Work Experience Section */}
@@ -147,14 +150,18 @@ export const DarkProfessionalTemplate: React.FC<UniversalTemplateProps> = ({ dat
               }}>
                 {exp.company} | {exp.startDate} - {exp.endDate || 'Present'}
               </p>
-              <p style={{
-                fontSize: '12px',
-                lineHeight: '1.7',
-                color: '#c0c0c0',
-                margin: 0,
-              }}>
-                {exp.description || 'Became a Wordpress Developer at a small startup in Argentina. Any City and as a charge of building wordpress Theme'}
-              </p>
+              {exp.description && (
+                <HtmlRenderer
+                  html={exp.description}
+                  as="div"
+                  style={{
+                    fontSize: '12px',
+                    lineHeight: '1.7',
+                    color: '#c0c0c0',
+                    margin: 0,
+                  }}
+                />
+              )}
             </div>
           );
         })}

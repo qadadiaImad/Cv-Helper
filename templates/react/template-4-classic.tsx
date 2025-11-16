@@ -4,7 +4,8 @@
  */
 
 import React from 'react'
-import type { UniversalTemplateProps } from './universal-schema'
+import type { UniversalTemplateProps} from './universal-schema'
+import { HtmlRenderer } from '@/components/builder/html-renderer'
 
 export const ClassicTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
@@ -38,7 +39,7 @@ export const ClassicTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
     {data.summary && (
       <section style={{ marginBottom: '25px' }}>
         <h2 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '10px', textTransform: 'uppercase', letterSpacing: '1px' }}>PROFESSIONAL SUMMARY</h2>
-        <p style={{ fontSize: '12px', lineHeight: '1.7', textAlign: 'justify', color: '#333' }}>{data.summary.text}</p>
+        <HtmlRenderer html={data.summary} as="div" style={{ fontSize: '11px', lineHeight: '1.6', color: '#333', textAlign: 'justify' }} />
       </section>
     )}
 
@@ -55,7 +56,9 @@ export const ClassicTemplate: React.FC<UniversalTemplateProps> = ({ data }) => (
             <span style={{ fontSize: '11px', color: '#666', whiteSpace: 'nowrap', marginLeft: '15px' }}>{exp.startDate} – {exp.endDate}</span>
           </div>
           {exp.location && <p style={{ fontSize: '11px', color: '#666', marginBottom: '6px' }}>{exp.location}</p>}
-          {exp.description && <p style={{ fontSize: '11px', color: '#555', marginBottom: '6px', fontStyle: 'italic' }}>{exp.description}</p>}
+          {exp.description && (
+            <HtmlRenderer html={exp.description} as="div" style={{ fontSize: '11px', color: '#555', marginBottom: '6px', fontStyle: 'italic' }} />
+          )}
           <ul style={{ fontSize: '11px', lineHeight: '1.6', paddingLeft: '20px', marginTop: '6px', color: '#333' }}>
             {exp.achievements.map((ach, j) => <li key={j} style={{ marginBottom: '3px' }}>{ach}</li>)}
           </ul>

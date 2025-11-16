@@ -4,7 +4,6 @@ import React, { useState, useEffect, useCallback } from "react"
 import { useSearchParams } from "next/navigation"
 import { CVPreview } from "@/components/cv-preview"
 import { InlineCVPreview } from "@/components/inline-cv-preview"
-import { AtlanticBlueEditable } from "@/templates/react/template-1-atlantic-blue-editable"
 import { AtlanticBlueFieldEditable } from "@/templates/react/template-1-atlantic-blue-field-editable"
 import { getFieldEditableTemplate } from "@/lib/field-editable-templates"
 import { updateNestedField } from "@/lib/field-updater"
@@ -700,7 +699,7 @@ export default function ReactBuilderPage() {
           // Normal Mode: Sidebar with forms + read-only template preview
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
           {/* Left Sidebar - Collapsible Sections */}
-          <div className="lg:col-span-4 space-y-4">
+          <div className="lg:col-span-6 space-y-4">
             <Card 
               className="p-6 border-2" 
               style={{
@@ -797,7 +796,7 @@ export default function ReactBuilderPage() {
 
           {/* Right - Preview */}
           {previewVisible && ready && activeCV && localCVData && (
-            <div className="lg:col-span-8">
+            <div className="lg:col-span-6">
               <Card className="p-0 shadow-2xl bg-white overflow-hidden sticky top-24">
                 {(() => {
                   const TemplateComponent = getFieldEditableTemplate(activeCV.templateId)

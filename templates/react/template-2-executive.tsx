@@ -5,6 +5,7 @@
 
 import React from 'react'
 import type { UniversalTemplateProps } from './universal-schema'
+import { HtmlRenderer } from '@/components/builder/html-renderer'
 
 export const Executive: React.FC<UniversalTemplateProps> = ({ data }) => (
   <div style={{
@@ -41,7 +42,11 @@ export const Executive: React.FC<UniversalTemplateProps> = ({ data }) => (
     {data.summary && (
       <section style={{ marginBottom: '20px' }}>
         <h2 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '8px', borderBottom: '2px solid #000', paddingBottom: '4px' }}>Profile</h2>
-        <p style={{ fontSize: '11px', lineHeight: '1.6', textAlign: 'justify' }}>{data.summary}</p>
+        <HtmlRenderer
+          html={data.summary}
+          as="div"
+          style={{ fontSize: '11px', lineHeight: '1.6', textAlign: 'justify' }}
+        />
       </section>
     )}
 

@@ -10,6 +10,8 @@ import { GlobalBackground } from "@/components/global-background"
 import { Toaster } from "sonner"
 import { ThemeProvider } from "@/lib/theme-context"
 import { ThemeWrapper } from "@/components/theme-wrapper"
+import { DevProvider } from "@/lib/dev-context"
+import { DevToolbar } from "@/components/dev-toolbar/dev-toolbar"
 
 export const metadata: Metadata = {
   title: "FlowCV - Professional LaTeX Resume Builder",
@@ -45,24 +47,29 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`font-sans ${GeistSans.variable} ${GeistMono.variable} antialiased`}>
-        <ThemeProvider>
-          <ThemeWrapper>
-            {/* Main wrapper with relative positioning for GlobalBackground */}
-            <div className="relative min-h-screen">
-              {/* Global Figma-style background on all pages */}
-              <GlobalBackground />
-              
-              {/* Header and content */}
-              <div className="relative" style={{ zIndex: 10 }}>
-                <FigmaHeader />
-                <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+        <DevProvider>
+          <ThemeProvider>
+            <ThemeWrapper>
+              {/* Main wrapper with relative positioning for GlobalBackground */}
+              <div className="relative min-h-screen">
+                {/* Global Figma-style background on all pages */}
+                <GlobalBackground />
+                
+                {/* Header and content */}
+                <div className="relative" style={{ zIndex: 10 }}>
+                  <FigmaHeader />
+                  <Suspense fallback={<div>Loading...</div>}>{children}</Suspense>
+                </div>
               </div>
-            </div>
-            
-            <Analytics />
-            <Toaster richColors closeButton />
-          </ThemeWrapper>
-        </ThemeProvider>
+              
+              {/* Dev Toolbar */}
+              <DevToolbar />
+              
+              <Analytics />
+              <Toaster richColors closeButton />
+            </ThemeWrapper>
+          </ThemeProvider>
+        </DevProvider>
       </body>
     </html>
   )
