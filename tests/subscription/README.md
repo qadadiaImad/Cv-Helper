@@ -45,6 +45,22 @@ Tests feature access control across all plans.
 
 **Test Cases:** 25+
 
+### 4. `quick-boost.test.ts` ✅ NEW
+Tests QUICK_BOOST (ONE_TIME) plan specific features.
+
+**Test Coverage:**
+- Quick Boost subscription creation
+- 3 AI credits assignment
+- AI Polish credit consumption (3 sequential uses)
+- Blocking when credits exhausted
+- Template access (all 18+ templates)
+- Advanced customization access
+- AI Cover Letter blocking
+- 1 resume limit enforcement
+- 30-day expiration logic
+
+**Test Cases:** 9
+
 ## Running Tests
 
 ### Run All Subscription Tests
@@ -57,6 +73,7 @@ npm test tests/subscription
 npm test tests/subscription/limits.test.ts
 npm test tests/subscription/ai-credits.test.ts
 npm test tests/subscription/feature-access.test.ts
+npm test tests/subscription/quick-boost.test.ts
 ```
 
 ### Run in Watch Mode
@@ -127,19 +144,21 @@ describe('Feature Category', () => {
 
 ### All Tests Should Pass ✅
 
-**Total Test Cases:** 75+
-- `limits.test.ts`: ~30 tests
-- `ai-credits.test.ts`: ~20 tests
-- `feature-access.test.ts`: ~25 tests
+**Total Test Cases:** 70
+- `limits.test.ts`: 22 tests
+- `ai-credits.test.ts`: 14 tests
+- `feature-access.test.ts`: 25 tests
+- `quick-boost.test.ts`: 9 tests ✅ NEW
 
 ### Sample Output
 ```
-✓ tests/subscription/limits.test.ts (30 tests)
-✓ tests/subscription/ai-credits.test.ts (20 tests)
+✓ tests/subscription/limits.test.ts (22 tests)
+✓ tests/subscription/ai-credits.test.ts (14 tests)
 ✓ tests/subscription/feature-access.test.ts (25 tests)
+✓ tests/subscription/quick-boost.test.ts (9 tests)
 
-Test Files  3 passed (3)
-     Tests  75 passed (75)
+Test Files  4 passed (4)
+     Tests  70 passed (70)
 ```
 
 ## Debugging Failed Tests
@@ -196,6 +215,6 @@ If subscription plans change:
 
 ---
 
-**Last Updated:** November 15, 2025
-**Test Coverage:** 75+ test cases
+**Last Updated:** November 16, 2025
+**Test Coverage:** 70 test cases across 4 test files
 **Status:** ✅ All tests passing
