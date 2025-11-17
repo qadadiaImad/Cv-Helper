@@ -152,6 +152,9 @@ export function RichTextEditor({
           totalTokens: metadata.totalTokens,
           cost: metadata.cost,
           costBreakdown: metadata.costBreakdown,
+          systemPrompt: metadata.systemPrompt,
+          userPrompt: metadata.userPrompt,
+          responseText: JSON.stringify({ options, reasoning }, null, 2),
         }
         devTools.addOperation(operation)
       }

@@ -5,15 +5,17 @@ import { Label } from "@/components/ui/label"
 import { Button } from "@/components/ui/button"
 import { Plus, Trash2 } from "lucide-react"
 import { Card } from "@/components/ui/card"
-import { RichTextEditor } from "@/components/rich-text-editor"
+import { RichTextEditorMinimal } from "@/components/rich-text-editor-minimal"
 import type { Experience, UniversalResumeData } from "@/lib/schemas"
 
 interface ExperienceFormProps {
   data: UniversalResumeData
   onChange: (data: UniversalResumeData) => void
+  onAchievementFocus?: (expIndex: number, achIndex: number) => void
+  onAchievementBlur?: () => void
 }
 
-export function ExperienceForm({ data, onChange }: ExperienceFormProps) {
+export function ExperienceForm({ data, onChange, onAchievementFocus, onAchievementBlur }: ExperienceFormProps) {
 
   const addExperience = () => {
     const newExp: Experience = {
@@ -124,31 +126,33 @@ export function ExperienceForm({ data, onChange }: ExperienceFormProps) {
           {/* Achievements */}
           <div className="space-y-2">
             <Label>Key Achievements</Label>
-            {exp.achievements?.map((achievement, achIndex) => (
-              <div key={achIndex} className="space-y-2">
-                <div className="flex items-start gap-2">
+            <div className="space-y-3">
+              {exp.achievements?.map((achievement, achIndex) => (
+                <div key={achIndex} className="flex items-start gap-2 group">
+                  <div className="flex-none w-6 h-6 rounded-full bg-slate-100 flex items-center justify-center text-xs font-semibold text-slate-600 mt-2">
+                    {achIndex + 1}
+                  </div>
                   <div className="flex-1">
-                    <RichTextEditor
+                    <RichTextEditorMinimal
                       content={achievement}
                       onChange={(html) => updateAchievement(index, achIndex, html)}
-                      placeholder="Describe your achievement..."
-                      minHeight="100px"
-                      enableAI={true}
-                      resumeContext={data}
-                      section="experience.achievements"
+                      placeholder="Describe your achievement (e.g., Reduced API response time by 65%...)" 
+                      minHeight="80px"
+                      onFocus={() => onAchievementFocus?.(index, achIndex)}
+                      onBlur={() => onAchievementBlur?.()}
                     />
                   </div>
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={() => removeAchievement(index, achIndex)}
-                    className="text-red-600 mt-2"
+                    className="text-red-600 opacity-0 group-hover:opacity-100 transition-opacity mt-2"
                   >
                     <Trash2 className="h-4 w-4" />
                   </Button>
                 </div>
-              </div>
-            ))}
+              ))}
+            </div>
             <Button
               variant="outline"
               size="sm"

@@ -11,6 +11,7 @@ export function DevToolbar() {
   const { isEnabled, operations, sessionStats, clearStats } = useDevTools()
   const [isOpen, setIsOpen] = useState(true)
   const [showDetails, setShowDetails] = useState(false)
+  const [selectedOp, setSelectedOp] = useState<typeof operations[0] | null>(null)
 
   if (!isEnabled) return null
 
@@ -93,7 +94,11 @@ export function DevToolbar() {
           {showDetails && (
             <div className="max-h-64 overflow-y-auto space-y-1">
               {operations.slice(-10).reverse().map((op) => (
-                <div key={op.id} className="p-2 bg-slate-800 rounded text-xs">
+                <div 
+                  key={op.id} 
+                  className="p-2 bg-slate-800 rounded text-xs cursor-pointer hover:bg-slate-700 transition-colors"
+                  onClick={() => setSelectedOp(op)}
+                >
                   <div className="flex justify-between">
                     <span className="text-slate-300">{op.operation}</span>
                     <span className="text-green-400">{formatCost(op.cost)}</span>
@@ -107,6 +112,101 @@ export function DevToolbar() {
           )}
         </div>
       )}
+
+      {/* Prompt Details Modal */}
+      {selectedOp && (
+        <div 
+          className="fixed inset-0 bg-black/50 flex items-center justify-center z-[60] p-4"
+          onClick={() => setSelectedOp(null)}
+        >
+          <div 
+            className="bg-slate-900 rounded-lg shadow-2xl border border-slate-700 max-w-3xl w-full max-h-[80vh] overflow-hidden"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="p-4 border-b border-slate-700 flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-white">{selectedOp.operation}</h3>
+                <p className="text-xs text-slate-400 mt-1">
+                  {new Date(selectedOp.timestamp).toLocaleString()} • {selectedOp.model}
+                </p>
+              </div>
+              <button
+                onClick={() => setSelectedOp(null)}
+                className="text-slate-400 hover:text-white"
+              >
+                ✕
+              </button>
+            </div>
+
+            {/* Modal Content */}
+            <div className="p-4 overflow-y-auto max-h-[calc(80vh-120px)] space-y-4">
+              {/* Stats */}
+              <div className="grid grid-cols-3 gap-2 text-xs">
+                <div className="p-2 bg-slate-800 rounded">
+                  <div className="text-slate-400">Cost</div>
+                  <div className="text-green-400 font-semibold">{formatCost(selectedOp.cost)}</div>
+                </div>
+                <div className="p-2 bg-slate-800 rounded">
+                  <div className="text-slate-400">Tokens</div>
+                  <div className="text-white font-semibold">{formatTokens(selectedOp.totalTokens)}</div>
+                </div>
+                <div className="p-2 bg-slate-800 rounded">
+                  <div className="text-slate-400">Model</div>
+                  <div className="text-white font-semibold text-[10px]">{selectedOp.model.split('/')[1]}</div>
+                </div>
+              </div>
+
+              {/* System Prompt */}
+              {selectedOp.systemPrompt && (
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-300 mb-2">System Prompt</h4>
+                  <div className="p-3 bg-slate-800 rounded text-xs text-slate-300 whitespace-pre-wrap font-mono max-h-48 overflow-y-auto">
+                    {selectedOp.systemPrompt}
+                  </div>
+                </div>
+              )}
+
+              {/* User Prompt */}
+              {selectedOp.userPrompt && (
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-300 mb-2">User Prompt</h4>
+                  <div className="p-3 bg-slate-800 rounded text-xs text-slate-300 whitespace-pre-wrap font-mono max-h-48 overflow-y-auto">
+                    {selectedOp.userPrompt}
+                  </div>
+                </div>
+              )}
+
+              {/* AI Response */}
+              {selectedOp.responseText && (
+                <div>
+                  <h4 className="text-sm font-semibold text-slate-300 mb-2">AI Response</h4>
+                  <div className="p-3 bg-slate-800 rounded text-xs text-slate-300 whitespace-pre-wrap font-mono max-h-48 overflow-y-auto">
+                    {selectedOp.responseText}
+                  </div>
+                </div>
+              )}
+
+              {/* Token Breakdown */}
+              <div>
+                <h4 className="text-sm font-semibold text-slate-300 mb-2">Token Breakdown</h4>
+                <div className="grid grid-cols-2 gap-2 text-xs">
+                  <div className="p-2 bg-slate-800 rounded">
+                    <div className="text-slate-400">Prompt Tokens</div>
+                    <div className="text-white">{formatTokens(selectedOp.promptTokens)}</div>
+                  </div>
+                  <div className="p-2 bg-slate-800 rounded">
+                    <div className="text-slate-400">Completion Tokens</div>
+                    <div className="text-white">{formatTokens(selectedOp.completionTokens)}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   )
 }
+
+

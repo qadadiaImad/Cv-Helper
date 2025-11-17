@@ -103,6 +103,8 @@ export async function POST(req: NextRequest) {
           promptCost: costData.promptCost,
           completionCost: costData.completionCost,
         },
+        systemPrompt,
+        userPrompt,
       },
     })
   } catch (error: any) {

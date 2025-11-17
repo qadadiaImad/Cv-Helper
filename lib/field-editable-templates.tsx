@@ -36,10 +36,12 @@ import { AcademicBurgundyFieldEditable } from '@/templates/react/template-30-aca
 import type { TemplateId } from '@/lib/react-templates'
 import type { UniversalResumeData } from '@/lib/schemas'
 
-interface FieldEditableTemplateProps {
+export interface FieldEditableTemplateProps {
   data: UniversalResumeData
   editMode?: boolean
   onFieldChange?: (path: string, value: any) => void
+  onFieldEditStart?: (path: string, type: 'text' | 'richtext' | 'list' | 'skills', position?: { top: number; left: number }) => void
+  onFieldEditEnd?: () => void
 }
 
 // Map of template IDs to their field-editable components

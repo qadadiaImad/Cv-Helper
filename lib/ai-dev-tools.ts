@@ -13,6 +13,9 @@ export interface AIOperation {
     promptCost: number
     completionCost: number
   }
+  systemPrompt?: string
+  userPrompt?: string
+  responseText?: string
 }
 
 export interface AIModel {

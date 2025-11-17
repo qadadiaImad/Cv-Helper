@@ -7,16 +7,14 @@ import React from 'react'
 import type { UniversalTemplateProps } from './universal-schema'
 import { InlineEditableField } from '@/components/builder/inline-editable-field'
 import { HtmlRenderer } from '@/components/builder/html-renderer'
-
-interface FieldEditableTemplateProps extends UniversalTemplateProps {
-  editMode?: boolean
-  onFieldChange?: (path: string, value: any) => void
-}
+import type { FieldEditableTemplateProps } from '@/lib/field-editable-templates'
 
 export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = ({ 
   data, 
   editMode = false,
-  onFieldChange = () => {}
+  onFieldChange = () => {},
+  onFieldEditStart,
+  onFieldEditEnd
 }) => {
   // Photo configuration
   const photoConfig = data.personal?.photo
@@ -37,9 +35,18 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
     onFieldChange(`${arrayName}.${index}.${field}`, value)
   }
 
-  const EditableText = editMode ? InlineEditableField : ({ value, className, style }: any) => (
-    <HtmlRenderer html={value} as="span" className={className} style={style} />
-  )
+  // Wrapper for EditableText that passes tracking callbacks
+  const EditableText = editMode 
+    ? (props: any) => (
+        <InlineEditableField
+          {...props}
+          onEditStart={onFieldEditStart}
+          onEditEnd={onFieldEditEnd}
+        />
+      )
+    : ({ value, className, style }: any) => (
+        <HtmlRenderer html={value} as="span" className={className} style={style} />
+      )
 
   return (
     <div style={{
@@ -89,6 +96,8 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
             <EditableText
               value={data.personal?.fullName || 'Your Name'}
               onChange={(v: string) => updateField('personal.fullName', v)}
+              fieldPath="personal.fullName"
+              fieldType="text"
               style={{ color: '#ffffff' }}
             />
           </h1>
@@ -97,6 +106,8 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
               <EditableText
                 value={data.personal.title}
                 onChange={(v: string) => updateField('personal.title', v)}
+                fieldPath="personal.title"
+                fieldType="text"
                 style={{ color: '#ffffff' }}
               />
             </p>

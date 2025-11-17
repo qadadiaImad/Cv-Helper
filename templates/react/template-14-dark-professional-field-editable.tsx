@@ -11,20 +11,32 @@ import { HtmlRenderer } from '@/components/builder/html-renderer'
 interface FieldEditableTemplateProps extends UniversalTemplateProps {
   editMode?: boolean
   onFieldChange?: (path: string, value: any) => void
+  onFieldEditStart?: (path: string, type: 'text' | 'richtext' | 'list' | 'skills', position?: { top: number; left: number }) => void
+  onFieldEditEnd?: () => void
 }
 
 export const DarkProfessionalFieldEditable: React.FC<FieldEditableTemplateProps> = ({ 
   data, 
   editMode = false,
-  onFieldChange = () => {}
+  onFieldChange = () => {},
+  onFieldEditStart,
+  onFieldEditEnd
 }) => {
   const updateField = (path: string, value: any) => {
     onFieldChange(path, value)
   }
 
-  const EditableText = editMode ? InlineEditableField : ({ value, className, style }: any) => (
-    <HtmlRenderer html={value} as="span" className={className} style={style} />
-  )
+  const EditableText = editMode 
+    ? (props: any) => (
+        <InlineEditableField
+          {...props}
+          onEditStart={onFieldEditStart}
+          onEditEnd={onFieldEditEnd}
+        />
+      )
+    : ({ value, className, style }: any) => (
+        <HtmlRenderer html={value} as="span" className={className} style={style} />
+      )
 
   return (
     <div style={{
@@ -79,6 +91,8 @@ export const DarkProfessionalFieldEditable: React.FC<FieldEditableTemplateProps>
               <EditableText
                 value={data.personal?.fullName || 'Your Name'}
                 onChange={(v: string) => updateField('personal.fullName', v)}
+                fieldPath="personal.fullName"
+                fieldType="text"
                 style={{ color: '#ffffff' }}
               />
             </h1>
@@ -93,10 +107,12 @@ export const DarkProfessionalFieldEditable: React.FC<FieldEditableTemplateProps>
               <EditableText
                 value={data.personal?.title || 'Software Engineer'}
                 onChange={(v: string) => updateField('personal.title', v)}
+                fieldPath="personal.title"
+                fieldType="text"
                 style={{ color: '#a0a0a0' }}
               />
             </h2>
-            <p style={{
+            <div style={{
               fontSize: '13px',
               lineHeight: '1.8',
               color: '#c0c0c0',
@@ -106,10 +122,12 @@ export const DarkProfessionalFieldEditable: React.FC<FieldEditableTemplateProps>
               <EditableText
                 value={data.summary || 'Professional summary goes here...'}
                 onChange={(v: string) => updateField('summary', v)}
+                fieldPath="summary"
+                fieldType="richtext"
                 multiline
                 style={{ color: '#c0c0c0' }}
               />
-            </p>
+            </div>
           </div>
 
           {/* Work Experience Section */}
