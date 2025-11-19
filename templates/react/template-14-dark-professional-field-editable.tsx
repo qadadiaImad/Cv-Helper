@@ -523,7 +523,7 @@ export const DarkProfessionalFieldEditable: React.FC<FieldEditableTemplateProps>
                 </button>
               )}
             </div>
-            {data.skills && data.skills.slice(0, 6).map((skill, i) => {
+            {data.skills && Array.isArray(data.skills) && data.skills.slice(0, 6).map((skill, i) => {
               const percentages = [90, 85, 80, 75, 70, 65];
               const percent = percentages[i] || 70;
               return (
