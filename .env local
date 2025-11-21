@@ -1,0 +1,32 @@
+# Default local development environment
+# Switch to Postgres by changing DATABASE_PROVIDER and DATABASE_URL
+
+DATABASE_PROVIDER=sqlite
+DATABASE_URL="file:./dev.db"
+
+# Use a long random string in production
+JWT_SECRET="change-me-please-very-long-random-secret"
+
+# Stripe Configuration
+# Get these from https://dashboard.stripe.com/apikeys
+STRIPE_SECRET_KEY="sk_test_51RRKaOC0szEeNCcEcILbVm8XmSiEk77D4RHACKHOQ6iUN8a6BQMhvPrLVXqVV6t6SsIf37tsIccTEdTHAt5hQm5J00wuUZl1XU"
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY="pk_test_51RRKaOC0szEeNCcEakyshL2n2xcs84ViPjujeeUsLBzOltGCyE7eafyDCvVsolNeZBsoZIRipCw565NnHgZuuJZq00igL6uyKw"
+STRIPE_WEBHOOK_SECRET="whsec_7fda1928c0cf7bcd4280017187763dd6b7ec1a020ce5a7732e922ef348e58f8b"
+
+# Stripe Price IDs (create products in Stripe Dashboard)
+# Quick Boost: €2.99 one-time
+NEXT_PUBLIC_STRIPE_PRICE_ONE_TIME="price_1ST3eNC0szEeNCcEzTR2xuRi"
+# Basic Monthly: €8.99/month
+NEXT_PUBLIC_STRIPE_PRICE_BASIC="price_1ST3eqC0szEeNCcEm1FQwVjw"
+# Pro Unlimited: €15.99/month
+NEXT_PUBLIC_STRIPE_PRICE_PRO="price_1ST3f9C0szEeNCcEbZcfWaDB"
+
+# App URL for Stripe redirects
+NEXT_PUBLIC_APP_URL="http://localhost:3000"
+OPENROUTER_KEY_ARBITRAGE=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
+OPENROUTER_KEY_VISION=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
+OPENROUTER_KEY_PDF_TO_JSON=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
+OPENROUTER_API_KEY_JUDGE=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
+
+# AI Development Tools
+NEXT_PUBLIC_DEV_TOOLBAR=true
