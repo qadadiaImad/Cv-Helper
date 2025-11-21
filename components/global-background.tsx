@@ -3,8 +3,8 @@
 export function GlobalBackground() {
   return (
     <div 
-      className="absolute top-0 left-0 right-0 pointer-events-none" 
-      style={{ zIndex: 0, minHeight: '3000px' }}
+      className="absolute top-0 left-0 right-0 bottom-0 pointer-events-none" 
+      style={{ zIndex: 0 }}
       data-testid="global-background"
     >
       {/* TEST: Large visible shape to confirm rendering */}
@@ -94,49 +94,10 @@ export function GlobalBackground() {
         </defs>
       </svg>
       
-      {/* MORE shapes for MIDDLE section of page */}
-      <div className="absolute" style={{ top: '800px', left: '15%' }}>
-        <div className="w-56 h-80 bg-gradient-to-br from-purple-200/60 to-purple-300/60 rounded-[3rem] transform -rotate-12 shadow-2xl" />
-      </div>
-      <div className="absolute" style={{ top: '900px', right: '10%' }}>
-        <div className="w-44 h-44 bg-gradient-to-br from-pink-200/70 to-pink-300/70 rounded-full shadow-2xl" />
-      </div>
-      <div className="absolute" style={{ top: '1000px', left: '40%' }}>
-        <div className="w-48 h-68 bg-gradient-to-br from-blue-200/50 to-cyan-200/50 rounded-[2rem] transform rotate-25 shadow-xl" />
-      </div>
-      
-      {/* MORE shapes for BOTTOM section of page */}
-      <div className="absolute" style={{ top: '1400px', right: '20%' }}>
-        <div className="w-52 h-76 bg-gradient-to-br from-purple-300/50 to-purple-400/50 rounded-[3rem] transform rotate-15 shadow-2xl" />
-      </div>
-      <div className="absolute" style={{ top: '1500px', left: '25%' }}>
-        <div className="w-40 h-40 bg-gradient-to-br from-pink-300/60 to-pink-400/60 rounded-full shadow-xl" />
-      </div>
-      <div className="absolute" style={{ top: '1600px', right: '30%' }}>
-        <div className="w-36 h-36 bg-gradient-to-br from-yellow-200/60 to-orange-200/60 rounded-full shadow-xl" />
-      </div>
-      <div className="absolute" style={{ top: '1700px', left: '15%' }}>
-        <div className="w-44 h-64 bg-gradient-to-br from-cyan-200/50 to-teal-200/50 rounded-[2rem] transform -rotate-20 shadow-lg" />
-      </div>
-      
-      {/* EVEN MORE shapes for LOWER section */}
-      <div className="absolute" style={{ top: '2000px', right: '15%' }}>
-        <div className="w-48 h-72 bg-gradient-to-br from-purple-200/50 to-purple-300/50 rounded-[2.5rem] transform rotate-10 shadow-xl" />
-      </div>
-      <div className="absolute" style={{ top: '2100px', left: '35%' }}>
-        <div className="w-38 h-38 bg-gradient-to-br from-pink-200/60 to-pink-300/60 rounded-full shadow-xl" />
-      </div>
-      
       {/* Decorative circles throughout */}
       <div className="absolute top-1/4 right-1/4 w-4 h-4 bg-yellow-400 rounded-full opacity-60 animate-pulse" />
       <div className="absolute top-1/2 left-1/3 w-3 h-3 bg-pink-400 rounded-full opacity-50 animate-pulse" style={{animationDelay: '1s'}} />
       <div className="absolute bottom-1/3 right-1/3 w-5 h-5 bg-purple-400 rounded-full opacity-40 animate-pulse" style={{animationDelay: '2s'}} />
-      <div className="absolute" style={{ top: '1200px', left: '20%' }}>
-        <div className="w-4 h-4 bg-blue-400 rounded-full opacity-60 animate-pulse" />
-      </div>
-      <div className="absolute" style={{ top: '1800px', right: '25%' }}>
-        <div className="w-5 h-5 bg-yellow-400 rounded-full opacity-50 animate-pulse" style={{animationDelay: '1.5s'}} />
-      </div>
     </div>
   )
 }

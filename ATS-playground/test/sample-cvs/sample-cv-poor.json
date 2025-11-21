@@ -1,0 +1,20 @@
+{
+  "resume_text": "SARAH JOHNSON\ncooldude2023@funmail.com\n\nI am a passionate, results-driven, innovative professional with a proven track record of success. I'm a team player who thinks outside the box and hits the ground running.\n\nI was responsible for managing various projects at my previous company. I worked on different tasks and helped with multiple initiatives. I participated in team meetings and was involved in the development process.\n\nResponsible for:\n- Working on code\n- Helping team members\n- Attended meetings\n- Various administrative tasks\n\nI have skills in:\nJava, Python, C++, JavaScript, HTML, CSS, React, Angular, Vue, Node, Express, Django, Flask, Spring, Hibernate, SQL, NoSQL, MongoDB, PostgreSQL, MySQL, Redis, AWS, Azure, GCP, Docker, Kubernetes, Jenkins, Git, GitHub, Agile, Scrum, Kanban, and many more technologies.\n\nEducation:\nDegree in something related to computers\n\nI'm looking for a dynamic company where I can leverage my synergies to drive holistic transformation and become a thought leader in the space.",
+  "file_type": "jpg",
+  "file_size_kb": 2500,
+  "candidate_name": "Sarah Johnson",
+  "job_title_target": null,
+  "job_description": null,
+  "parse_coverage_ratio": 0.6,
+  "available_templates": [
+    "Clean One-Column",
+    "Modern Two-Tone"
+  ],
+  "extra_metadata": {
+    "sections": {},
+    "font_name": "Comic Sans MS",
+    "word_count": 180,
+    "bullet_count": 4,
+    "years_of_experience": null
+  }
+}

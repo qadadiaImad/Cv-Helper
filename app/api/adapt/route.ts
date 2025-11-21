@@ -10,7 +10,7 @@ import { computeResumeDiff, buildNarrativeFromDiff } from './aiservice-lib/diff'
 import { isOpenRouterEnabled, getConfiguredModel, getPricingForModel, getDefaultPricing, isJudgeEnabled, getJudgeModel } from './aiservice-config/models';
 
 // Configuration OpenAI sera créée dynamiquement
-import { getVerbs, filterForATS, ACTION_VERB_CATEGORIES } from './aiservice-src/hr/actionVerbs';
+import { ACTION_VERB_CATEGORIES, getVerbsForLanguage, filterForATSInLanguage, replaceEnglishVerbs } from '../../../AIservice-infcv/src/hr';
 import { callWithFallbackChat } from '../../../AIservice-infcv/Integration/orchestrator';
 
 // Taille maximale du fichier (5MB)
@@ -698,9 +698,11 @@ export async function POST(request: NextRequest) {
             const parts = String(s || '').trim().split(/\s+/);
             return parts.length > 22 ? parts.slice(0, 22).join(' ') : String(s || '').trim();
           };
-          const verbsUnion2 = filterForATS(getVerbs(ACTION_VERB_CATEGORIES));
+          // Get verbs in the CV's language
+          const verbsUnion2 = filterForATSInLanguage(getVerbsForLanguage(ACTION_VERB_CATEGORIES, origLang2), origLang2);
           const verbsSet2 = new Set(verbsUnion2.map(v => v.toLowerCase()));
-          const SEED2 = `ACTION VERB STARTER SEED (English forms for guidance only; do NOT translate the rest): ${verbsUnion2.slice(0, 60).join(', ')}`;
+          console.log(`[API] 🌍 Detected language: "${origLang2}" | Sample verbs:`, verbsUnion2.slice(0, 10));
+          const SEED2 = `ACTION VERB STARTER SEED (use these verbs in ${origLang2}): ${verbsUnion2.slice(0, 60).join(', ')}`;
           const defaultVerbByLang2: Record<string, string> = { en: 'Implemented', fr: 'Réalisé' };
           const ensureActionVerbStart2 = (text: string) => {
             const before = String(text || '').trim();
@@ -720,43 +722,59 @@ export async function POST(request: NextRequest) {
             return { changed: before !== s, value: s };
           };
           const LLM_SYSTEM = [
-            'You rewrite resume bullets using the XYZ formula: "Accomplished [X] as measured by [Y] by doing [Z]."',
-            '- Start with a strong ACTION VERB; include 1 clear METRIC if it already exists; then HOW it was done.',
-            '- Keep each bullet concise (≤ 22 words), past tense unless current role.',
-            '- No fluff, no buzzwords, no invented facts.',
+            'You are a professional resume optimizer. Your task is to improve resume bullets using the XYZ formula: "Accomplished [X] as measured by [Y] by doing [Z]."',
             '',
-            'IMPORTANT — METRICS & INTEGRITY',
-            '- NEVER invent numbers. Use a metric ONLY if it already exists in the input bullet.',
-            '- If no metric exists, keep the bullet QUALITATIVE (no numbers).',
-            '- You may SUGGEST possible metrics, but ONLY inside REPORT.recommendations (not in the rewritten bullets).',
+            '═══════════════════════════════════════════════════════════',
+            'CRITICAL RULES - FOLLOW STRICTLY',
+            '═══════════════════════════════════════════════════════════',
             '',
-            'TASK',
-            'For each input bullet, output one rewritten bullet that follows XYZ. If there’s no metric, keep impact qualitative and factual (no numbers). Optionally add metric SUGGESTIONS in REPORT.recommendations.',
+            '1. PRESERVE MEANING & CONTEXT',
+            '   - DO NOT change the semantic meaning of the bullet',
+            '   - If the bullet says "Designed", do NOT change it to "Accelerated" or any other verb with different meaning',
+            '   - ONLY modify if the bullet is WEAK (vague verb, no metrics, unclear impact)',
+            '   - If a bullet ALREADY has a strong action verb, KEEP IT',
             '',
-            'RULES',
-            '1) Structure = ACTION VERB → X (what) → Y (metric/impact/baseline, if present) → Z (how).',
-            '2) Exactly ONE metric Y, and ONLY if present in the original bullet (%, $, time, volume).',
-            '3) Domain wording consistent; optionally align to context.jd_keywords when semantically equivalent to the original bullet.',
-            '4) Avoid vague openers (“Responsible for…”, “Worked on…”). Use specific verbs.',
-            '5) Do NOT add new achievements, tools, companies, or numbers.',
-            '6) Remove filler (“successfully”, “various”, “numerous”). No first-person.',
+            '2. ACTION VERBS',
+            '   - Use ONLY verbs from the SEED list provided below',
+            '   - Choose a verb that MATCHES the original meaning',
+            '   - If the original verb is already strong and in the SEED list, DO NOT replace it',
+            '   - Examples of WEAK verbs to replace: "Responsible for", "Worked on", "Helped with", "Involved in"',
             '',
-            'BULLET VOLUME CONTROL (PRUNE & SHORTEN)',
-            '- If an experience has MANY bullets, you MAY remove low-signal bullets—especially when that experience is minor or not relevant to jd_keywords.',
-            '- Target count (guideline, not strict): major experiences 3–5 bullets; minor/less relevant 1–3 bullets.',
-            '- Prefer to KEEP bullets that show measurable outcomes, leadership/ownership, or JD-aligned skills. Remove repetitive, overlapping, or purely duty-based bullets.',
-            '- If a bullet is long or verbose, you MAY shorten it while preserving meaning and facts (keep ≤ 22 words, keep original claims, no new metrics).',
-            '- All removals/shortenings MUST be logged in REPORT (see OUTPUT FORMAT).',
+            '3. METRICS & INTEGRITY',
+            '   - NEVER invent numbers, percentages, or metrics',
+            '   - Use a metric ONLY if it already exists in the input bullet',
+            '   - If no metric exists, keep the bullet QUALITATIVE (no numbers)',
+            '   - You may SUGGEST possible metrics in REPORT.recommendations (not in bullets)',
             '',
-            'ALGORITHM (follow exactly)',
-            'A) Parse each bullet: verb, what/result, any EXISTING metric, the “how”.',
-            'B) If no metric exists, keep qualitative impact; DO NOT fabricate numbers.',
-            'C) Draft: VERB + X + (optional Y if present) + Z. Ensure ≤ 22 words.',
-            'D) Prune pass (per experience): rank bullets by JD relevance + impact; mark low-signal items for removal.',
-            'E) Shorten pass: compress verbose bullets (remove filler, merge duplicates, keep one metric).',
-            'F) Validate: each kept bullet has verb, what, how; metric only if present.',
+            '4. WHEN TO MODIFY vs WHEN TO KEEP',
+            '   MODIFY if:',
+            '   - Bullet starts with weak/vague verb ("Responsible for", "Worked on", "Helped")',
+            '   - Bullet lacks clear impact or result',
+            '   - Bullet is too verbose (>22 words)',
+            '   ',
+            '   KEEP UNCHANGED if:',
+            '   - Bullet already starts with a strong action verb from SEED list',
+            '   - Bullet already has clear metrics and impact',
+            '   - Bullet is already well-structured (XYZ formula)',
             '',
-            `Output MUST be in the same language as clean_cv.metadata.language: "${origLang2}". DO NOT translate.`,
+            '5. FORMATTING',
+            '   - Keep each bullet concise (≤ 22 words)',
+            '   - Use past tense unless current role',
+            '   - Remove filler words ("successfully", "various", "numerous")',
+            '   - No first-person pronouns',
+            '',
+            '6. BULLET VOLUME CONTROL',
+            '   - Target: major experiences 3–5 bullets; minor experiences 1–3 bullets',
+            '   - Remove low-signal bullets (repetitive, vague, or irrelevant to job description)',
+            '   - Log all removals in REPORT.pruned',
+            '',
+            '',
+            `CRITICAL LANGUAGE RULE:`,
+            `- Output MUST be ENTIRELY in "${origLang2}" language.`,
+            `- Use ONLY action verbs from the SEED list below (they are already in ${origLang2}).`,
+            `- NEVER mix languages. NEVER use English verbs if the CV is in another language.`,
+            `- NEVER create spelling errors like "sur l ʼ ensemble" (incorrect spacing).`,
+            '',
             SEED2,
           ].join('\n');
           const perExpLogs: any[] = [];
@@ -765,6 +783,7 @@ export async function POST(request: NextRequest) {
             const exp = afterCvArbOnly.experience[i];
             const originalBullets: string[] = Array.isArray(exp?.bullets) ? exp.bullets : [];
             if (!originalBullets.length) continue;
+            console.log(`[API] 📝 Processing experience ${i+1}: Original bullets:`, originalBullets);
             const userPayload = JSON.stringify({ bullets: originalBullets, context: { jd_keywords: jdKw } });
             const req: any = { model: arbModel, messages: [ { role: 'system', content: LLM_SYSTEM }, { role: 'user', content: userPayload } ], temperature: 0.0 };
             let out: any = null;
@@ -797,6 +816,18 @@ export async function POST(request: NextRequest) {
               if (r.changed && r.value !== s) harmonized.push({ index: idxB, before: s, after: r.value, reason: 'prefixed action verb for harmonization' });
               return r.value;
             });
+            
+            // POST-PROCESSING: Replace English verbs with target language verbs
+            deduped = deduped.map((bullet, idxB) => {
+              const beforeReplace = bullet;
+              const afterReplace = replaceEnglishVerbs(bullet, origLang2);
+              if (beforeReplace !== afterReplace) {
+                console.log(`[API] 🔄 Replaced English verbs in bullet ${idxB}:`, { before: beforeReplace, after: afterReplace });
+                harmonized.push({ index: idxB, before: beforeReplace, after: afterReplace, reason: 'replaced English verbs with target language' });
+              }
+              return afterReplace;
+            });
+            
             exp.bullets = deduped.length ? deduped : originalBullets;
             perExpLogs[i] = { experienceIndex: i, recommendations: out?.REPORT?.recommendations || [], pruned: out?.REPORT?.pruned || {}, shortened: out?.REPORT?.shortened || [], harmonized };
           }
@@ -839,6 +870,18 @@ export async function POST(request: NextRequest) {
               if (r.changed && r.value !== s) harmonized.push({ index: idxB, before: s, after: r.value, reason: 'prefixed action verb for harmonization' });
               return r.value;
             });
+            
+            // POST-PROCESSING: Replace English verbs with target language verbs
+            deduped = deduped.map((bullet, idxB) => {
+              const beforeReplace = bullet;
+              const afterReplace = replaceEnglishVerbs(bullet, origLang2);
+              if (beforeReplace !== afterReplace) {
+                console.log(`[API] 🔄 Replaced English verbs in project bullet ${idxB}:`, { before: beforeReplace, after: afterReplace });
+                harmonized.push({ index: idxB, before: beforeReplace, after: afterReplace, reason: 'replaced English verbs with target language' });
+              }
+              return afterReplace;
+            });
+            
             proj.bullets = deduped.length ? deduped : originalBullets;
             perProjLogs[i] = { projectIndex: i, recommendations: out?.REPORT?.recommendations || [], pruned: out?.REPORT?.pruned || {}, shortened: out?.REPORT?.shortened || [], harmonized };
           }
@@ -1337,9 +1380,10 @@ export async function POST(request: NextRequest) {
         const parts = String(s || '').trim().split(/\s+/);
         return parts.length > 22 ? parts.slice(0, 22).join(' ') : String(s || '').trim();
       };
-      const verbsUnion = filterForATS(getVerbs(ACTION_VERB_CATEGORIES));
+      // Get verbs in the CV's language
+      const verbsUnion = filterForATSInLanguage(getVerbsForLanguage(ACTION_VERB_CATEGORIES, origLang), origLang);
       const verbsSet = new Set(verbsUnion.map(v => v.toLowerCase()));
-      const SEED = `ACTION VERB STARTER SEED (English forms for guidance only; do NOT translate the rest): ${verbsUnion.slice(0, 60).join(', ')}`;
+      const SEED = `ACTION VERB STARTER SEED (use these verbs in ${origLang}): ${verbsUnion.slice(0, 60).join(', ')}`;
       const defaultVerbByLang: Record<string, string> = { en: 'Implemented', fr: 'Réalisé' };
       const ensureActionVerbStart = (text: string) => {
         const before = String(text || '').trim();
@@ -1359,43 +1403,59 @@ export async function POST(request: NextRequest) {
         return { changed: before !== s, value: s };
       };
       const LLM_SYSTEM = [
-        'You rewrite resume bullets using the XYZ formula: "Accomplished [X] as measured by [Y] by doing [Z]."',
-        '- Start with a strong ACTION VERB; include 1 clear METRIC if it already exists; then HOW it was done.',
-        '- Keep each bullet concise (≤ 22 words), past tense unless current role.',
-        '- No fluff, no buzzwords, no invented facts.',
+        'You are a professional resume optimizer. Your task is to improve resume bullets using the XYZ formula: "Accomplished [X] as measured by [Y] by doing [Z]."',
         '',
-        'IMPORTANT — METRICS & INTEGRITY',
-        '- NEVER invent numbers. Use a metric ONLY if it already exists in the input bullet.',
-        '- If no metric exists, keep the bullet QUALITATIVE (no numbers).',
-        '- You may SUGGEST possible metrics, but ONLY inside REPORT.recommendations (not in the rewritten bullets).',
+        '═══════════════════════════════════════════════════════════',
+        'CRITICAL RULES - FOLLOW STRICTLY',
+        '═══════════════════════════════════════════════════════════',
         '',
-        'TASK',
-        'For each input bullet, output one rewritten bullet that follows XYZ. If there’s no metric, keep impact qualitative and factual (no numbers). Optionally add metric SUGGESTIONS in REPORT.recommendations.',
+        '1. PRESERVE MEANING & CONTEXT',
+        '   - DO NOT change the semantic meaning of the bullet',
+        '   - If the bullet says "Designed", do NOT change it to "Accelerated" or any other verb with different meaning',
+        '   - ONLY modify if the bullet is WEAK (vague verb, no metrics, unclear impact)',
+        '   - If a bullet ALREADY has a strong action verb, KEEP IT',
         '',
-        'RULES',
-        '1) Structure = ACTION VERB → X (what) → Y (metric/impact/baseline, if present) → Z (how).',
-        '2) Exactly ONE metric Y, and ONLY if present in the original bullet (%, $, time, volume).',
-        '3) Domain wording consistent; optionally align to context.jd_keywords when semantically equivalent to the original bullet.',
-        '4) Avoid vague openers (“Responsible for…”, “Worked on…”). Use specific verbs.',
-        '5) Do NOT add new achievements, tools, companies, or numbers.',
-        '6) Remove filler (“successfully”, “various”, “numerous”). No first-person.',
+        '2. ACTION VERBS',
+        '   - Use ONLY verbs from the SEED list provided below',
+        '   - Choose a verb that MATCHES the original meaning',
+        '   - If the original verb is already strong and in the SEED list, DO NOT replace it',
+        '   - Examples of WEAK verbs to replace: "Responsible for", "Worked on", "Helped with", "Involved in"',
         '',
-        'BULLET VOLUME CONTROL (PRUNE & SHORTEN)',
-        '- If an experience has MANY bullets, you MAY remove low-signal bullets—especially when that experience is minor or not relevant to jd_keywords.',
-        '- Target count (guideline, not strict): major experiences 3–5 bullets; minor/less relevant 1–3 bullets.',
-        '- Prefer to KEEP bullets that show measurable outcomes, leadership/ownership, or JD-aligned skills. Remove repetitive, overlapping, or purely duty-based bullets.',
-        '- If a bullet is long or verbose, you MAY shorten it while preserving meaning and facts (keep ≤ 22 words, keep original claims, no new metrics).',
-        '- All removals/shortenings MUST be logged in REPORT (see OUTPUT FORMAT).',
+        '3. METRICS & INTEGRITY',
+        '   - NEVER invent numbers, percentages, or metrics',
+        '   - Use a metric ONLY if it already exists in the input bullet',
+        '   - If no metric exists, keep the bullet QUALITATIVE (no numbers)',
+        '   - You may SUGGEST possible metrics in REPORT.recommendations (not in bullets)',
         '',
-        'ALGORITHM (follow exactly)',
-        'A) Parse each bullet: verb, what/result, any EXISTING metric, the “how”.',
-        'B) If no metric exists, keep qualitative impact; DO NOT fabricate numbers.',
-        'C) Draft: VERB + X + (optional Y if present) + Z. Ensure ≤ 22 words.',
-        'D) Prune pass (per experience): rank bullets by JD relevance + impact; mark low-signal items for removal.',
-        'E) Shorten pass: compress verbose bullets (remove filler, merge duplicates, keep one metric).',
-        'F) Validate: each kept bullet has verb, what, how; metric only if present.',
+        '4. WHEN TO MODIFY vs WHEN TO KEEP',
+        '   MODIFY if:',
+        '   - Bullet starts with weak/vague verb ("Responsible for", "Worked on", "Helped")',
+        '   - Bullet lacks clear impact or result',
+        '   - Bullet is too verbose (>22 words)',
+        '   ',
+        '   KEEP UNCHANGED if:',
+        '   - Bullet already starts with a strong action verb from SEED list',
+        '   - Bullet already has clear metrics and impact',
+        '   - Bullet is already well-structured (XYZ formula)',
         '',
-        `Output MUST be in the same language as clean_cv.metadata.language: "${origLang}". DO NOT translate.`,
+        '5. FORMATTING',
+        '   - Keep each bullet concise (≤ 22 words)',
+        '   - Use past tense unless current role',
+        '   - Remove filler words ("successfully", "various", "numerous")',
+        '   - No first-person pronouns',
+        '',
+        '6. BULLET VOLUME CONTROL',
+        '   - Target: major experiences 3–5 bullets; minor experiences 1–3 bullets',
+        '   - Remove low-signal bullets (repetitive, vague, or irrelevant to job description)',
+        '   - Log all removals in REPORT.pruned',
+        '',
+        '',
+        `CRITICAL LANGUAGE RULE:`,
+        `- Output MUST be ENTIRELY in "${origLang}" language.`,
+        `- Use ONLY action verbs from the SEED list below (they are already in ${origLang}).`,
+        `- NEVER mix languages. NEVER use English verbs if the CV is in another language.`,
+        `- NEVER create spelling errors like "sur l ʼ ensemble" (incorrect spacing).`,
+        '',
         SEED,
       ].join('\n');
       const perExpLogs: any[] = [];
@@ -1442,6 +1502,18 @@ export async function POST(request: NextRequest) {
           if (r.changed && r.value !== s) harmonized.push({ index: idxB, before: s, after: r.value, reason: 'prefixed action verb for harmonization' });
           return r.value;
         });
+        
+        // POST-PROCESSING: Replace English verbs with target language verbs
+        deduped = deduped.map((bullet, idxB) => {
+          const beforeReplace = bullet;
+          const afterReplace = replaceEnglishVerbs(bullet, origLang);
+          if (beforeReplace !== afterReplace) {
+            console.log(`[API] 🔄 Replaced English verbs in bullet ${idxB}:`, { before: beforeReplace, after: afterReplace });
+            harmonized.push({ index: idxB, before: beforeReplace, after: afterReplace, reason: 'replaced English verbs with target language' });
+          }
+          return afterReplace;
+        });
+        
         exp.bullets = deduped.length ? deduped : originalBullets;
         perExpLogs[i] = { experienceIndex: i, recommendations: out?.REPORT?.recommendations || [], pruned: out?.REPORT?.pruned || {}, shortened: out?.REPORT?.shortened || [], harmonized };
       }
@@ -1488,6 +1560,18 @@ export async function POST(request: NextRequest) {
           if (r.changed && r.value !== s) harmonized.push({ index: idxB, before: s, after: r.value, reason: 'prefixed action verb for harmonization' });
           return r.value;
         });
+        
+        // POST-PROCESSING: Replace English verbs with target language verbs
+        deduped = deduped.map((bullet, idxB) => {
+          const beforeReplace = bullet;
+          const afterReplace = replaceEnglishVerbs(bullet, origLang);
+          if (beforeReplace !== afterReplace) {
+            console.log(`[API] 🔄 Replaced English verbs in project bullet ${idxB}:`, { before: beforeReplace, after: afterReplace });
+            harmonized.push({ index: idxB, before: beforeReplace, after: afterReplace, reason: 'replaced English verbs with target language' });
+          }
+          return afterReplace;
+        });
+        
         proj.bullets = deduped.length ? deduped : originalBullets;
         perProjLogs[i] = { projectIndex: i, recommendations: out?.REPORT?.recommendations || [], pruned: out?.REPORT?.pruned || {}, shortened: out?.REPORT?.shortened || [], harmonized };
       }

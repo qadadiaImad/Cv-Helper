@@ -1,0 +1,27 @@
+{
+  "name": "ats-playground",
+  "version": "1.0.0",
+  "description": "ATS scoring and analysis module with Next.js UI",
+  "main": "index.ts",
+  "scripts": {
+    "test": "tsx test/run-ats-test.ts",
+    "dev": "next dev -p 3002",
+    "build": "next build",
+    "start": "next start -p 3002",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@types/node": "^20.0.0",
+    "next": "^14.0.0",
+    "pdfjs-dist": "^3.11.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "typescript": "^5.0.0",
+    "zod": "^3.23.8"
+  },
+  "devDependencies": {
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
+    "tsx": "^4.0.0"
+  }
+}

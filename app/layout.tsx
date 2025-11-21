@@ -51,7 +51,7 @@ export default function RootLayout({
           <ThemeProvider>
             <ThemeWrapper>
               {/* Main wrapper with relative positioning for GlobalBackground */}
-              <div className="relative min-h-screen">
+              <div className="relative">
                 {/* Global Figma-style background on all pages */}
                 <GlobalBackground />
                 
