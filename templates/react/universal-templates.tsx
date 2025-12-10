@@ -34,6 +34,14 @@ export { GeometricCoralTemplate } from './template-28-geometric-coral'
 export { ModernBlueBlackTemplate } from './template-29-modern-blue-black'
 export { AcademicBurgundyTemplate } from './template-30-academic-burgundy'
 
+// Component-based refactored templates
+export { AtlanticBlueRefactored } from './template-1-atlantic-blue-refactored'
+export { ExecutiveRefactored } from './template-2-executive-refactored'
+export { MercuryRefactored } from './template-3-mercury-refactored'
+export { ClassicRefactored } from './template-4-classic-refactored'
+export { HarvardRefactored } from './template-5-harvard-refactored'
+export { EvergreenRefactored } from './template-6-evergreen-refactored'
+
 // Editable versions
 export { AtlanticBlueFieldEditable } from './template-1-atlantic-blue-field-editable'
 export { ExecutiveFieldEditable } from './template-2-executive-field-editable'

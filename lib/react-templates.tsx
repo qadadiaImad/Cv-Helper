@@ -9,11 +9,17 @@
 
 import {
   AtlanticBlue,
+  AtlanticBlueRefactored,
   Executive,
+  ExecutiveRefactored,
   Mercury,
+  MercuryRefactored,
   ClassicTemplate,
+  ClassicRefactored,
   Harvard,
+  HarvardRefactored,
   Evergreen,
+  EvergreenRefactored,
   YoungCurve,
   DoubleColumnTemplate,
   CreativeOrangeTemplate,
@@ -64,11 +70,17 @@ import {
 export const REACT_TEMPLATES = {
   // Original universal templates from @/templates/react
   atlantic_blue: AtlanticBlue as any,
+  atlantic_blue_refactored: AtlanticBlueRefactored as any,
   executive: Executive as any,
+  executive_refactored: ExecutiveRefactored as any,
   mercury: Mercury as any,
+  mercury_refactored: MercuryRefactored as any,
   classic: ClassicTemplate as any,
+  classic_refactored: ClassicRefactored as any,
   harvard: Harvard as any,
+  harvard_refactored: HarvardRefactored as any,
   evergreen: Evergreen as any,
+  evergreen_refactored: EvergreenRefactored as any,
   youngcurve: YoungCurve as any,
   // New templates from playground
   'double-column': DoubleColumnTemplate as any,
