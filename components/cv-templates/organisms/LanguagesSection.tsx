@@ -7,7 +7,7 @@ import React from 'react'
 import { SectionHeader } from '../molecules/SectionHeader'
 import { Text } from '../atoms/Text'
 import { ProgressBar, proficiencyToValue } from '../atoms/ProgressBar'
-import type { Language } from '@/lib/schemas'
+import type { Language } from '../../../lib/schemas'
 
 export interface LanguagesSectionProps {
   data?: Language[]

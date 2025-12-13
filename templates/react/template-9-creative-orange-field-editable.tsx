@@ -215,7 +215,7 @@ export const CreativeOrangeFieldEditable: React.FC<FieldEditableTemplateProps> =
                   + Add
                 </button>
               )}
-              {data.skills && data.skills.slice(0, 3).map((skill, i) => {
+              {data.skills && Array.isArray(data.skills) && data.skills.slice(0, 3).map((skill, i) => {
                 const icons = ['📱', '🏢', '⚙️'];
                 return (
                   <div key={i} style={{

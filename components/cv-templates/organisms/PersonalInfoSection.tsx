@@ -18,7 +18,7 @@ import React from 'react'
 import { Avatar } from '../atoms/Avatar'
 import { Text } from '../atoms/Text'
 import { ContactItem } from '../molecules/ContactItem'
-import type { PersonalInfo } from '@/lib/schemas'
+import type { PersonalInfo } from '../../../lib/schemas'
 
 export interface PersonalInfoSectionProps {
   /** Personal information data */
@@ -29,6 +29,8 @@ export interface PersonalInfoSectionProps {
   showPhoto?: boolean
   /** Show contact information */
   showContact?: boolean
+  /** Show summary/bio */
+  showSummary?: boolean
   /** Text alignment */
   textAlign?: 'left' | 'center' | 'right'
   /** Background color */
@@ -37,6 +39,28 @@ export interface PersonalInfoSectionProps {
   textColor?: string
   /** Accent color for contact icons */
   accentColor?: string
+  /** Name font size */
+  nameSize?: string
+  /** Name font weight */
+  nameWeight?: number
+  /** Name letter spacing */
+  nameLetterSpacing?: string
+  /** Title font size */
+  titleSize?: string
+  /** Title font weight */
+  titleWeight?: number
+  /** Title letter spacing */
+  titleLetterSpacing?: string
+  /** Title text transform */
+  titleTransform?: 'none' | 'uppercase' | 'lowercase' | 'capitalize'
+  /** Title color (overrides textColor) */
+  titleColor?: string
+  /** Summary color */
+  summaryColor?: string
+  /** Summary font size */
+  summarySize?: string
+  /** Summary line height */
+  summaryLineHeight?: string
   /** Additional CSS class names */
   className?: string
   /** Inline styles */
@@ -103,10 +127,22 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
   variant = 'sidebar',
   showPhoto,
   showContact,
+  showSummary = false,
   textAlign,
   backgroundColor,
   textColor = '#ffffff',
   accentColor = '#4a90e2',
+  nameSize,
+  nameWeight,
+  nameLetterSpacing,
+  titleSize,
+  titleWeight,
+  titleLetterSpacing,
+  titleTransform = 'none',
+  titleColor,
+  summaryColor,
+  summarySize,
+  summaryLineHeight,
   className,
   style,
 }) => {
@@ -145,27 +181,43 @@ export const PersonalInfoSection: React.FC<PersonalInfoSectionProps> = ({
 
       {/* Name & Title */}
       <div style={nameContainerStyles}>
-        <Text
-          variant="name"
-          size={preset.nameSize}
-          weight="bold"
-          color={textColor}
-          style={{ marginBottom: '8px', lineHeight: '1.2' }}
-        >
+        <h1 style={{
+          fontSize: nameSize || preset.nameSize || '32px',
+          fontWeight: nameWeight || 'bold',
+          letterSpacing: nameLetterSpacing || 'normal',
+          color: textColor,
+          margin: '0 0 10px 0',
+          lineHeight: '1.2',
+        }}>
           {data.fullName}
-        </Text>
+        </h1>
         {data.title && (
-          <Text
-            variant="body"
-            size={preset.titleSize}
-            weight={300}
-            color={textColor}
-            style={{ opacity: 0.9 }}
-          >
+          <h2 style={{
+            fontSize: titleSize || preset.titleSize || '18px',
+            fontWeight: titleWeight || 400,
+            letterSpacing: titleLetterSpacing || 'normal',
+            textTransform: titleTransform,
+            color: titleColor || textColor,
+            margin: '0 0 25px 0',
+          }}>
             {data.title}
-          </Text>
+          </h2>
         )}
       </div>
+
+      {/* Summary */}
+      {showSummary && data.summary && (
+        <div style={{
+          fontSize: summarySize || '13px',
+          lineHeight: summaryLineHeight || '1.8',
+          color: summaryColor || textColor,
+          margin: 0,
+          maxWidth: '90%',
+          textAlign: resolvedTextAlign,
+        }}>
+          {data.summary}
+        </div>
+      )}
 
       {/* Contact Information */}
       {resolvedShowContact && (

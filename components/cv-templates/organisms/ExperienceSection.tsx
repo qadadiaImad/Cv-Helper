@@ -16,8 +16,8 @@ import React from 'react'
 import { SectionHeader } from '../molecules/SectionHeader'
 import { Text } from '../atoms/Text'
 import { Badge } from '../atoms/Badge'
-import { HtmlRenderer } from '@/components/builder/html-renderer'
-import type { Experience } from '@/lib/schemas'
+import { HtmlRenderer } from '../../builder/html-renderer'
+import type { Experience } from '../../../lib/schemas'
 
 export interface ExperienceSectionProps {
   /** Experience data array */
@@ -112,11 +112,20 @@ export const ExperienceSection: React.FC<ExperienceSectionProps> = ({
   return (
     <section className={className} style={containerStyles}>
       {showHeader && (
-        <SectionHeader
-          title={title}
-          variant={headerVariant}
-          color={primaryColor}
-        />
+        <Text
+          variant="custom"
+          size="18px"
+          color={textColor}
+          uppercase
+          letterSpacing="1px"
+          style={{ 
+            fontWeight: 600,
+            marginBottom: '30px',
+            display: 'block'
+          }}
+        >
+          {title}
+        </Text>
       )}
       
       {data.map((exp, i) => (

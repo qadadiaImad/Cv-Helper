@@ -85,7 +85,18 @@ const VARIANT_PRESETS = {
     titleMarginBottom: '0px',
     marginBottom: '12px',
   },
-  custom: {},
+  custom: {
+    fontSize: undefined,
+    fontWeight: undefined,
+    uppercase: undefined,
+    letterSpacing: undefined,
+    color: undefined,
+    showDivider: undefined,
+    dividerColor: undefined,
+    dividerThickness: undefined,
+    titleMarginBottom: undefined,
+    marginBottom: undefined,
+  },
 } as const
 
 /**

@@ -7,7 +7,7 @@ import React from 'react'
 import { SectionHeader } from '../molecules/SectionHeader'
 import { Text } from '../atoms/Text'
 import { Badge } from '../atoms/Badge'
-import type { Project } from '@/lib/schemas'
+import type { Project } from '../../../lib/schemas'
 
 export interface ProjectsSectionProps {
   data?: Project[]

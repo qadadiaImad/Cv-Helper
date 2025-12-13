@@ -11,7 +11,7 @@
  */
 
 import React from 'react'
-import type { PhotoConfig } from '@/lib/schemas'
+import type { PhotoConfig } from '../../../lib/schemas'
 
 export interface AvatarProps {
   /** Image source URL */
@@ -20,8 +20,12 @@ export interface AvatarProps {
   alt?: string
   /** Avatar size in pixels (width and height) */
   size?: number
+  /** Width in pixels (overrides size for rectangular avatars) */
+  width?: number
+  /** Height in pixels (overrides size for rectangular avatars) */
+  height?: number
   /** Visual variant */
-  variant?: 'circle' | 'rounded' | 'square'
+  variant?: 'circle' | 'rounded' | 'square' | 'rectangular'
   /** Border radius percentage (0-50, overrides variant) */
   borderRadius?: number
   /** Apply grayscale filter */
@@ -49,6 +53,7 @@ const VARIANT_RADIUS = {
   circle: 50,
   rounded: 12,
   square: 0,
+  rectangular: 8,
 } as const
 
 /**
@@ -72,6 +77,8 @@ export const Avatar: React.FC<AvatarProps> = ({
   src,
   alt = 'Profile photo',
   size = 120,
+  width,
+  height,
   variant = 'circle',
   borderRadius,
   grayscale = false,
@@ -83,12 +90,16 @@ export const Avatar: React.FC<AvatarProps> = ({
   style,
   objectFit = 'cover',
 }) => {
+  // Determine dimensions (width/height override size)
+  const finalWidth = width || size
+  const finalHeight = height || size
+
   // Determine border radius (custom or variant preset)
   const radius = borderRadius !== undefined ? borderRadius : VARIANT_RADIUS[variant]
 
   const containerStyles: React.CSSProperties = {
-    width: `${size}px`,
-    height: `${size}px`,
+    width: `${finalWidth}px`,
+    height: `${finalHeight}px`,
     borderRadius: `${radius}%`,
     backgroundColor: background,
     overflow: 'hidden',
@@ -155,4 +166,8 @@ export const RoundedAvatar: React.FC<Omit<AvatarProps, 'variant'>> = (props) => 
 
 export const SquareAvatar: React.FC<Omit<AvatarProps, 'variant'>> = (props) => (
   <Avatar variant="square" {...props} />
+)
+
+export const RectangularAvatar: React.FC<Omit<AvatarProps, 'variant'>> = (props) => (
+  <Avatar variant="rectangular" {...props} />
 )

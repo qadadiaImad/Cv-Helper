@@ -5,7 +5,7 @@
 
 import React from 'react'
 import { SectionHeader } from '../molecules/SectionHeader'
-import { HtmlRenderer } from '@/components/builder/html-renderer'
+import { HtmlRenderer } from '../../builder/html-renderer'
 
 export interface SummarySectionProps {
   data?: string

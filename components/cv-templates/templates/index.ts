@@ -11,3 +11,6 @@ export type { SingleColumnLayoutProps } from './SingleColumnLayout'
 
 export { SectionedLayout } from './SectionedLayout'
 export type { SectionedLayoutProps, LayoutSection } from './SectionedLayout'
+
+export { DarkProfessionalLayout } from './DarkProfessionalLayout'
+export type { DarkProfessionalLayoutProps } from './DarkProfessionalLayout'

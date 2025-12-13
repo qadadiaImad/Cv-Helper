@@ -26,6 +26,7 @@ export interface PersonalInfo {
   github?: string
   portfolio?: string
   photo?: PhotoConfig
+  summary?: string
 }
 
 // Default values

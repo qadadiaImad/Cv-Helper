@@ -20,7 +20,7 @@ export interface TextProps {
   /** Text color (CSS color value) */
   color?: string
   /** Font weight */
-  weight?: 'normal' | 'medium' | 'semibold' | 'bold' | number
+  weight?: 'normal' | 'medium' | 'semibold' | 'bold' | 'light' | number | string
   /** Font size (overrides variant default) */
   size?: string | number
   /** Transform to uppercase */
@@ -53,7 +53,7 @@ const FONT_WEIGHTS = {
   medium: 500,
   semibold: 600,
   bold: 700,
-}
+} as const
 
 /**
  * Text Component - Foundational typography primitive

@@ -6,7 +6,7 @@
 import React from 'react'
 import { SectionHeader } from '../molecules/SectionHeader'
 import { Text } from '../atoms/Text'
-import type { Certification } from '@/lib/schemas'
+import type { Certification } from '../../../lib/schemas'
 
 export interface CertificationsSectionProps {
   data?: Certification[]

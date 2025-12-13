@@ -15,13 +15,15 @@
 import React from 'react'
 import { SectionHeader } from '../molecules/SectionHeader'
 import { SkillTag } from '../molecules/SkillTag'
-import type { SkillCategory } from '@/lib/schemas'
+import { ProgressBar } from '../atoms/ProgressBar'
+import { Text } from '../atoms/Text'
+import type { SkillCategory } from '../../../lib/schemas'
 
 export interface SkillsSectionProps {
   /** Skills data (simple array or categorized) */
   data?: string[] | SkillCategory[]
   /** Visual variant */
-  variant?: 'list' | 'grid' | 'sidebar-bordered' | 'categorized' | 'custom'
+  variant?: 'list' | 'grid' | 'sidebar-bordered' | 'categorized' | 'progress-bars' | 'custom'
   /** Section title */
   title?: string
   /** Show section header */
@@ -68,6 +70,7 @@ function isCategorized(data: string[] | SkillCategory[]): data is SkillCategory[
  * - **list**: Simple vertical list
  * - **grid**: Multi-column grid layout
  * - **sidebar-bordered**: Bordered items with accent (for sidebars)
+ * - **progress-bars**: Skills with horizontal progress bars
  * - **categorized**: Grouped by category
  * - **custom**: Full control via props
  */
@@ -111,6 +114,41 @@ export const SkillsSection: React.FC<SkillsSectionProps> = ({
             </li>
           ))}
         </ul>
+      )
+    }
+
+    if (variant === 'progress-bars') {
+      // Generate decreasing percentages for skills (90%, 85%, 80%, etc.)
+      const percentages = skills.map((_, i) => Math.max(65, 90 - i * 5))
+
+      return (
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+          {skills.map((skill, i) => {
+            const percent = percentages[i]
+            return (
+              <div key={i}>
+                <div style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  marginBottom: '8px',
+                }}>
+                  <Text variant="body" weight="medium" color={textColor}>
+                    {skill}
+                  </Text>
+                </div>
+                <ProgressBar
+                  value={percent}
+                  max={100}
+                  variant="bar"
+                  height={8}
+                  color={accentColor}
+                  backgroundColor="rgba(255, 255, 255, 0.1)"
+                  borderRadius={4}
+                />
+              </div>
+            )
+          })}
+        </div>
       )
     }
 

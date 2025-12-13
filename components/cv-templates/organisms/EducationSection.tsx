@@ -15,7 +15,7 @@
 import React from 'react'
 import { SectionHeader } from '../molecules/SectionHeader'
 import { Text } from '../atoms/Text'
-import type { Education } from '@/lib/schemas'
+import type { Education } from '../../../lib/schemas'
 
 export interface EducationSectionProps {
   /** Education data array */

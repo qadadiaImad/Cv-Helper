@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dir \"C:\\Test\\Cv-Helper\\app\")",
+      "Bash(dir \"C:\\Test\\Cv-Helper\\AIservice-infcv\")",
+      "Bash(dir \"C:\\Test\\Cv-Helper\\prisma\")",
+      "Bash(dir \"C:\\Test\\Cv-Helper\\components\")",
+      "Bash(dir \"C:\\Test\\Cv-Helper\\lib\")",
+      "Bash(dir \"C:\\Test\\Cv-Helper\\app\" -Recurse -Depth 2)",
+      "Bash(dir:*)",
+      "Bash(git -C \"C:\\Test\\Cv-Helper\" log --oneline)",
+      "Bash(cat:*)",
+      "Bash(find:*)",
+      "Bash(findstr:*)",
+      "Bash(grep:*)",
+      "Bash(mkdir:*)",
+      "Bash(ls -la \"C:\\Test\\Cv-Helper\\AIservice-infcv\\src\"\" 2>/dev/null || ls -la \"C:TestCv-HelperAIservice-infcv\"\")"
+    ]
+  }
+}
