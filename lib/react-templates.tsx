@@ -9,17 +9,11 @@
 
 import {
   AtlanticBlue,
-  AtlanticBlueRefactored,
   Executive,
-  ExecutiveRefactored,
   Mercury,
-  MercuryRefactored,
   ClassicTemplate,
-  ClassicRefactored,
   Harvard,
-  HarvardRefactored,
   Evergreen,
-  EvergreenRefactored,
   YoungCurve,
   DoubleColumnTemplate,
   CreativeOrangeTemplate,
@@ -44,6 +38,20 @@ import {
   GeometricCoralTemplate,
   ModernBlueBlackTemplate,
   AcademicBurgundyTemplate,
+  Template31,
+  Template32,
+  Template33,
+  Template34,
+  Template35,
+  Template36,
+  Template37,
+  Template38,
+  Template39,
+  Template40,
+  Template41,
+  Template42,
+  Template43,
+  Template44,
 } from "@/templates/react";
 
 // Legacy ResumeData type removed - now using UniversalResumeData from @/lib/schemas
@@ -70,17 +78,11 @@ import {
 export const REACT_TEMPLATES = {
   // Original universal templates from @/templates/react
   atlantic_blue: AtlanticBlue as any,
-  atlantic_blue_refactored: AtlanticBlueRefactored as any,
   executive: Executive as any,
-  executive_refactored: ExecutiveRefactored as any,
   mercury: Mercury as any,
-  mercury_refactored: MercuryRefactored as any,
   classic: ClassicTemplate as any,
-  classic_refactored: ClassicRefactored as any,
   harvard: Harvard as any,
-  harvard_refactored: HarvardRefactored as any,
   evergreen: Evergreen as any,
-  evergreen_refactored: EvergreenRefactored as any,
   youngcurve: YoungCurve as any,
   // New templates from playground
   'double-column': DoubleColumnTemplate as any,
@@ -106,6 +108,20 @@ export const REACT_TEMPLATES = {
   'geometric-coral': GeometricCoralTemplate as any,
   'modern-blue-black': ModernBlueBlackTemplate as any,
   'academic-burgundy': AcademicBurgundyTemplate as any,
+  'lauren-chen': Template31 as any,
+  'orange-sidebar-left': Template32 as any,
+  'slate-yellow': Template33 as any,
+  'bold-yellow': Template34 as any,
+  'two-column-yellow': Template35 as any,
+  'advanced-blue': Template36 as any,
+  'premium-green': Template37 as any,
+  'pastel-orange': Template38 as any,
+  'hybrid-green': Template39 as any,
+  'professional-purple': Template40 as any,
+  'unique-orange': Template41 as any,
+  'aesthetic-green': Template42 as any,
+  'modern-blue-hub': Template43 as any,
+  'dark-yellow-split': Template44 as any,
 };
 
 export type TemplateId = keyof typeof REACT_TEMPLATES;

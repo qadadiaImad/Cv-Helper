@@ -145,7 +145,8 @@ export const OrangeSidebarFieldEditable: React.FC<FieldEditableTemplateProps> = 
             {editMode && (
               <button
                 onClick={() => {
-                  onFieldChange('skills', [...(data.skills || []), 'New Skill'])
+                  const currentSkills = Array.isArray(data.skills) ? data.skills : (typeof data.skills === 'object' && data.skills ? Object.values(data.skills).flatMap((cat: any) => Array.isArray(cat) ? cat : []) : [])
+                  onFieldChange('skills', [...currentSkills, 'New Skill'])
                 }}
                 style={{
                   padding: '4px 8px',
@@ -167,7 +168,7 @@ export const OrangeSidebarFieldEditable: React.FC<FieldEditableTemplateProps> = 
             padding: 0,
             listStyle: 'none',
           }}>
-            {data.skills && data.skills.slice(0, 6).map((skill, i) => (
+            {(Array.isArray(data.skills) ? data.skills : (typeof data.skills === 'object' && data.skills ? Object.values(data.skills).flatMap((cat: any) => Array.isArray(cat) ? cat : []) : [])).slice(0, 6).map((skill, i) => (
               <li key={i} style={{
                 fontSize: '12px',
                 color: '#c0c0c0',
@@ -187,7 +188,8 @@ export const OrangeSidebarFieldEditable: React.FC<FieldEditableTemplateProps> = 
                 <EditableText
                   value={skill}
                   onChange={(v: string) => {
-                    const newSkills = [...data.skills!]
+                    const skillsArray = Array.isArray(data.skills) ? data.skills : (typeof data.skills === 'object' && data.skills ? Object.values(data.skills).flatMap((cat: any) => Array.isArray(cat) ? cat : []) : [])
+                    const newSkills = [...skillsArray]
                     newSkills[i] = v
                     onFieldChange('skills', newSkills)
                   }}
@@ -196,7 +198,8 @@ export const OrangeSidebarFieldEditable: React.FC<FieldEditableTemplateProps> = 
                 {editMode && (
                   <button
                     onClick={() => {
-                      const newSkills = data.skills!.filter((_, index) => index !== i)
+                      const skillsArray = Array.isArray(data.skills) ? data.skills : (typeof data.skills === 'object' && data.skills ? Object.values(data.skills).flatMap((cat: any) => Array.isArray(cat) ? cat : []) : [])
+                      const newSkills = skillsArray.filter((_, index) => index !== i)
                       onFieldChange('skills', newSkills)
                     }}
                     style={{

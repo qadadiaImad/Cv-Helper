@@ -178,15 +178,14 @@ function mapSkills(data: any): any {
     // If it's a flat array of strings
     return source
   } else if (typeof source === 'object') {
-    // If it's an object with categories
-    return {
-      languages: source.languages || source.programming || source.programmingLanguages || [],
-      frameworks: source.frameworks || source.libraries || source.tools || [],
-      databases: source.databases || source.db || source.data || [],
-      tools: source.tools || source.software || source.applications || [],
-      other: source.other || source.misc || source.additional || [],
-      ...source, // Keep any other categories
+    // If it's an object with categories, flatten into a single array
+    const flattened: string[] = []
+    for (const category of Object.values(source)) {
+      if (Array.isArray(category)) {
+        flattened.push(...category)
+      }
     }
+    return flattened
   }
   
   return []

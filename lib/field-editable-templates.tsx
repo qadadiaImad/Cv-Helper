@@ -33,6 +33,20 @@ import { StockholmFieldEditable } from '@/templates/react/template-27-stockholm-
 import { GeometricCoralFieldEditable } from '@/templates/react/template-28-geometric-coral-field-editable'
 import { ModernBlueBlackFieldEditable } from '@/templates/react/template-29-modern-blue-black-field-editable'
 import { AcademicBurgundyFieldEditable } from '@/templates/react/template-30-academic-burgundy-field-editable'
+import { Template31FieldEditable } from '@/templates/react/template-31-lauren-chen-field-editable'
+import { Template32FieldEditable } from '@/templates/react/template-32-orange-sidebar-left-field-editable'
+import { Template33FieldEditable } from '@/templates/react/template-33-slate-yellow-field-editable'
+import { Template34FieldEditable } from '@/templates/react/template-34-bold-yellow-field-editable'
+import { Template35FieldEditable } from '@/templates/react/template-35-two-column-yellow-field-editable'
+import { Template36FieldEditable } from '@/templates/react/template-36-advanced-blue-field-editable'
+import { Template37FieldEditable } from '@/templates/react/template-37-premium-green-field-editable'
+import { Template38FieldEditable } from '@/templates/react/template-38-pastel-orange-field-editable'
+import { Template39FieldEditable } from '@/templates/react/template-39-hybrid-green-field-editable'
+import { Template40FieldEditable } from '@/templates/react/template-40-professional-purple-field-editable'
+import { Template41FieldEditable } from '@/templates/react/template-41-unique-orange-field-editable'
+import { Template42FieldEditable } from '@/templates/react/template-42-aesthetic-green-field-editable'
+import { Template43FieldEditable } from '@/templates/react/template-43-modern-blue-hub-field-editable'
+import { Template44FieldEditable } from '@/templates/react/template-44-dark-yellow-split-field-editable'
 import type { TemplateId } from '@/lib/react-templates'
 import type { UniversalResumeData } from '@/lib/schemas'
 
@@ -76,6 +90,20 @@ export const FIELD_EDITABLE_TEMPLATES: Record<TemplateId, React.FC<FieldEditable
   'geometric-coral': GeometricCoralFieldEditable as any,
   'modern-blue-black': ModernBlueBlackFieldEditable as any,
   'academic-burgundy': AcademicBurgundyFieldEditable as any,
+  'lauren-chen': Template31FieldEditable as any,
+  'orange-sidebar-left': Template32FieldEditable as any,
+  'slate-yellow': Template33FieldEditable as any,
+  'bold-yellow': Template34FieldEditable as any,
+  'two-column-yellow': Template35FieldEditable as any,
+  'advanced-blue': Template36FieldEditable as any,
+  'premium-green': Template37FieldEditable as any,
+  'pastel-orange': Template38FieldEditable as any,
+  'hybrid-green': Template39FieldEditable as any,
+  'professional-purple': Template40FieldEditable as any,
+  'unique-orange': Template41FieldEditable as any,
+  'aesthetic-green': Template42FieldEditable as any,
+  'modern-blue-hub': Template43FieldEditable as any,
+  'dark-yellow-split': Template44FieldEditable as any,
 }
 
 /**

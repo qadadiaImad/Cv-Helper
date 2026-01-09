@@ -47,6 +47,21 @@ const TEMPLATES = [
   'modern-resume-yellow',
   'ivy-league',
   'stockholm',
+  // Templates 31-44 (New templates)
+  'lauren-chen',
+  'orange-sidebar-left',
+  'slate-yellow',
+  'bold-yellow',
+  'two-column-yellow',
+  'advanced-blue',
+  'premium-green',
+  'pastel-orange',
+  'hybrid-green',
+  'professional-purple',
+  'unique-orange',
+  'aesthetic-green',
+  'modern-blue-hub',
+  'dark-yellow-split',
 ]
 
 // Configuration

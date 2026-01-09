@@ -196,7 +196,11 @@ export const CreativeOrangeFieldEditable: React.FC<FieldEditableTemplateProps> =
               {editMode && (
                 <button
                   onClick={() => {
-                    onFieldChange('skills', [...(data.skills || []), 'New Skill'])
+                    const currentSkills = Array.isArray(data.skills) ? data.skills : 
+                      (typeof data.skills === 'object' && data.skills ? 
+                        Object.values(data.skills).flatMap((cat: any) => Array.isArray(cat) ? cat : []) : 
+                        [])
+                    onFieldChange('skills', [...currentSkills, 'New Skill'])
                   }}
                   style={{
                     position: 'absolute',
@@ -215,7 +219,7 @@ export const CreativeOrangeFieldEditable: React.FC<FieldEditableTemplateProps> =
                   + Add
                 </button>
               )}
-              {data.skills && data.skills.slice(0, 3).map((skill, i) => {
+              {(Array.isArray(data.skills) ? data.skills : (typeof data.skills === 'object' && data.skills ? Object.values(data.skills).flatMap((cat: any) => Array.isArray(cat) ? cat : []) : [])).slice(0, 3).map((skill, i) => {
                 const icons = ['📱', '🏢', '⚙️'];
                 return (
                   <div key={i} style={{
@@ -249,7 +253,11 @@ export const CreativeOrangeFieldEditable: React.FC<FieldEditableTemplateProps> =
                         <EditableText
                           value={skill}
                           onChange={(v: string) => {
-                            const newSkills = [...data.skills!]
+                            const skillsArray = Array.isArray(data.skills) ? data.skills : 
+                              (typeof data.skills === 'object' && data.skills ? 
+                                Object.values(data.skills).flatMap((cat: any) => Array.isArray(cat) ? cat : []) : 
+                                [])
+                            const newSkills = [...skillsArray]
                             newSkills[i] = v
                             onFieldChange('skills', newSkills)
                           }}
@@ -260,7 +268,11 @@ export const CreativeOrangeFieldEditable: React.FC<FieldEditableTemplateProps> =
                     {editMode && (
                       <button
                         onClick={() => {
-                          const newSkills = data.skills!.filter((_, index) => index !== i)
+                          const skillsArray = Array.isArray(data.skills) ? data.skills : 
+                            (typeof data.skills === 'object' && data.skills ? 
+                              Object.values(data.skills).flatMap((cat: any) => Array.isArray(cat) ? cat : []) : 
+                              [])
+                          const newSkills = skillsArray.filter((_, index) => index !== i)
                           onFieldChange('skills', newSkills)
                         }}
                         style={{
