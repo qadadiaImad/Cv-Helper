@@ -68,10 +68,12 @@ const TEMPLATES = [
 const CONFIG = {
   baseUrl: 'http://localhost:3000',
   outputDir: join(__dirname, '../public/template-thumbnails'),
-  // Full A4 size for complete resume capture
-  viewport: { width: 1240, height: 1754 },
-  // Thumbnail size for gallery
-  thumbnailWidth: 300,
+  // A4 aspect ratio: 1:1.41 (210mm x 297mm)
+  // Using 794px width (standard A4 at 96 DPI)
+  viewport: { width: 794, height: 1123 }, // A4 at 96 DPI
+  // Thumbnail dimensions for gallery (maintains 1:1.41 aspect ratio)
+  thumbnailWidth: 600,
+  thumbnailHeight: 846, // 600 * 1.41
 }
 
 async function ensureDirectoryExists(dir) {
@@ -98,64 +100,69 @@ async function generateThumbnail(browser, templateId) {
       timeout: 30000 
     })
 
-    // Wait a bit for fonts and styles to load
-    await page.waitForTimeout(1000)
+    // Wait for fonts and styles to load
+    await page.waitForTimeout(2000)
 
-    // Get the bounding box of actual content (excluding whitespace)
-    const contentBox = await page.evaluate(() => {
-      // Get the first child of body (the template container)
+    // Get the template container dimensions
+    const contentInfo = await page.evaluate(() => {
       const container = document.body.firstElementChild
       if (!container) {
         return {
           x: 0,
           y: 0,
           width: document.body.scrollWidth,
-          height: document.body.scrollHeight
+          height: document.body.scrollHeight,
+          scrollHeight: document.body.scrollHeight
         }
       }
       
-      // Get the bounding rectangle of the actual content
       const rect = container.getBoundingClientRect()
-      
       return {
-        x: rect.left,
-        y: rect.top,
+        x: Math.max(0, rect.left),
+        y: Math.max(0, rect.top),
         width: Math.ceil(rect.width),
-        height: Math.ceil(rect.height)
+        height: Math.ceil(rect.height),
+        scrollHeight: container.scrollHeight
       }
     })
 
-    console.log(`   Content box: ${contentBox.width}x${contentBox.height}px at (${contentBox.x}, ${contentBox.y})`)
+    console.log(`   Content: ${contentInfo.width}x${contentInfo.height}px, scroll: ${contentInfo.scrollHeight}px`)
 
-    // Take screenshot with clip to capture only the content area
-    const screenshotPath = join(CONFIG.outputDir, `${templateId}.png`)
-    await page.screenshot({
-      path: screenshotPath,
-      type: 'png',
-      clip: {
-        x: contentBox.x,
-        y: contentBox.y,
-        width: contentBox.width,
-        height: contentBox.height
-      }
-    })
+    // Calculate the clip area to maintain A4 aspect ratio (1:1.41)
+    const targetAspectRatio = 1.41
+    let clipWidth = contentInfo.width
+    let clipHeight = contentInfo.height
+    
+    // Adjust to maintain aspect ratio
+    const currentAspectRatio = clipHeight / clipWidth
+    if (currentAspectRatio > targetAspectRatio) {
+      // Too tall, crop height
+      clipHeight = Math.floor(clipWidth * targetAspectRatio)
+    } else if (currentAspectRatio < targetAspectRatio) {
+      // Too wide, crop width
+      clipWidth = Math.floor(clipHeight / targetAspectRatio)
+    }
 
-    console.log(`   ✅ Saved: ${screenshotPath}`)
+    // Center the crop area
+    const clipX = contentInfo.x + Math.floor((contentInfo.width - clipWidth) / 2)
+    const clipY = contentInfo.y // Start from top to show header
 
-    // Generate thumbnail (same clip area)
+    console.log(`   Crop area: ${clipWidth}x${clipHeight}px at (${clipX}, ${clipY})`)
+
+    // Take screenshot - only one image per template
     const thumbnailPath = join(CONFIG.outputDir, `${templateId}-thumb.png`)
     await page.screenshot({
       path: thumbnailPath,
       type: 'png',
       clip: {
-        x: contentBox.x,
-        y: contentBox.y,
-        width: contentBox.width,
-        height: contentBox.height
+        x: clipX,
+        y: clipY,
+        width: clipWidth,
+        height: clipHeight
       }
     })
 
-    console.log(`   ✅ Thumbnail saved: ${thumbnailPath}`)
+    console.log(`   ✅ Saved: ${thumbnailPath}`)
 
   } catch (error) {
     console.error(`   ❌ Error capturing ${templateId}:`, error.message)

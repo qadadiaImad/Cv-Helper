@@ -115,7 +115,8 @@ function mapExperience(data: any): any[] {
     
     // Some templates use 'description' as a single string, others use 'achievements' array
     // Create both formats for maximum compatibility
-    const description = exp.description || exp.summary || (achievements.length > 0 ? achievements.join('\n• ') : '')
+    // Join with just newlines - let TipTap's convertTextToHtml detect and strip existing bullet characters
+    const description = exp.description || exp.summary || (achievements.length > 0 ? achievements.join('\n') : '')
     
     return {
       company: exp.company || exp.employer || exp.organization || exp.companyName || '',

@@ -56,10 +56,10 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
       fontFamily: 'Arial, sans-serif',
       backgroundColor: '#f5f5f5',
     }}>
-      {/* Left Sidebar - Dark Blue */}
+      {/* Left Sidebar - Dark Blue-Teal */}
       <aside style={{
-        width: '280px',
-        backgroundColor: '#1a3a52',
+        width: '320px',
+        backgroundColor: '#2C4E5A',
         color: '#ffffff',
         padding: '40px 30px',
         display: 'flex',
@@ -92,7 +92,14 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
 
         {/* Name & Title */}
         <div style={{ textAlign: 'center' }}>
-          <h1 style={{ fontSize: '24px', fontWeight: 'bold', marginBottom: '8px', lineHeight: '1.2' }}>
+          <h1 style={{
+            fontSize: '28px',
+            fontWeight: 'bold',
+            marginBottom: '8px',
+            lineHeight: '1.2',
+            letterSpacing: '2px',
+            textTransform: 'uppercase'
+          }}>
             <EditableText
               value={data.personal?.fullName || 'Your Name'}
               onChange={(v: string) => updateField('personal.fullName', v)}
@@ -102,13 +109,18 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
             />
           </h1>
           {data.personal?.title && (
-            <p style={{ fontSize: '14px', opacity: 0.9, fontWeight: '300' }}>
+            <p style={{
+              fontSize: '15px',
+              color: '#62C4D1',
+              fontWeight: '400',
+              lineHeight: '1.4'
+            }}>
               <EditableText
                 value={data.personal.title}
                 onChange={(v: string) => updateField('personal.title', v)}
                 fieldPath="personal.title"
                 fieldType="text"
-                style={{ color: '#ffffff' }}
+                style={{ color: '#62C4D1' }}
               />
             </p>
           )}
@@ -116,7 +128,7 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
 
         {/* Contact */}
         <div style={{ fontSize: '12px', lineHeight: '1.8' }}>
-          <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '12px', borderBottom: '2px solid rgba(255,255,255,0.3)', paddingBottom: '8px', letterSpacing: '0.5px' }}>
+          <h3 style={{ fontSize: '14px', fontWeight: 'bold', marginBottom: '12px', borderBottom: '3px solid #F4C430', paddingBottom: '8px', letterSpacing: '1px', textTransform: 'uppercase' }}>
             CONTACT
           </h3>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -175,14 +187,15 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
 
         {/* Skills */}
         <div style={{ fontSize: '12px' }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', borderBottom: '2px solid rgba(255,255,255,0.3)', paddingBottom: '8px' }}>
-            <h3 style={{ fontSize: '14px', fontWeight: 'bold', letterSpacing: '0.5px', flex: 1 }}>
+          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '12px', borderBottom: '3px solid #F4C430', paddingBottom: '8px' }}>
+            <h3 style={{ fontSize: '14px', fontWeight: 'bold', letterSpacing: '1px', textTransform: 'uppercase', flex: 1 }}>
               SKILLS
             </h3>
             {editMode && (
               <button
                 onClick={() => {
-                  const newSkills = [...(data.skills || []), 'New Skill']
+                  const currentSkills = Array.isArray(data.skills) ? data.skills : []
+                  const newSkills = [...currentSkills, 'New Skill']
                   onFieldChange('skills', newSkills)
                 }}
                 style={{
@@ -200,14 +213,15 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
               </button>
             )}
           </div>
-          {data.skills && data.skills.length > 0 && (
+          {Array.isArray(data.skills) && data.skills.length > 0 && (
             <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '6px' }}>
               {data.skills.map((skill, i) => (
                 <li key={i} style={{ padding: '6px 0 6px 12px', borderLeft: '3px solid #4a90e2', backgroundColor: 'rgba(74, 144, 226, 0.1)', position: 'relative', display: 'flex', alignItems: 'center', gap: '8px' }}>
                   <EditableText
                     value={skill}
                     onChange={(v: string) => {
-                      const newSkills = [...data.skills!]
+                      const currentSkills = Array.isArray(data.skills) ? data.skills : []
+                      const newSkills = [...currentSkills]
                       newSkills[i] = v
                       onFieldChange('skills', newSkills)
                     }}
@@ -216,7 +230,8 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
                   {editMode && (
                     <button
                       onClick={() => {
-                        const newSkills = data.skills!.filter((_, index) => index !== i)
+                        const currentSkills = Array.isArray(data.skills) ? data.skills : []
+                        const newSkills = currentSkills.filter((_, index) => index !== i)
                         onFieldChange('skills', newSkills)
                       }}
                       style={{
@@ -249,7 +264,7 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
         {/* Experience Section */}
         <section style={{ marginBottom: '35px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-            <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px', flex: 1 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 'bold', color: '#000000', borderBottom: '3px solid #F4C430', paddingBottom: '8px', letterSpacing: '1px', textTransform: 'uppercase', flex: 1 }}>
               EXPERIENCE
             </h2>
             {editMode && (
@@ -309,13 +324,13 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
               )}
               <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '8px' }}>
                 <div>
-                  <h3 style={{ fontSize: '15px', fontWeight: 'bold', color: '#1a3a52' }}>
+                  <h3 style={{ fontSize: '15px', fontWeight: 'bold', color: '#000000' }}>
                     <EditableText
                       value={exp.position || ''}
                       onChange={(v: string) => updateArrayField('experience', i, 'position', v)}
                     />
                   </h3>
-                  <p style={{ fontSize: '13px', color: '#4a90e2', fontWeight: '600' }}>
+                  <p style={{ fontSize: '13px', fontWeight: '400', fontStyle: 'italic', color: '#333333' }}>
                     <EditableText
                       value={exp.company || ''}
                       onChange={(v: string) => updateArrayField('experience', i, 'company', v)}
@@ -358,7 +373,7 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
         {/* Education Section */}
         <section style={{ marginBottom: '35px' }}>
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '15px' }}>
-            <h2 style={{ fontSize: '18px', fontWeight: 'bold', color: '#1a3a52', borderBottom: '3px solid #1a3a52', paddingBottom: '8px', letterSpacing: '0.5px', flex: 1 }}>
+            <h2 style={{ fontSize: '16px', fontWeight: 'bold', color: '#000000', borderBottom: '3px solid #F4C430', paddingBottom: '8px', letterSpacing: '1px', textTransform: 'uppercase', flex: 1 }}>
               EDUCATION
             </h2>
             {editMode && (
@@ -419,7 +434,7 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
               )}
               <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                 <div>
-                  <h3 style={{ fontSize: '14px', fontWeight: 'bold', color: '#1a3a52' }}>
+                  <h3 style={{ fontSize: '14px', fontWeight: 'bold', color: '#000000' }}>
                     <EditableText
                       value={edu.degree || ''}
                       onChange={(v: string) => updateArrayField('education', i, 'degree', v)}
@@ -430,7 +445,7 @@ export const AtlanticBlueFieldEditable: React.FC<FieldEditableTemplateProps> = (
                       onChange={(v: string) => updateArrayField('education', i, 'field', v)}
                     />
                   </h3>
-                  <p style={{ fontSize: '13px', color: '#4a90e2' }}>
+                  <p style={{ fontSize: '13px', fontStyle: 'italic', color: '#333333' }}>
                     <EditableText
                       value={edu.institution || ''}
                       onChange={(v: string) => updateArrayField('education', i, 'institution', v)}

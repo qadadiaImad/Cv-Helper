@@ -17,18 +17,20 @@ export function SkillsForm({ data, onChange }: SkillsFormProps) {
 
   const addSkill = () => {
     if (skillInput.trim()) {
+      const currentSkills = Array.isArray(data.skills) ? data.skills : []
       onChange({
         ...data,
-        skills: [...(data.skills || []), skillInput.trim()]
+        skills: [...currentSkills, skillInput.trim()]
       })
       setSkillInput("")
     }
   }
 
   const removeSkill = (index: number) => {
+    const currentSkills = Array.isArray(data.skills) ? data.skills : []
     onChange({
       ...data,
-      skills: (data.skills || []).filter((_, i) => i !== index)
+      skills: currentSkills.filter((_, i) => i !== index)
     })
   }
 
@@ -68,7 +70,7 @@ export function SkillsForm({ data, onChange }: SkillsFormProps) {
         </div>
 
         {/* Skills List */}
-        {data.skills && data.skills.length > 0 && (
+        {Array.isArray(data.skills) && data.skills.length > 0 && (
           <div className="space-y-2">
             <Label className="text-sm font-medium">Your Skills ({data.skills.length})</Label>
             <div className="flex flex-wrap gap-2">
@@ -87,7 +89,7 @@ export function SkillsForm({ data, onChange }: SkillsFormProps) {
           </div>
         )}
 
-        {(!data.skills || data.skills.length === 0) && (
+        {(!Array.isArray(data.skills) || data.skills.length === 0) && (
           <div className="p-4 border-2 border-dashed rounded-lg text-center text-muted-foreground">
             No skills added yet. Add your first skill above!
           </div>

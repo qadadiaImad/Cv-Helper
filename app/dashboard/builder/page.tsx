@@ -27,31 +27,51 @@ import { useSubscription } from "@/hooks/use-subscription"
 import { getTemplateTheme } from "@/lib/template-themes"
 import type { UniversalResumeData } from "@/lib/schemas"
 
-const SAMPLE_CV_DATA: UniversalResumeData = {
+const EMPTY_CV_TEMPLATE: UniversalResumeData = {
   personal: {
-    fullName: "Sarah Mitchell",
-    title: "Senior Full-Stack Developer",
-    email: "sarah@email.com",
-    phone: "+1 (555) 987-6543",
-    location: "San Francisco, CA"
+    fullName: "Your Name Here",
+    title: "Your Professional Title",
+    email: "your.email@example.com",
+    phone: "+1 (555) 000-0000",
+    location: "City, State/Country"
   },
-  summary: "Innovative Full-Stack Developer with 10+ years of experience.",
+  summary: "Write a brief professional summary highlighting your expertise and key achievements. This should be 2-3 sentences that capture your professional identity.",
   experience: [{
-    company: "TechCorp",
-    position: "Senior Developer",
-    startDate: "Jan 2021",
-    endDate: "Present",
-    location: "SF, CA",
-    achievements: ["Led development of microservices architecture"]
+    company: "Company Name",
+    position: "Job Title",
+    startDate: "Month Year",
+    endDate: "Month Year or Present",
+    location: "City, State",
+    description: "• Describe your key responsibilities and achievements\n• Use bullet points to highlight major accomplishments\n• Focus on quantifiable results when possible",
+    achievements: []
   }],
   education: [{
-    institution: "Stanford University",
-    degree: "Master of Science",
-    field: "Computer Science",
-    startDate: "2011",
-    endDate: "2013"
+    institution: "University or Institution Name",
+    degree: "Degree Type (e.g., Bachelor of Science)",
+    field: "Field of Study",
+    startDate: "Year",
+    endDate: "Year",
+    location: "City, State"
   }],
-  skills: ["JavaScript", "TypeScript", "React", "Node.js"],
+  skills: ["Skill 1", "Skill 2", "Skill 3"],
+  skillCategories: [
+    {
+      category: "Technical Skills",
+      skills: [
+        { name: "Skill or Technology 1" },
+        { name: "Skill or Technology 2" },
+        { name: "Skill or Technology 3" }
+      ]
+    },
+    {
+      category: "Soft Skills",
+      skills: [
+        { name: "Leadership" },
+        { name: "Communication" },
+        { name: "Problem Solving" }
+      ]
+    }
+  ],
   projects: [],
   certifications: [],
   languages: []
@@ -82,6 +102,7 @@ export default function ReactBuilderPage() {
   const { isOpen, feature, showUpgradeModal, closeUpgradeModal } = useUpgradeModal()
 
   const [localCVData, setLocalCVData] = useState<UniversalResumeData | null>(null)
+  const localCVDataRef = React.useRef<UniversalResumeData | null>(null)
   const [completedSections, setCompletedSections] = useState<Set<SectionId>>(new Set())
   const [showTemplateGallery, setShowTemplateGallery] = useState(false)
   const [useFieldEditable, setUseFieldEditable] = useState(true)
@@ -92,12 +113,17 @@ export default function ReactBuilderPage() {
   const [activeSection, setActiveSection] = useState<SectionId | null>(null)
   const [formatStates, setFormatStates] = useState({ bold: false, italic: false, underline: false })
   const [editingAchievement, setEditingAchievement] = useState<{ expIndex: number; achIndex: number } | null>(null)
+  
+  // Keep ref in sync with state
+  React.useEffect(() => {
+    localCVDataRef.current = localCVData
+  }, [localCVData])
   const blurTimeoutRef = React.useRef<NodeJS.Timeout | null>(null)
 
   useEffect(() => {
     if (activeCV) {
       const hasMinimalData = !activeCV.data.personal?.fullName
-      setLocalCVData(hasMinimalData ? SAMPLE_CV_DATA : activeCV.data)
+      setLocalCVData(hasMinimalData ? EMPTY_CV_TEMPLATE : activeCV.data)
     }
   }, [activeCV])
 
@@ -152,26 +178,116 @@ export default function ReactBuilderPage() {
 
   const progress = Math.round((completedSections.size / SECTIONS.length) * 100)
 
+  // Memoize callbacks to prevent recreating all field editors on every render
+  const handleFieldChange = useCallback((path: string, value: any) => {
+    if (!localCVDataRef.current) return
+    const updatedData = updateNestedField(localCVDataRef.current, path, value)
+    handleDataChange(updatedData)
+  }, [handleDataChange])
+  
+  const handleFieldEditStart = useCallback((path: string, type: 'text' | 'richtext' | 'list' | 'skills', position?: { top: number; left: number }) => {
+    console.log('[Builder] Field edit started:', path, type, position)
+    setActiveEditField({ path, type, position })
+  }, [])
+  
+  const handleFieldEditEnd = useCallback(() => {
+    console.log('[Builder] Field edit ended')
+    setActiveEditField({ path: '', type: null })
+  }, [])
+
+  const handleAddArrayItem = useCallback((arrayPath: string, index: number, position: 'before' | 'after') => {
+    if (!localCVDataRef.current) return
+    
+    const insertIndex = position === 'after' ? index + 1 : index
+    const pathParts = arrayPath.split('.')
+    const data = localCVDataRef.current as any
+    
+    // Navigate to array
+    let array = data
+    for (const part of pathParts) {
+      array = array[part]
+    }
+    
+    if (!Array.isArray(array)) return
+    
+    // Generate unique ID for the new item
+    const uniqueId = `${arrayPath}_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`
+    
+    // Create default item based on array type with helpful placeholder text
+    let newItem: any = { id: uniqueId }
+    if (arrayPath === 'experience') {
+      newItem = { 
+        id: uniqueId,
+        company: 'Your Company Name Here', 
+        position: 'Your Job Title', 
+        startDate: 'Month Year', 
+        endDate: 'Month Year or Present', 
+        location: 'City, State',
+        description: '• Describe your key responsibilities and achievements\n• Use bullet points to highlight major accomplishments\n• Focus on quantifiable results when possible',
+        achievements: []
+      }
+    } else if (arrayPath === 'education') {
+      newItem = { 
+        id: uniqueId,
+        institution: 'University or Institution Name', 
+        degree: 'Degree Type (e.g., Bachelor of Science)', 
+        field: 'Field of Study', 
+        startDate: 'Year', 
+        endDate: 'Year',
+        location: 'City, State'
+      }
+    } else if (arrayPath === 'skillCategories') {
+      newItem = { 
+        id: uniqueId,
+        category: 'Skill Category Name', 
+        skills: [
+          { name: 'Skill or Technology 1' },
+          { name: 'Skill or Technology 2' },
+          { name: 'Skill or Technology 3' }
+        ] 
+      }
+    }
+    
+    // Ensure existing items have IDs
+    const arrayWithIds = array.map((item: any, i: number) => {
+      if (!item.id) {
+        return { ...item, id: `${arrayPath}_existing_${i}_${Date.now()}` }
+      }
+      return item
+    })
+    
+    // Insert item
+    const newArray = [...arrayWithIds.slice(0, insertIndex), newItem, ...arrayWithIds.slice(insertIndex)]
+    const updatedData = updateNestedField(localCVDataRef.current, arrayPath, newArray)
+    handleDataChange(updatedData)
+  }, [handleDataChange])
+
+  const handleRemoveArrayItem = useCallback((arrayPath: string, index: number) => {
+    if (!localCVDataRef.current) return
+    
+    const pathParts = arrayPath.split('.')
+    const data = localCVDataRef.current as any
+    
+    // Navigate to array
+    let array = data
+    for (const part of pathParts) {
+      array = array[part]
+    }
+    
+    if (!Array.isArray(array) || array.length <= 1) return // Keep at least one item
+    
+    // Remove item
+    const newArray = array.filter((_, i) => i !== index)
+    const updatedData = updateNestedField(localCVDataRef.current, arrayPath, newArray)
+    handleDataChange(updatedData)
+  }, [handleDataChange])
+
   // Memoize template rendering to prevent re-renders when activeEditField changes
+  // Include localCVData so template updates when array items are added/removed
   const templateElement = useMemo(() => {
     if (!ready || !activeCV || !localCVData) return null
     
     const TemplateComponent = getFieldEditableTemplate(activeCV.templateId)
-    
-    const handleFieldChange = (path: string, value: any) => {
-      const updatedData = updateNestedField(localCVData, path, value)
-      handleDataChange(updatedData)
-    }
-    
-    const handleFieldEditStart = (path: string, type: 'text' | 'richtext' | 'list' | 'skills', position?: { top: number; left: number }) => {
-      console.log('[Builder] Field edit started:', path, type, position)
-      setActiveEditField({ path, type, position })
-    }
-    
-    const handleFieldEditEnd = () => {
-      console.log('[Builder] Field edit ended')
-      setActiveEditField({ path: '', type: null })
-    }
     
     return (
       <TemplateComponent
@@ -180,9 +296,11 @@ export default function ReactBuilderPage() {
         onFieldChange={handleFieldChange}
         onFieldEditStart={handleFieldEditStart}
         onFieldEditEnd={handleFieldEditEnd}
+        onAddArrayItem={handleAddArrayItem}
+        onRemoveArrayItem={handleRemoveArrayItem}
       />
     )
-  }, [ready, activeCV, localCVData])
+  }, [ready, activeCV, localCVData, handleFieldChange, handleFieldEditStart, handleFieldEditEnd, handleAddArrayItem, handleRemoveArrayItem])
 
   const handleImportCV = async (file: File) => {
     try {
@@ -281,7 +399,28 @@ export default function ReactBuilderPage() {
             <Button variant="default" className="w-full justify-start bg-gradient-to-r from-purple-600 to-pink-600" onClick={() => { if (!canUseAI()) { showUpgradeModal('ai_polish'); return; } alert('AI Polish coming soon!'); }}>
               <Sparkles className="h-4 w-4 mr-2" />AI Polish (Pro)
             </Button>
-            <Button className="w-full justify-start" disabled={completedSections.size < 3}>
+            <Button 
+              className="w-full justify-start" 
+              disabled={completedSections.size < 3 || !localCVData || !activeCV}
+              onClick={async () => {
+                if (!localCVData || !activeCV) return
+                try {
+                  const { generateReactPDF } = await import('@/lib/react-pdf-generator')
+                  const pdfBlob = await generateReactPDF(localCVData, activeCV.templateId as TemplateId)
+                  const url = window.URL.createObjectURL(pdfBlob)
+                  const a = document.createElement('a')
+                  a.href = url
+                  a.download = `${localCVData.personal.fullName.replace(/\s+/g, '_')}_resume.pdf`
+                  document.body.appendChild(a)
+                  a.click()
+                  document.body.removeChild(a)
+                  window.URL.revokeObjectURL(url)
+                } catch (error) {
+                  console.error('PDF export failed:', error)
+                  alert('Failed to export PDF. Please try again.')
+                }
+              }}
+            >
               <Download className="h-4 w-4 mr-2" />Export PDF
             </Button>
           </div>
@@ -410,7 +549,7 @@ export default function ReactBuilderPage() {
           // Visual Editing Mode
           <div className="max-w-4xl mx-auto">
             {templateElement && (
-              <Card className="p-0 shadow-2xl bg-white overflow-hidden">
+              <Card className="p-0 shadow-2xl bg-white overflow-hidden" data-template-preview>
                 {templateElement}
               </Card>
             )}

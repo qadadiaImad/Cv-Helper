@@ -171,7 +171,7 @@ export const TEMPLATE_REGISTRY: TemplateMetadata[] = [
     author: 'CV-Helper',
     license: 'MIT',
     type: 'react',
-    hidden: false,
+    hidden: true,
     thumbnailPath: '/templates/ClassicBlue.png',
     requiredFields: ['name', 'email', 'phone', 'experience', 'skills'],
     fieldMap: {
@@ -199,7 +199,7 @@ export const TEMPLATE_REGISTRY: TemplateMetadata[] = [
     author: 'CV-Helper',
     license: 'MIT',
     type: 'react',
-    hidden: false,
+    hidden: true,
     thumbnailPath: '/templates/classic.webp',
     requiredFields: ['name', 'email', 'phone', 'experience', 'education', 'skills'],
     fieldMap: {
@@ -313,7 +313,7 @@ export const TEMPLATE_REGISTRY: TemplateMetadata[] = [
     author: 'Enhancv (Converted)',
     license: 'MIT',
     type: 'react',
-    hidden: false,
+    hidden: true,
     thumbnailPath: '/templates/double-column.webp',
     requiredFields: ['name', 'email', 'phone', 'experience', 'education'],
     fieldMap: {
@@ -341,7 +341,7 @@ export const TEMPLATE_REGISTRY: TemplateMetadata[] = [
     author: 'Custom Design',
     license: 'MIT',
     type: 'react',
-    hidden: false,
+    hidden: true,
     thumbnailPath: '/templates/creative-orange.webp',
     requiredFields: ['name', 'email', 'phone', 'experience', 'skills'],
     fieldMap: {
@@ -397,7 +397,7 @@ export const TEMPLATE_REGISTRY: TemplateMetadata[] = [
     author: 'CodePen by mavrK',
     license: 'MIT',
     type: 'react',
-    hidden: false,
+    hidden: true,
     thumbnailPath: '/templates/beige-sidebar.webp',
     requiredFields: ['name', 'email', 'phone', 'experience', 'education'],
     fieldMap: {
@@ -452,7 +452,7 @@ export const TEMPLATE_REGISTRY: TemplateMetadata[] = [
     author: 'Professional Design',
     license: 'MIT',
     type: 'react',
-    hidden: false,
+    hidden: true,
     thumbnailPath: '/templates/gray-minimal.webp',
     requiredFields: ['name', 'email', 'phone', 'experience', 'education'],
     fieldMap: {
@@ -481,7 +481,7 @@ export const TEMPLATE_REGISTRY: TemplateMetadata[] = [
     author: 'Modern Design',
     license: 'MIT',
     type: 'react',
-    hidden: false,
+    hidden: true,
     thumbnailPath: '/templates/dark-professional.webp',
     requiredFields: ['name', 'email', 'phone', 'experience', 'skills'],
     fieldMap: {
@@ -624,7 +624,7 @@ export const TEMPLATE_REGISTRY: TemplateMetadata[] = [
     author: 'LaTeX Overleaf',
     license: 'MIT',
     type: 'react',
-    hidden: false,
+    hidden: true,
     thumbnailPath: '/templates/jack-sparrow.webp',
     requiredFields: ['name', 'title', 'email', 'phone', 'experience', 'education'],
     fieldMap: {
@@ -823,7 +823,7 @@ export const TEMPLATE_REGISTRY: TemplateMetadata[] = [
     author: 'Academic Template',
     license: 'MIT',
     type: 'react',
-    hidden: false,
+    hidden: true,
     thumbnailPath: '/templates/ivy-league.webp',
     requiredFields: ['name', 'email', 'education', 'experience'],
     fieldMap: {
@@ -910,7 +910,7 @@ export const TEMPLATE_REGISTRY: TemplateMetadata[] = [
     author: 'CV Helper',
     license: 'MIT',
     type: 'react',
-    hidden: false,
+    hidden: true,
     thumbnailPath: '/templates/modern-blue-black.webp',
     requiredFields: ['name', 'title', 'email', 'experience', 'education'],
     fieldMap: {
@@ -1364,6 +1364,35 @@ export const TEMPLATE_REGISTRY: TemplateMetadata[] = [
     compatibility: { atsScore: 82, printOptimized: true, mobileResponsive: true, accessibilityScore: 87 },
     customization: { colorCustomizable: true, colorVariants: 3, supportsPhoto: true, fontCustomizable: true },
     estimatedTime: '20-28 minutes',
+  },
+  {
+    id: 'product-manager',
+    name: 'Product Manager',
+    description: 'Professional CV with tropical leaf accent bar, clean layout, and categorized skills grid',
+    category: 'modern',
+    tags: ['modern', 'professional', 'product-manager', 'green', 'photo', 'clean', 'skills-grid'],
+    author: 'CV Helper',
+    license: 'MIT',
+    type: 'react',
+    hidden: false,
+    thumbnailPath: '/templates/product-manager.webp',
+    requiredFields: ['name', 'email', 'phone'],
+    fieldMap: {
+      basic: ['name', 'title', 'email', 'phone', 'location', 'website', 'linkedIn', 'photo'],
+      experience: ['company', 'position', 'period', 'location', 'description'],
+      education: ['institution', 'degree', 'field', 'year', 'location', 'honors'],
+      skills: ['skillCategories'],
+      custom: ['summary', 'certifications', 'languages'],
+    },
+    features: ['Tropical leaf decorative bar', 'Photo support', 'Categorized skills grid', 'Clean typography', 'Professional layout'],
+    popularity: 93,
+    isNew: true,
+    complexity: 'simple',
+    layout: 'single-column',
+    bestFor: ['product-managers', 'project-managers', 'business-analysts', 'modern-professionals', 'tech-professionals'],
+    compatibility: { atsScore: 92, printOptimized: true, mobileResponsive: true, accessibilityScore: 93 },
+    customization: { colorCustomizable: true, colorVariants: 2, supportsPhoto: true, fontCustomizable: true },
+    estimatedTime: '18-25 minutes',
   },
 ]
 
