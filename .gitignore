@@ -25,7 +25,6 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-public/template-thumbnail/*.png
 
 # vercel
 .vercel
@@ -37,3 +36,5 @@ next-env.d.ts
 
 # test accounts (contains passwords)
 #TEST_ACCOUNTS.md
+/public/template-thumbnails
+
